@@ -39,7 +39,11 @@ Sistema de gestión eficiente de paquetes y correspondencia en edificios residen
 - .claude/skills/code-reviewer → análisis de PRs, revisión de calidad de código
 
 ## Plan de sprints
-- Sprint 1 (24–31 mar): Setup del proyecto, SSO con 2 roles, base responsive, i18n
+- **Sprint 1 (24–31 mar)**: Setup del proyecto, SSO con 2 roles, base responsive, i18n
+  - Tarea 1: Setup inicial ✓
+  - **Tarea 2: [Auth] SSO login with NextAuth + Google provider** ✅ COMPLETADA (25 mar)
+  - Tarea 3: i18n setup (pendiente)
+  - Tarea 4: Responsive design audit (pendiente)
 - Sprint 2 (31 mar–7 abr): Registro de encomiendas, base de datos, notificaciones
 - Sprint 3 (7–14 abr): Generación y escaneo QR, verificación de retiro
 - Sprint 4 (14–21 abr): Dashboard conserje, filtros, estadísticas
