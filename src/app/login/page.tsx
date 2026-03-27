@@ -13,13 +13,10 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      // Store the selected role in session storage before signing in
-      sessionStorage.setItem("selectedRole", selectedRole);
-
-      // Redirect to Google OAuth flow
+      // Pass the selected role as a query param so the NextAuth backend can read and persist it
       await signIn("google", {
         redirect: true,
-        callbackUrl: "/dashboard",
+        callbackUrl: `/api/auth/set-role?role=${selectedRole}&next=/dashboard`,
       });
     } catch (error) {
       console.error("Sign in error:", error);

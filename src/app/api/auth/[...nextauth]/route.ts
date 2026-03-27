@@ -2,12 +2,10 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
-import type { User } from "@prisma/client";
-import type { JWT } from "next-auth/jwt";
-import type { Session } from "next-auth";
 
 const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  adapter: PrismaAdapter(prisma) as any, // @auth/prisma-adapter v2 uses a bundled @auth/core; casting is the standard workaround for next-auth v4 compatibility
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -20,32 +18,28 @@ const authOptions: NextAuthOptions = {
     error: "/login",
   },
   callbacks: {
-    async signIn({ user, account }) {
-      // Allow sign in with Google
-      if (account?.provider === "google") {
-        return true;
-      }
-      return false;
+    async signIn({ account }) {
+      // Allow sign in with Google only
+      return account?.provider === "google";
     },
 
     async redirect({ url, baseUrl }) {
-      // Redirect to dashboard after login
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
 
-    async session({ session, user }: { session: Session; user: User }) {
-      // Add user role to session
+    async session({ session, user }) {
+      // Add user id and role to session (types from src/types/next-auth.d.ts)
       if (session.user) {
         session.user.id = user.id;
-        (session.user as any).role = user.role;
+        session.user.role = user.role;
       }
       return session;
     },
 
-    async jwt({ token, user }: { token: JWT; user?: User }) {
-      // Add user role to JWT token
+    async jwt({ token, user }) {
+      // Add user id and role to JWT token
       if (user) {
         token.id = user.id;
         token.role = user.role;
