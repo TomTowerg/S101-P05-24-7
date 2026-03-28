@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+@theme {
+  /* ── Backgrounds ─────────────────────────────── */
+  --color-bg-base: #080810;
+  --color-bg-surface: #0f0f1a;
+
+  /* ── Glass ───────────────────────────────────── */
+  --color-glass-fill: rgba(255, 255, 255, 0.04);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+
+  /* ── Accent ──────────────────────────────────── */
+  --color-accent-primary: #6366f1;
+  --color-accent-glow: rgba(99, 102, 241, 0.15);
+
+  /* ── Text ────────────────────────────────────── */
+  --color-text-primary: #f1f0ff;
+  --color-text-muted: #6b6a8a;
+
+  /* ── Fonts ───────────────────────────────────── */
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-syne);
+}
