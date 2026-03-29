@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📦 Gestión de Encomiendas (Parcel Management System)
 
-## Getting Started
+Un sistema de gestión de encomiendas premium basado en roles, diseñado para complejos residenciales y comerciales. Desarrollado para optimizar el flujo de trabajo en conserjería, administrar las entregas de los departamentos y brindar visibilidad inmediata a los residentes mediante Dashboards seguros.
 
-First, run the development server:
+Construido con **Next.js 16 (App Router)**, **Prisma (PostgreSQL)** y **NextAuth v4**.
+
+---
+
+## 🚀 Inicio Rápido
+
+Asegúrate de tener Node.js y PostgreSQL instalados y en ejecución, luego provisiona tu entorno de forma segura utilizando nuestro script de arranque rápido:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# MacOS / Linux
+bash scripts/quick-start.sh
+
+# Windows (Git Bash / WSL)
+./scripts/quick-start.sh
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Alternativamente, puedes instalar y ejecutar la aplicación manualmente:
+```bash
+npm install
+npx prisma generate
+npx prisma db push
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visita [http://localhost:3000](http://localhost:3000) para acceder a la aplicación.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📚 Documentación
 
-## Learn More
+Las guías detalladas de arquitectura y manuales de configuración se han consolidado en el directorio `/docs`.
 
-To learn more about Next.js, take a look at the following resources:
+- **[Guía de Configuración de Autenticación](docs/auth-setup-guide.md)**: Guía maestra para configurar Google OAuth 2.0, la lógica de NextAuth (JWT) y la inyección inicial de roles.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ Stack Tecnológico
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Framework**: Next.js 16 (React 19)
+- **Estilos**: Tailwind CSS v4 + Motion
+- **Base de Datos**: PostgreSQL
+- **ORM**: Prisma
+- **Autenticación**: NextAuth.js (Google Provider SSO)
+- **Despliegue**: Listo para Vercel
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

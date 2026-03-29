@@ -28,15 +28,15 @@ Sistema de gestión eficiente de paquetes y correspondencia en edificios residen
 - Multilenguaje i18n (es/en) sin APIs externas de traducción
 - Debe estar desplegado en una URL pública en la nube para el Sprint 5
 
-## Skills disponibles (úsalas automáticamente según el contexto)
-- .claude/skills/senior-backend → diseño de APIs, migraciones de BD, seguridad
-- .claude/skills/senior-frontend → componentes Next.js, optimización de bundle
-- .claude/skills/ui-ux-pro-max → sistema de diseño, paletas de color, reglas UX
-- .claude/skills/frontend-design → diseño visual, animaciones, estética
-- .claude/skills/authentication-setup → JWT, roles, middleware, SSO
-- .claude/skills/i18n → internacionalización con estructura de claves planas
-- .claude/skills/qr-code-generator → generación y decodificación de QR
-- .claude/skills/code-reviewer → análisis de PRs, revisión de calidad de código
+## Guías de Desarrollo avanzadas (implementar estrictamente según el contexto)
+- .claude/skills/senior-backend → diseño de APIs, migraciones de BD, arquitectura robusta
+- .claude/skills/senior-frontend → componentes Next.js, optimización de bundle y performance
+- .claude/skills/ui-ux-pro-max → sistema de diseño premium, paletas de color unificadas
+- .claude/skills/frontend-design → diseño visual avanzado, animaciones fluidas, hiper estética
+- .claude/skills/authentication-setup → manejo de seguridad JWT, middlewares, estructura SSO
+- .claude/skills/i18n → internacionalización escalable
+- .claude/skills/qr-code-generator → flujos de inventarios
+- .claude/skills/code-reviewer → estándares de revisión
 
 ## Plan de sprints
 - **Sprint 1 (24–31 mar)**: Setup del proyecto, SSO con 2 roles, base responsive, i18n
@@ -59,4 +59,4 @@ src/
 prisma/               # Schema y migraciones
 public/               # Archivos estáticos
 docs/                 # Documentación técnica
-.claude/skills/       # Skills de Claude Code.
+.claude/skills/       # Criterios y estándares técnicos paramétricos
