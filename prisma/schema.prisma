@@ -24,7 +24,9 @@ model User {
 
   accounts           Account[]
   sessions           Session[]
-  registeredPackages Package[]
+  registeredPackages Package[]      @relation("RegisteredPackages")
+  pickedUpPackages   Package[]      @relation("PickedUpPackages")
+  packageEvents      PackageEvent[] @relation("PackageEvents")
 }
 
 enum UserRole {
@@ -77,35 +79,82 @@ model Apartment {
   id        String   @id @default(cuid())
   number    String
   tower     String?
+  floor     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   packages Package[]
 
   @@unique([number, tower])
+  @@index([number])
 }
 
 model Package {
-  id           String        @id @default(cuid())
-  trackingCode String        @unique
-  status       PackageStatus @default(PENDING)
-  description  String?
-  receivedAt   DateTime      @default(now())
-  deliveredAt  DateTime?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  trackingCode  String        @unique
+  status        PackageStatus @default(PENDING)
 
-  apartmentId String
-  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  // Package details
+  description   String?
+  carrier       String?       // Courier company: Chilexpress, DHL, Correos, etc.
+  recipientName String?       // Name of the resident the package is for
+  imageUrl      String?       // Optional photo taken at reception
+
+  // Timestamps
+  receivedAt    DateTime      @default(now())
+  notifiedAt    DateTime?     // When push notification was sent to resident
+  pickedUpAt    DateTime?     // When the resident picked up the package
+  deliveredAt   DateTime?     // Alias kept for backward-compatibility
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  apartmentId    String
+  apartment      Apartment @relation(fields: [apartmentId], references: [id])
 
   registeredById String
-  registeredBy   User   @relation(fields: [registeredById], references: [id])
+  registeredBy   User      @relation("RegisteredPackages", fields: [registeredById], references: [id])
+
+  pickedUpById   String?
+  pickedUpBy     User?     @relation("PickedUpPackages", fields: [pickedUpById], references: [id])
+
+  events PackageEvent[]
 
   @@index([apartmentId])
   @@index([registeredById])
+  @@index([pickedUpById])
+  @@index([status])
+  @@index([receivedAt])
+}
+
+// Full audit trail: every state change is recorded as an event
+model PackageEvent {
+  id        String           @id @default(cuid())
+  type      PackageEventType
+  notes     String?
+  createdAt DateTime         @default(now())
+
+  packageId   String
+  package     Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  createdById String
+  createdBy   User    @relation("PackageEvents", fields: [createdById], references: [id])
+
+  @@index([packageId])
+  @@index([createdById])
 }
 
 enum PackageStatus {
-  PENDING
-  DELIVERED
+  PENDING    // Received, resident not yet notified
+  NOTIFIED   // Push notification sent to resident
+  DELIVERED  // Picked up by resident or authorized person
 }
+
+enum PackageEventType {
+  RECEIVED   // Package arrived and was registered
+  NOTIFIED   // Resident was notified
+  PICKED_UP  // Package was picked up
+  RETURNED   // Package was returned to sender
+  NOTE_ADDED // A note was added manually
+}
+

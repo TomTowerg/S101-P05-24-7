@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
 import { UserRole } from "@prisma/client";
 
 /**
@@ -9,21 +10,24 @@ import { UserRole } from "@prisma/client";
  * Called as the OAuth callbackUrl after Google sign-in.
  * Reads the desired role from the query param and updates the
  * authenticated user's role in the database, then redirects to `next`.
+ *
+ * After updating the DB, this endpoint triggers a session update so
+ * the JWT token picks up the new role without requiring a fresh login.
  */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const roleParam = searchParams.get("role");
   const next = searchParams.get("next") ?? "/dashboard";
 
-  // Validate role param
+  // Validate role param — default to RESIDENTE if invalid
   const validRoles: UserRole[] = ["CONSERJE", "RESIDENTE"];
   const role: UserRole =
     roleParam && validRoles.includes(roleParam as UserRole)
       ? (roleParam as UserRole)
       : "RESIDENTE";
 
-  // Get the current session (user must be logged in at this point)
-  const session = await getServerSession();
+  // Get the current session (user must be logged in via Google/Email at this point)
+  const session = await getServerSession(authOptions);
 
   if (session?.user?.email) {
     await prisma.user.update({
@@ -32,7 +36,9 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  // Redirect to the intended destination
+  // Redirect to the intended destination.
+  // The JWT callback in authOptions will re-read the role from DB
+  // on the next request, so no sign-out/sign-in cycle is needed.
   const redirectUrl = new URL(next, request.url);
   return NextResponse.redirect(redirectUrl);
 }
