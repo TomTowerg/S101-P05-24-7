@@ -6,6 +6,7 @@ import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
+import Providers from "@/components/Providers";
 
 const syne = Syne({
   variable: "--font-syne",
@@ -49,8 +50,10 @@ export default async function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-[#0f0820] text-[#f5f0ff] antialiased overscroll-none">
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="flex flex-col flex-1">{children}</main>
+          <Providers>
+            <Navbar />
+            <main className="flex flex-col flex-1">{children}</main>
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>
