@@ -89,7 +89,8 @@
   },
   "DashboardCommon": {
     "loading": "Cargando...",
-    "redirecting": "Redirigiendo a tu panel de control..."
+    "redirecting": "Redirigiendo a tu panel de control...",
+    "scan": "Escanear QR"
   },
   "Concierge": {
     "title": "Panel del Conserje",
@@ -180,5 +181,19 @@
     "printQR": "Imprimir Etiqueta",
     "downloadQR": "Descargar QR",
     "close": "Cerrar"
+  },
+  "Scanner": {
+    "title": "Escanear Código QR",
+    "subtitle": "Coloca el código QR frente a la cámara para verificar el paquete",
+    "start": "Abrir Cámara",
+    "stop": "Cerrar Cámara",
+    "searching": "Buscando cámara...",
+    "scanning": "Escaneando...",
+    "errorHeader": "Error de Cámara",
+    "errorPermission": "No se pudo acceder a la cámara. Por favor, otorga los permisos necesarios.",
+    "errorNotFound": "No se encontró ninguna cámara en este dispositivo.",
+    "errorGeneric": "Ocurrió un error al intentar iniciar el escáner.",
+    "success": "Código detectado con éxito",
+    "invalid": "El código escaneado no es válido para este sistema"
   }
 }
