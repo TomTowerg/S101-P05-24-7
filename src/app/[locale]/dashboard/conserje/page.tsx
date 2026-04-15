@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import PackageRegistrationForm from "@/components/PackageRegistrationForm";
-import { Loader2, LogOut, Package, Clock, CheckCircle2, History, User } from "lucide-react";
+import QRScanner from "@/components/QRScanner";
+import PackageVerificationModal from "@/components/PackageVerificationModal";
+import { Loader2, LogOut, Package, Clock, CheckCircle2, History, User, QrCode } from "lucide-react";
 
 interface PackageData {
   id: string;
@@ -26,6 +28,9 @@ export default function ConciergeDashboard() {
   
   const [packages, setPackages] = useState<PackageData[]>([]);
   const [isLoadingPackages, setIsLoadingPackages] = useState(true);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scannedId, setScannedId] = useState<string | null>(null);
+  const [showVerification, setShowVerification] = useState(false);
 
   const fetchPackages = useCallback(async () => {
     try {
@@ -48,6 +53,12 @@ export default function ConciergeDashboard() {
       fetchPackages();
     }
   }, [status, router, fetchPackages]);
+
+  const handleScanSuccess = (decodedText: string) => {
+    setScannedId(decodedText);
+    setIsScanning(false);
+    setShowVerification(true);
+  };
 
   if (status === "loading") {
     return (
@@ -122,15 +133,20 @@ export default function ConciergeDashboard() {
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-8 shadow-xl shadow-indigo-100 flex flex-col justify-center">
-            <h3 className="text-indigo-100 font-bold text-xs uppercase tracking-[0.2em] mb-4">{t('comingSoonTitle')}</h3>
-            <div className="flex flex-wrap gap-2">
-              {['QR SCAN', 'SIGNATURE', 'EXPORT'].map((l) => (
-                <span key={l} className="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-bold text-white tracking-widest uppercase border border-white/10">
-                  {l}
-                </span>
-              ))}
-            </div>
+          <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-8 shadow-xl shadow-indigo-100 flex flex-col justify-center items-center text-center">
+            <h3 className="text-indigo-100 font-bold text-[10px] uppercase tracking-[0.2em] mb-4">{t('comingSoonTitle')}</h3>
+            <button
+              onClick={() => setIsScanning(true)}
+              className="group relative flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95 shadow-xl hover:shadow-indigo-200"
+            >
+              <QrCode className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              {tCommon('scan').toUpperCase()}
+              <div className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+              </div>
+            </button>
+            <p className="mt-4 text-indigo-200/60 text-[9px] font-bold uppercase tracking-widest">{t('f3')}</p>
           </div>
         </div>
 
@@ -203,6 +219,26 @@ export default function ConciergeDashboard() {
           </div>
         </div>
 
+        {/* Scanner Overlay */}
+        {isScanning && (
+          <QRScanner 
+            onScanSuccess={handleScanSuccess}
+            onClose={() => setIsScanning(false)}
+          />
+        )}
+
+        {showVerification && scannedId && (
+          <PackageVerificationModal 
+            packageId={scannedId}
+            onClose={() => {
+              setShowVerification(false);
+              setScannedId(null);
+            }}
+            onDeliverySuccess={() => {
+              fetchPackages(); // Refresh the list
+            }}
+          />
+        )}
       </div>
     </div>
   );
