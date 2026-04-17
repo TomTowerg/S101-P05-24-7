@@ -103,6 +103,7 @@ model Package {
   description   String?
   carrier       String?       // Courier company: Chilexpress, DHL, Correos, etc.
   recipientName String?       // Name of the resident the package is for
+  receiverName  String?       // Name of the person who physically picked up the package
   imageUrl      String?       // Optional photo taken at reception
   isPerishable  Boolean       @default(false) // For urgent notifications (Ticket #25)
 

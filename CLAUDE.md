@@ -52,7 +52,7 @@ Sistema de gestión eficiente de paquetes y correspondencia en edificios residen
   - [Feature] Push Notifications setup and integration #9
   - [Feature] Urgent notification for perishable packages #25
 - **Sprint 3 (13 abr – 19 abr): QR & Pickup Flow**
-  - [Feature] QR code generation for packages #10
+  - [Feature] QR code generation for packages #10 ✅
   - [Feature] QR scanner implementation #11
   - [Feature] Package pickup verification flow #12
   - [Feature] Pickup record: log who retrieved each package #26

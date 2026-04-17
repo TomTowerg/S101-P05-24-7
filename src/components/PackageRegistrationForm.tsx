@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Package, CheckCircle, AlertCircle, Loader2, X } from "lucide-react";
+import { Package, CheckCircle, AlertCircle, Loader2, X, PlusCircle } from "lucide-react";
+import PackageQR from "./PackageQR";
 
 interface FormState {
   status: "idle" | "loading" | "success" | "error";
   message: string;
   registeredPackage?: {
+    id: string;
     trackingCode: string;
     apartment: { number: string; tower?: string | null };
+    recipientName?: string | null;
   };
 }
 
@@ -79,44 +82,64 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="bg-slate-900 px-6 py-4 flex items-center gap-3">
-        <div className="p-2 bg-indigo-500/20 rounded-lg">
-          <Package className="w-5 h-5 text-indigo-400" strokeWidth={1.5} />
-        </div>
-        <div>
-          <h2 className="text-white font-semibold text-base">{t("title")}</h2>
-          <p className="text-slate-400 text-xs">{t("subtitle")}</p>
-        </div>
-      </div>
-
-      {/* ── Success Banner ──────────────────────────────────────────────────── */}
-      {state.status === "success" && state.registeredPackage && (
-        <div className="mx-6 mt-4 flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-4">
-          <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-          <div className="flex-1 min-w-0">
-            <p className="text-green-800 font-semibold text-sm">{state.message}</p>
-            <p className="text-green-700 text-xs mt-1">
-              {t("trackingLabel")}:{" "}
-              <span className="font-mono font-bold">
-                {state.registeredPackage.trackingCode}
-              </span>{" "}
-              · {t("apartmentLabel")}:{" "}
-              <span className="font-bold">
-                {state.registeredPackage.apartment.number}
-                {state.registeredPackage.apartment.tower
-                  ? ` ${t("towerLabel")} ${state.registeredPackage.apartment.tower}`
-                  : ""}
-              </span>
-            </p>
+      {/* ── Header (Hidden on success) ────────────────────────────────────── */}
+      {state.status !== "success" && (
+        <div className="bg-slate-900 px-6 py-4 flex items-center gap-3">
+          <div className="p-2 bg-indigo-500/20 rounded-lg">
+            <Package className="w-5 h-5 text-indigo-400" strokeWidth={1.5} />
           </div>
-          <button
-            onClick={resetForm}
-            className="text-green-600 hover:text-green-800 transition-colors"
-            aria-label="Cerrar"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div>
+            <h2 className="text-white font-semibold text-base">{t("title")}</h2>
+            <p className="text-slate-400 text-xs">{t("subtitle")}</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Success View ──────────────────────────────────────────────────── */}
+      {state.status === "success" && state.registeredPackage && (
+        <div className="p-6 md:p-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
+          <div className="max-w-xl mx-auto space-y-8">
+            {/* Success Header */}
+            <div className="text-center space-y-2">
+              <div className="inline-flex items-center justify-center p-3 bg-green-100 rounded-full mb-2">
+                <CheckCircle className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                {state.message}
+              </h3>
+              <p className="text-slate-500 text-sm font-medium">
+                {t("apartmentLabel")}: <span className="text-slate-900 font-bold">{state.registeredPackage.apartment.number}</span>
+                {state.registeredPackage.apartment.tower ? ` · ${t("towerLabel")} ${state.registeredPackage.apartment.tower}` : ""}
+              </p>
+            </div>
+
+            {/* QR Section */}
+            <div className="bg-slate-50/50 rounded-3xl p-4 md:p-8 border border-slate-100">
+              <PackageQR
+                packageId={state.registeredPackage.id}
+                trackingCode={state.registeredPackage.trackingCode}
+                apartmentNumber={state.registeredPackage.apartment.number}
+                recipientName={state.registeredPackage.recipientName || undefined}
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="grid grid-cols-1 gap-3">
+              <button
+                onClick={resetForm}
+                className="w-full flex items-center justify-center gap-3 bg-slate-900 hover:bg-slate-800 text-white font-black py-4 px-6 rounded-2xl transition-all active:scale-[0.98] shadow-xl shadow-slate-200"
+              >
+                <PlusCircle className="w-5 h-5 text-indigo-400" />
+                {t("submitButton")}
+              </button>
+              <button
+                onClick={() => setState({ status: "idle", message: "" })}
+                className="w-full py-3 text-slate-400 hover:text-slate-600 font-bold transition-colors text-xs uppercase tracking-widest"
+              >
+                {t("close")}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -136,7 +159,8 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
       )}
 
       {/* ── Form ────────────────────────────────────────────────────────────── */}
-      <form onSubmit={handleSubmit} className="p-6 space-y-5">
+      {state.status !== "success" && (
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
         {/* Tracking Code */}
         <div>
           <label
@@ -263,6 +287,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
           )}
         </button>
       </form>
+      )}
     </div>
   );
 }

@@ -116,7 +116,8 @@
   },
   "DashboardCommon": {
     "loading": "Loading...",
-    "redirecting": "Redirecting to your dashboard..."
+    "redirecting": "Redirecting to your dashboard...",
+    "scan": "Scan QR"
   },
   "Concierge": {
     "title": "Concierge Dashboard",
@@ -201,6 +202,25 @@
     "errorGeneric": "An error occurred while registering the package",
     "errorNetwork": "Connection error. Check your network and try again",
     "perishableLabel": "Is perishable / urgent",
-    "perishableDesc": "Mark if it requires refrigeration or fast delivery"
+    "perishableDesc": "Mark if it requires refrigeration or fast delivery",
+    "qrTitle": "Package QR Code",
+    "qrSubtitle": "Scan or print this code for pickup",
+    "printQR": "Print Label",
+    "downloadQR": "Download QR",
+    "close": "Close"
+  },
+  "Scanner": {
+    "title": "Scan QR Code",
+    "subtitle": "Place the QR code in front of the camera to verify the package",
+    "start": "Open Camera",
+    "stop": "Close Camera",
+    "searching": "Searching camera...",
+    "scanning": "Scanning...",
+    "errorHeader": "Camera Error",
+    "errorPermission": "Could not access camera. Please grant the necessary permissions.",
+    "errorNotFound": "No camera found on this device.",
+    "errorGeneric": "An error occurred while trying to start the scanner.",
+    "success": "Code detected successfully",
+    "invalid": "The scanned code is not valid for this system"
   }
 }
