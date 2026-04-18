@@ -1,46 +1,149 @@
-# 📦 Gestión de Encomiendas (Parcel Management System)
+# Loombox — Gestión de Encomiendas
 
-Un sistema de gestión de encomiendas premium basado en roles, diseñado para complejos residenciales y comerciales. Desarrollado para optimizar el flujo de trabajo en conserjería, administrar las entregas de los departamentos y brindar visibilidad inmediata a los residentes mediante Dashboards seguros.
+Sistema de gestión de paquetes y correspondencia para edificios residenciales.
+Desarrollado como proyecto P05 del curso TICS420 — Universidad Adolfo Ibáñez.
 
-Construido con **Next.js 16 (App Router)**, **Prisma (PostgreSQL)** y **NextAuth v4**.
+Cada paquete queda registrado, notificado y entregado con trazabilidad completa.
 
 ---
 
-## 🚀 Inicio Rápido
+## Stack
 
-Asegúrate de tener Node.js y PostgreSQL instalados y en ejecución, luego provisiona tu entorno de forma segura utilizando nuestro script de arranque rápido:
+| Capa | Tecnología |
+|---|---|
+| Framework | Next.js 16.2 (App Router, Turbopack) |
+| Runtime | Bun |
+| Lenguaje | TypeScript |
+| Estilos | Tailwind CSS v4 + Framer Motion |
+| Base de datos | PostgreSQL (Supabase / Docker) |
+| ORM | Prisma |
+| Auth | NextAuth v4 — Google SSO + TOTP 2FA (Google Authenticator) |
+| i18n | next-intl (ES / EN) |
+| Email | Resend SMTP (nodemailer) |
+| QR | qrcode (generación), html5-qrcode (escaneo) |
+| Notificaciones | Web Push API |
+| Deploy | Vercel + Supabase |
+
+---
+
+## Inicio rápido
 
 ```bash
-# MacOS / Linux
-bash scripts/quick-start.sh
-
-# Windows (Git Bash / WSL)
-./scripts/quick-start.sh
+cp .env.example .env        # configurar variables de entorno
+bun install                 # instalar dependencias
+bunx prisma generate        # generar cliente Prisma
+bunx prisma db push         # sincronizar schema con la BD
+bun dev                     # iniciar servidor en localhost:3000
 ```
 
-Alternativamente, puedes instalar y ejecutar la aplicación manualmente:
+### Con Docker (desarrollo local)
+
 ```bash
-npm install
-npx prisma generate
-npx prisma db push
-npm run dev
+# Solo base de datos local + servidor Next.js
+docker compose up postgres -d
+bun dev
+
+# Stack completo en contenedores
+docker compose up -d
 ```
 
-Visita [http://localhost:3000](http://localhost:3000) para acceder a la aplicación.
+### Variables de entorno requeridas
 
-## 📚 Documentación
+```env
+DATABASE_URL=           # URL de conexión PostgreSQL (pooler)
+DIRECT_URL=             # URL de conexión directa PostgreSQL
+NEXTAUTH_SECRET=        # secreto JWT (openssl rand -base64 32)
+NEXTAUTH_URL=           # URL pública de la app (ej. http://localhost:3000)
+GOOGLE_CLIENT_ID=       # Google OAuth 2.0 Client ID
+GOOGLE_CLIENT_SECRET=   # Google OAuth 2.0 Client Secret
+EMAIL_SERVER=           # SMTP URL (ej. smtp://user:pass@smtp.resend.com:465)
+EMAIL_FROM=             # dirección remitente
+```
 
-Las guías detalladas de arquitectura y manuales de configuración se han consolidado en el directorio `/docs`.
+---
 
-- **[Guía de Configuración de Autenticación](docs/auth-setup-guide.md)**: Guía maestra para configurar Google OAuth 2.0, la lógica de NextAuth (JWT) y la inyección inicial de roles.
+## Flujo de autenticación
 
-## 🏗️ Stack Tecnológico
+```
+Login page
+  └── Selección de rol (CONSERJE / RESIDENTE)
+        └── Google SSO (NextAuth)
+              └── Onboarding
+                    ├── CONSERJE → Confirmación → setup-totp
+                    └── RESIDENTE → Selección de departamento → Confirmación → setup-totp
+                          └── Google Authenticator (QR scan)
+                                └── verify-totp
+                                      └── Dashboard
+```
 
-- **Framework**: Next.js 16 (React 19)
-- **Estilos**: Tailwind CSS v4 + Motion
-- **Base de Datos**: PostgreSQL
-- **ORM**: Prisma
-- **Autenticación**: NextAuth.js (Google Provider SSO)
-- **Despliegue**: Listo para Vercel
+El middleware (`src/proxy.ts`) protege todas las rutas y dirige según el estado del token JWT:
+- Sin sesión → `/login`
+- Sin onboarding → `/onboarding`
+- Sin TOTP configurado → `/auth/setup-totp`
+- TOTP configurado pero no verificado → `/auth/verify-totp`
+- Todo completo → `/dashboard/conserje` o `/dashboard/resident`
 
+---
 
+## Roles
+
+| Funcionalidad | CONSERJE | RESIDENTE |
+|---|:---:|:---:|
+| Registrar paquetes | ✅ | — |
+| Ver todos los paquetes | ✅ | — |
+| Generar QR de paquete | ✅ | — |
+| Escanear QR para entrega | ✅ | — |
+| Reportes y estadísticas | ✅ | — |
+| Ver mis encomiendas | — | ✅ |
+| Notificaciones push | — | ✅ |
+| Código QR para retiro | — | ✅ |
+
+---
+
+## Estructura de carpetas
+
+```
+src/
+├── app/
+│   ├── [locale]/
+│   │   ├── auth/
+│   │   │   ├── setup-totp/     # Configuración inicial Google Authenticator
+│   │   │   └── verify-totp/    # Verificación TOTP en cada login
+│   │   ├── dashboard/
+│   │   │   ├── conserje/       # Panel del conserje
+│   │   │   └── resident/       # Portal del residente
+│   │   ├── onboarding/         # Flujo de primer ingreso
+│   │   └── login/              # Selección de rol + OAuth
+│   └── api/
+│       ├── auth/               # NextAuth + TOTP endpoints
+│       ├── onboarding/         # Completar perfil
+│       ├── packages/           # CRUD encomiendas
+│       └── push/               # Web Push subscriptions
+├── lib/
+│   ├── auth.ts                 # NextAuth config + JWT callbacks
+│   ├── prisma.ts               # Cliente Prisma singleton
+│   ├── totp.ts                 # Generación y verificación TOTP
+│   └── otp.ts                  # Envío de email OTP (Resend)
+├── i18n/
+│   └── messages/
+│       ├── es.json
+│       └── en.json
+└── proxy.ts                    # Middleware de rutas (auth + i18n)
+prisma/
+└── schema.prisma
+```
+
+> **Nota:** Se usa `src/proxy.ts` en lugar de `src/middleware.ts` por compatibilidad con Next.js 16.2 + Turbopack.
+
+---
+
+## Equipo
+
+| GitHub | Rol |
+|---|---|
+| [@TomTowerg](https://github.com/TomTowerg) | Desarrollo |
+| [@matildavasquezdevi](https://github.com/matildavasquezdevi) | Desarrollo |
+
+Product Owner: Nicolás Escobar
+Repositorio: [uai-cl-tics420/S101-P05-24-7](https://github.com/uai-cl-tics420/S101-P05-24-7)
+Curso: TICS420 — Programación Profesional · Universidad Adolfo Ibáñez · 2026
