@@ -2,24 +2,23 @@
 
 ## Estado actual del proyecto
 
-### Sprint en curso: Sprint 3 (13 abr – 19 abr) — QR & Pickup Flow
+### Sprint en curso: Sprint 6 (04 may – 10 may) — Polish & Handover
 
 **Completado:**
 - Sprint 1 ✅ — Setup, Auth base, i18n, schema Prisma
-- #36 Onboarding flow ✅ — sin selección de rol (viene del login)
-- #37 TOTP 2FA ✅ — Google Authenticator reemplaza email OTP
-- #10 QR code generation ✅
-- Fixes: Prisma sync (db push), cookies() async, proxy.ts routing, Resend SMTP
+- Sprint 2 ✅ — Package Management & Notifications
+- Sprint 3 ✅ — QR & Pickup Flow
+- Sprint 4 ✅ — Dashboard & Reporting (Dashboard conserje, filtros, estadísticas, reclamos)
+- #19 Final UI polish and animations ✅
+- #28 Responsive verification on 3 required breakpoints ✅
+- Fixes: Prisma sync (db push), cookies() async, proxy.ts routing, Resend SMTP, Web Push variables.
 
 **En progreso:**
-- #11 QR scanner implementation
-- #12 Package pickup verification flow
-- #26 Pickup record: log who retrieved each package
+- #20 Demo preparation and user documentation (Finalizando: actualización de documentación y guión de demo)
 
-**Pendiente:**
-- Sprint 4 (20 abr): Dashboard concierge, filtros, estadísticas, claims
-- Sprint 5 (27 abr): Deploy Vercel + Supabase, CI/CD
-- Sprint 6 (04 may): Polish, tests responsive, documentación
+**Pendiente / Siguiente Sprint:**
+- Sprint 5 — Deployment & Testing (Deploy en Vercel + Supabase, pipeline CI/CD, E2E testing)
+
 
 ---
 
@@ -124,24 +123,25 @@ taskkill /PID <PID> /F
   - [Feature] Urgent notification for perishable packages #25
   - [Auth] TOTP 2FA replacing email OTP #37
   - [Auth] Onboarding flow refactor #36
-- **Sprint 3 (13 abr – 19 abr): QR & Pickup Flow** — EN CURSO
+- **Sprint 3 (13 abr – 19 abr): QR & Pickup Flow** ✅ COMPLETADO
   - [Feature] QR code generation for packages #10 ✅
-  - [Feature] QR scanner implementation #11
-  - [Feature] Package pickup verification flow #12
-  - [Feature] Pickup record: log who retrieved each package #26
-- **Sprint 4 (20 abr – 26 abr): Dashboard & Reporting**
-  - [UI] Concierge Dashboard layout #13
-  - [Feature] Package filtering and search #14
-  - [Feature] Statistics and reporting views #15
-  - [Feature] Claims management for concierge #27
-- **Sprint 5 (27 abr – 03 may): Deployment & Testing**
+  - [Feature] QR scanner implementation #11 ✅
+  - [Feature] Package pickup verification flow #12 ✅
+  - [Feature] Pickup record: log who retrieved each package #26 ✅
+- **Sprint 4 (20 abr – 26 abr): Dashboard & Reporting** ✅ COMPLETADO
+  - [UI] Concierge Dashboard layout #13 ✅
+  - [Feature] Package filtering and search #14 ✅
+  - [Feature] Statistics and reporting views #15 ✅
+  - [Feature] Claims management for concierge #27 ✅
+- **Sprint 6 (04 may – 10 may): Polish & Handover** — EN CURSO
+  - [UI/UX] Final UI polish and animations #19 ✅
+  - [Docs] Demo preparation and user documentation #20 🚧 (En desarrollo)
+  - [Test] Responsive verification on 3 required breakpoints #28 ✅
+- **Sprint 5 (Próximo Sprint): Deployment & Testing** — PENDIENTE (Reagendado para el cierre final)
   - [Ops] Vercel & Supabase deployment setup #16
   - [Ops] GitHub Actions CI/CD pipeline #17
   - [Test] E2E testing implementation #18
-- **Sprint 6 (04 may – 10 may): Polish & Handover**
-  - [UI/UX] Final UI polish and animations #19
-  - [Docs] Demo preparation and user documentation #20
-  - [Test] Responsive verification on 3 required breakpoints #28
+
 
 ## Estructura de carpetas
 ```

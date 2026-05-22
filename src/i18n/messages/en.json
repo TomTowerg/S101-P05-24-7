@@ -181,7 +181,21 @@
     "f3": "QR code generation and scanning",
     "f4": "Resident management",
     "f5": "Delivery tracking and statistics",
-    "receivedBy": "Picked up by"
+    "receivedBy": "Picked up by",
+    "searchPackages": "Search Packages",
+    "searchPlaceholder": "Search by tracking, description or receiver...",
+    "allStatuses": "All Statuses",
+    "allApartments": "All Apartments",
+    "filterByStatus": "Filter by Status",
+    "filterByApartment": "Filter by Apartment",
+    "clearFilters": "Clear Filters",
+    "noResults": "No packages found matching your criteria.",
+    "allTypes": "All Types",
+    "typeStandard": "Standard",
+    "typePerishable": "Perishable",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "perishable": "Perishable"
   },
   "VerificationModal": {
     "title": "Verify Delivery",

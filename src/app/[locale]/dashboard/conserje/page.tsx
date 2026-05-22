@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
@@ -84,50 +84,7 @@ export default function ConciergeDashboard() {
   }).length;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] pt-[68px]">
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-200">
-              <Package className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{t("title")}</h1>
-              <p className="text-slate-500 text-sm font-medium">{t("subtitle")}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => router.push("/dashboard/conserje/reports")}
-              className="inline-flex items-center justify-center px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-all duration-200 text-sm"
-            >
-              Reports
-            </button>
-            <button
-              onClick={() => router.push("/dashboard/conserje/users")}
-              className="inline-flex items-center justify-center px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-all duration-200 text-sm"
-            >
-              Users
-            </button>
-            <button
-              onClick={() => router.push("/dashboard/profile")}
-              className="inline-flex items-center justify-center px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-all duration-200 text-sm"
-            >
-              Profile
-            </button>
-            <button
-              onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-bold transition-all duration-200 text-sm border border-red-100"
-            >
-              <LogOut className="w-4 h-4" />
-              {t("signOut").toUpperCase()}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-10 space-y-10">
+    <div className="p-6 md:p-10 space-y-10 pb-24 md:pb-10">
         
         {/* Welcome Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -279,7 +236,6 @@ export default function ConciergeDashboard() {
             }}
           />
         )}
-      </div>
     </div>
   );
 }

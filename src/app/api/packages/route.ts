@@ -13,7 +13,15 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    let whereClause = {};
+    const { searchParams } = new URL(request.url);
+    const search = searchParams.get('search');
+    const status = searchParams.get('status');
+    const apartmentId = searchParams.get('apartmentId');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+    const type = searchParams.get('type');
+
+    let whereClause: any = {};
 
     // If resident, only show packages for their apartment
     if (token.role === "RESIDENTE") {
@@ -27,7 +35,44 @@ export async function GET(request: NextRequest) {
         return NextResponse.json([]); // No packages if no apartment assigned
       }
 
-      whereClause = { apartmentId: user.apartmentId };
+      whereClause.apartmentId = user.apartmentId;
+    } else {
+      // Concierge can filter by apartmentId
+      if (apartmentId) {
+        whereClause.apartmentId = apartmentId;
+      }
+    }
+
+    if (status) {
+      whereClause.status = status;
+    }
+
+    if (type) {
+      if (type === 'perishable') {
+        whereClause.isPerishable = true;
+      } else if (type === 'standard') {
+        whereClause.isPerishable = false;
+      }
+    }
+
+    if (startDate || endDate) {
+      whereClause.createdAt = {};
+      if (startDate) {
+        whereClause.createdAt.gte = new Date(startDate);
+      }
+      if (endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        whereClause.createdAt.lte = end;
+      }
+    }
+
+    if (search) {
+      whereClause.OR = [
+        { trackingCode: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { receiverName: { contains: search, mode: 'insensitive' } }
+      ];
     }
 
     const packages = await prisma.package.findMany({

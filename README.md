@@ -5,6 +5,10 @@ Desarrollado como proyecto P05 del curso TICS420 — Universidad Adolfo Ibáñez
 
 Cada paquete queda registrado, notificado y entregado con trazabilidad completa.
 
+> [!NOTE]
+> **Estado del Despliegue**: La URL pública de producción estará disponible en el próximo Sprint, cuando se ejecute el despliegue del pipeline CI/CD en Vercel y Supabase. Por el momento, la aplicación se ejecuta localmente.
+
+
 ---
 
 ## Stack
@@ -58,6 +62,12 @@ GOOGLE_CLIENT_ID=       # Google OAuth 2.0 Client ID
 GOOGLE_CLIENT_SECRET=   # Google OAuth 2.0 Client Secret
 EMAIL_SERVER=           # SMTP URL (ej. smtp://user:pass@smtp.resend.com:465)
 EMAIL_FROM=             # dirección remitente
+
+# Notificaciones Push (Web Push API)
+NEXT_PUBLIC_VAPID_PUBLIC_KEY= # Clave pública VAPID para suscripción de notificaciones
+VAPID_PRIVATE_KEY=            # Clave privada VAPID para envío de notificaciones
+VAPID_SUBJECT=                # Asunto opcional (ej. mailto:noreply@loombox.cl)
+
 ```
 
 ---
@@ -136,6 +146,25 @@ prisma/
 > **Nota:** Se usa `src/proxy.ts` en lugar de `src/middleware.ts` por compatibilidad con Next.js 16.2 + Turbopack.
 
 ---
+
+## Problemas Conocidos y Consideraciones Técnicas
+
+Al probar o desarrollar en el sistema Loombox, ten en consideración los siguientes aspectos técnicos y limitaciones identificadas:
+
+### 1. Permisos de Cámara para Escaneo QR
+* **Comportamiento**: El escáner QR (`html5-qrcode`) requiere acceso a la cámara del dispositivo.
+* **Limitación**: Los navegadores modernos bloquean el acceso a la cámara en conexiones no seguras. En producción, la aplicación **debe servirse obligatoriamente bajo HTTPS** para que el escáner funcione. Para desarrollo local (`localhost`), los navegadores permiten el acceso bajo HTTP.
+
+### 2. Notificaciones Push en iOS (Apple)
+* **Comportamiento**: iOS implementa el estándar Web Push de forma más restrictiva que Android o navegadores de escritorio.
+* **Solución**: Para recibir notificaciones push en dispositivos Apple, el usuario residente debe agregar la aplicación a su pantalla de inicio utilizando la opción **"Añadir a pantalla de inicio"** (funcionando como PWA) desde Safari.
+
+### 3. Límites en el Envío de Correos (Resend SMTP)
+* **Comportamiento**: El envío de correos electrónicos para el login o alertas de paquetes utiliza el servicio Resend.
+* **Limitación**: El plan gratuito de Resend limita el envío a un máximo de 100 correos por día y solo a direcciones de correo que estén previamente registradas y verificadas en la consola de Resend como destinatarios de prueba (sandbox).
+
+---
+
 
 ## Equipo
 

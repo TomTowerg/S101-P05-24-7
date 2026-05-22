@@ -181,7 +181,21 @@
     "f3": "Generación y escaneo de códigos QR",
     "f4": "Gestión de residentes",
     "f5": "Estadísticas y seguimiento de envíos",
-    "receivedBy": "Retirado por"
+    "receivedBy": "Retirado por",
+    "searchPackages": "Buscar Encomiendas",
+    "searchPlaceholder": "Buscar por seguimiento, descripción o destinatario...",
+    "allStatuses": "Todos los Estados",
+    "allApartments": "Todos los Departamentos",
+    "filterByStatus": "Filtrar por Estado",
+    "filterByApartment": "Filtrar por Depto",
+    "clearFilters": "Limpiar Filtros",
+    "noResults": "No se encontraron encomiendas que coincidan con tu búsqueda.",
+    "allTypes": "Todos los Tipos",
+    "typeStandard": "Estándar",
+    "typePerishable": "Perecible",
+    "startDate": "Fecha Inicio",
+    "endDate": "Fecha Fin",
+    "perishable": "Perecible"
   },
   "VerificationModal": {
     "title": "Verificar Entrega",
