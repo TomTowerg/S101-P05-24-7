@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   Package,
-  User,
   MapPin,
   Calendar,
   CheckCircle2,
@@ -101,7 +100,7 @@ export default function PackageVerificationModal({
 
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-400">
+      <div className="bg-white w-full max-w-sm md:max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-400">
 
         {/* Header */}
         <div className="relative h-32 bg-indigo-600 flex items-center justify-center">
@@ -119,7 +118,7 @@ export default function PackageVerificationModal({
           </div>
         </div>
 
-        <div className="p-8">
+        <div className="p-4 md:p-8">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-10 gap-4">
               <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
@@ -144,7 +143,7 @@ export default function PackageVerificationModal({
           ) : pkg ? (
             <div className="space-y-6">
               <div className="text-center">
-                <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
                   {t("title")}
                 </h3>
                 <p className="text-indigo-600 font-mono text-sm font-bold mt-1">

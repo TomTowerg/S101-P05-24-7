@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { useTranslations } from "next-intl";
-import { Camera, X, RefreshCw, AlertCircle, CheckCircle2, Maximize } from "lucide-react";
+import { Camera, X, RefreshCw, AlertCircle, Maximize } from "lucide-react";
 
 interface QRScannerProps {
   onScanSuccess: (decodedText: string) => void;
@@ -45,9 +45,8 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
             // Optionally stop after first scan
             stopScanner();
           },
-          (errorMessage) => {
-            // This is called for every frame where no QR is found
-            // usually we don't want to show this as an error to user
+          () => {
+            // Called for every frame where no QR is found — not shown to user
           }
         );
 
@@ -88,7 +87,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/95 backdrop-blur-md p-4 animate-in fade-in duration-300">
-      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500">
+      <div className="relative w-full max-w-sm md:max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500">
         
         {/* Header */}
         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -134,7 +133,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
               </div>
               <button 
                 onClick={() => window.location.reload()}
-                className="mt-4 px-6 py-2 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors"
+                className="mt-4 px-6 py-2 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors w-full md:w-auto"
               >
                 {t('start')}
               </button>

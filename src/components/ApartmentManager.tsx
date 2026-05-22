@@ -96,7 +96,7 @@ export default function ApartmentManager() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 
       {/* Header */}
-      <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+      <div className="px-4 md:px-8 py-4 md:py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <Building2 className="w-5 h-5 text-slate-400" />
           <h3 className="font-bold text-slate-800 text-lg">{t("title")}</h3>
@@ -123,7 +123,7 @@ export default function ApartmentManager() {
 
       {/* Inline add form */}
       {showForm && (
-        <form onSubmit={handleCreate} className="px-8 py-5 border-b border-slate-100 bg-indigo-50/30">
+        <form onSubmit={handleCreate} className="px-4 md:px-8 py-4 md:py-5 border-b border-slate-100 bg-indigo-50/30">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">{t("formTitle")}</p>
           <div className="flex flex-wrap gap-3 items-end">
             <div className="flex flex-col gap-1">
@@ -166,9 +166,9 @@ export default function ApartmentManager() {
         <table className="w-full text-left">
           <thead>
             <tr className="bg-slate-50/80 border-b border-slate-200">
-              <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colApt")}</th>
-              <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colResident")}</th>
-              <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colPackages")}</th>
+              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colApt")}</th>
+              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colResident")}</th>
+              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colPackages")}</th>
               <th className="px-8 py-4" />
             </tr>
           </thead>
@@ -193,14 +193,14 @@ export default function ApartmentManager() {
                   <tr key={apt.id} className="hover:bg-slate-50/50 transition-colors">
 
                     {/* Apartment */}
-                    <td className="px-8 py-4">
+                    <td className="px-4 md:px-8 py-3 md:py-4">
                       <span className="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">
                         {apt.number}{apt.tower ? ` · ${apt.tower}` : ""}
                       </span>
                     </td>
 
                     {/* Resident */}
-                    <td className="px-8 py-4">
+                    <td className="px-4 md:px-8 py-3 md:py-4">
                       {resident ? (
                         <div className="flex items-center gap-2">
                           <User className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
@@ -215,7 +215,7 @@ export default function ApartmentManager() {
                     </td>
 
                     {/* Package count */}
-                    <td className="px-8 py-4">
+                    <td className="px-4 md:px-8 py-3 md:py-4">
                       <div className="flex items-center gap-1.5 text-xs text-slate-500">
                         <Package className="w-3.5 h-3.5 text-slate-300" />
                         {apt._count.packages}

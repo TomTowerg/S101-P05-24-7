@@ -15,6 +15,7 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
   const [isLoading, setIsLoading] = useState(false);
   const [trustDevice, setTrustDevice] = useState(false);
   const [errorStatus, setErrorStatus] = useState<{message: string, type: 'error' | 'success'} | null>(null);
+  const [shake, setShake] = useState(false);
   
   const [cooldown, setCooldown] = useState(60);
   const [canResend, setCanResend] = useState(false);
@@ -95,7 +96,9 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
       } else {
         setOtp([...otp.map(() => "")]);
         setActiveOTPIndex(0);
-        
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+
         let msg = data.error;
         if (data.error === "locked") {
           const unlockTime = new Date(data.lockoutUntil);
@@ -194,7 +197,12 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
           </p>
         </div>
 
-        <div className="flex justify-center gap-2 mb-6" onPaste={handleOnPaste}>
+        <motion.div
+          className="flex justify-center gap-2 mb-6"
+          onPaste={handleOnPaste}
+          animate={shake ? { x: [-10, 10, -10, 10, 0] } : { x: 0 }}
+          transition={{ duration: 0.4 }}
+        >
           {otp.map((_, index) => (
             <input
               key={index}
@@ -213,7 +221,7 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
               maxLength={1}
             />
           ))}
-        </div>
+        </motion.div>
 
         <AnimatePresence mode="wait">
           {errorStatus && (

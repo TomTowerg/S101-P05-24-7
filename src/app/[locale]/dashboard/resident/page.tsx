@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { usePushSubscription } from "@/hooks/usePushSubscription";
+import { motion } from "framer-motion";
 import { Bell, BellOff, Loader2, LogOut, Package, Clock, CheckCircle2, Info, Edit2, X, Check } from "lucide-react";
 
 export default function ResidentDashboard() {
@@ -305,8 +306,14 @@ export default function ResidentDashboard() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {packages.map((pkg) => (
-                <div key={pkg.id} className="bg-[#18181b]/60 backdrop-blur-md rounded-2xl border border-white/[0.06] p-6 shadow-xl hover:border-[#f59e0b]/30 transition-all duration-300 group">
+              {packages.map((pkg, index) => (
+                <motion.div
+                  key={pkg.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="bg-[#18181b]/60 backdrop-blur-md rounded-2xl border border-white/[0.06] p-6 shadow-xl hover:border-[#f59e0b]/30 transition-all duration-300 group"
+                >
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-indigo-500/10 rounded-xl">
                       <Package className="w-5 h-5 text-indigo-400" />
@@ -331,7 +338,7 @@ export default function ResidentDashboard() {
                       {new Date(pkg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

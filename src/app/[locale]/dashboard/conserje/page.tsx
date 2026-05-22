@@ -8,6 +8,7 @@ import PackageRegistrationForm from "@/components/PackageRegistrationForm";
 import QRScanner from "@/components/QRScanner";
 import PackageVerificationModal from "@/components/PackageVerificationModal";
 import ApartmentManager from "@/components/ApartmentManager";
+import { motion } from "framer-motion";
 import { Loader2, LogOut, Package, Clock, CheckCircle2, History, User, QrCode } from "lucide-react";
 
 interface PackageData {
@@ -214,8 +215,14 @@ export default function ConciergeDashboard() {
                       </td>
                     </tr>
                   ) : (
-                    packages.map((pkg) => (
-                      <tr key={pkg.id} className="hover:bg-slate-50/50 transition-colors">
+                    packages.map((pkg, index) => (
+                      <motion.tr
+                        key={pkg.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="hover:bg-slate-50/50 transition-colors"
+                      >
                         <td className="px-8 py-4 font-mono text-xs font-bold text-indigo-600">{pkg.trackingCode}</td>
                         <td className="px-8 py-4">
                           <span className="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">
@@ -235,7 +242,7 @@ export default function ConciergeDashboard() {
                         <td className="px-8 py-4 text-xs text-slate-400 font-medium">
                           {new Date(pkg.createdAt).toLocaleDateString()} {new Date(pkg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))
                   )}
                 </tbody>
