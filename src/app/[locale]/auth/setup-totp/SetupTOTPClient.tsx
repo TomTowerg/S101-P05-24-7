@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldCheck, Loader2, ArrowRight, RefreshCw } from "lucide-react";
+import { ShieldCheck, Loader2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
-export default function SetupTOTPClient({ email, role }: { email: string; role: string }) {
+export default function SetupTOTPClient({ role }: { email: string; role: string }) {
   const t = useTranslations("totp");
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
@@ -104,7 +104,7 @@ export default function SetupTOTPClient({ email, role }: { email: string; role: 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 w-full max-w-md bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 p-8 rounded-3xl shadow-2xl"
+        className="relative z-10 w-full max-w-sm md:max-w-lg bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 px-4 md:px-8 py-6 md:py-8 rounded-3xl shadow-2xl"
       >
         <div className="w-16 h-16 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-indigo-500/20">
           <ShieldCheck className="text-indigo-400 w-8 h-8" />
@@ -124,8 +124,8 @@ export default function SetupTOTPClient({ email, role }: { email: string; role: 
             {qrCode && (
               <div className="mb-8">
                 <p className="text-sm text-neutral-400 text-center mb-4">{t("scanInstructions")}</p>
-                <div className="bg-white rounded-2xl p-4 w-fit mx-auto">
-                  <Image src={qrCode} alt="TOTP QR Code" width={200} height={200} />
+                <div className="bg-white rounded-2xl p-3 md:p-4 w-fit mx-auto">
+                  <Image src={qrCode} alt="TOTP QR Code" width={256} height={256} className="w-40 h-40 md:w-56 md:h-56" />
                 </div>
                 {secret && (
                   <p className="text-xs text-neutral-600 text-center mt-3 font-mono break-all">
@@ -144,7 +144,7 @@ export default function SetupTOTPClient({ email, role }: { email: string; role: 
                   ref={index === activeIndex ? inputRef : null}
                   type="number"
                   disabled={isLoading}
-                  className={`w-12 h-14 text-center text-xl font-semibold bg-neutral-950 text-white rounded-xl border-2 transition-all outline-none
+                  className={`w-10 h-12 md:w-12 md:h-14 text-center text-lg md:text-xl font-semibold bg-neutral-950 text-white rounded-xl border-2 transition-all outline-none
                     ${activeIndex === index ? "border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.2)]" : "border-neutral-800"}
                     ${otp[index] ? "border-neutral-700 bg-neutral-900" : ""}
                     ${isLoading ? "opacity-50" : ""}
