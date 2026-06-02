@@ -87,22 +87,22 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/95 backdrop-blur-md p-4 animate-in fade-in duration-300">
-      <div className="relative w-full max-w-sm md:max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500">
+      <div className="relative w-full max-w-sm md:max-w-lg bg-bg-surface rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500 transition-theme">
         
         {/* Header */}
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="p-6 border-b border-border-subtle flex items-center justify-between bg-bg-base/30">
           <div className="flex items-center gap-3">
-            <div className="bg-indigo-100 p-2 rounded-xl">
-              <Camera className="w-5 h-5 text-indigo-600" />
+            <div className="bg-indigo-500/15 p-2 rounded-xl">
+              <Camera className="w-5 h-5 text-indigo-500" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 leading-tight">{t('title')}</h3>
-              <p className="text-xs text-slate-500 font-medium">{t('subtitle')}</p>
+              <h3 className="font-bold text-text-primary leading-tight">{t('title')}</h3>
+              <p className="text-xs text-text-muted font-medium">{t('subtitle')}</p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400 hover:text-slate-600"
+            className="p-2 hover:bg-bg-base rounded-full transition-colors text-text-muted hover:text-text-primary cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
@@ -133,7 +133,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
               </div>
               <button 
                 onClick={() => window.location.reload()}
-                className="mt-4 px-6 py-2 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors w-full md:w-auto"
+                className="mt-4 px-6 py-2 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors w-full md:w-auto cursor-pointer"
               >
                 {t('start')}
               </button>
@@ -165,11 +165,11 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
         </div>
 
         {/* Footer info */}
-        <div className="p-6 bg-slate-50 flex items-center gap-4">
-          <div className="bg-white p-2.5 rounded-xl shadow-sm border border-slate-200">
-            <Maximize className="w-5 h-5 text-slate-400" />
+        <div className="p-6 bg-bg-base flex items-center gap-4 border-t border-border-subtle">
+          <div className="bg-bg-surface p-2.5 rounded-xl shadow-sm border border-border-subtle">
+            <Maximize className="w-5 h-5 text-text-muted/60" />
           </div>
-          <p className="text-xs text-slate-500 font-medium leading-relaxed">
+          <p className="text-xs text-text-muted font-medium leading-relaxed">
             {t('subtitle')}
           </p>
         </div>

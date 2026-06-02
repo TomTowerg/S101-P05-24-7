@@ -48,8 +48,27 @@ export default async function RootLayout({
     <html
       lang={locale}
       className={`${syne.variable} ${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-screen flex flex-col bg-[#0f0820] text-[#f5f0ff] antialiased overscroll-none">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedTheme = localStorage.getItem('theme');
+                  if (savedTheme === 'light') {
+                    document.documentElement.classList.add('light');
+                  } else {
+                    document.documentElement.classList.remove('light');
+                  }
+                } catch (_) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen flex flex-col bg-bg-base text-text-primary antialiased overscroll-none transition-theme">
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <Navbar />

@@ -64,21 +64,21 @@ export default function UsersClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] pt-[68px]">
-      <div className="bg-white border-b border-slate-200">
+    <div className="min-h-screen bg-bg-base pt-[68px] transition-theme">
+      <div className="bg-bg-surface border-b border-border-subtle transition-theme">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-200">
+            <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-950/20">
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{t("title")}</h1>
-              <p className="text-slate-500 text-sm font-medium">{t("subtitle")}</p>
+              <h1 className="text-2xl font-bold text-text-primary tracking-tight">{t("title")}</h1>
+              <p className="text-text-muted text-sm font-medium">{t("subtitle")}</p>
             </div>
           </div>
           <button
             onClick={() => router.push("/dashboard/conserje")}
-            className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-all text-sm flex items-center gap-2"
+            className="px-6 py-2.5 bg-bg-base border border-border-subtle hover:bg-bg-surface text-text-primary rounded-xl font-bold transition-all text-sm flex items-center gap-2 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4"/>
             {tCommon("back")}
@@ -87,19 +87,19 @@ export default function UsersClient() {
       </div>
 
       <div className="max-w-7xl mx-auto px-3 md:px-6 py-6 md:py-10">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-bg-surface rounded-2xl shadow-sm border border-border-subtle overflow-hidden transition-theme">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200">
-                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">{t("name")}</th>
-                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">{t("email")}</th>
-                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">{t("role")}</th>
-                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">{t("status")}</th>
-                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">{t("actions")}</th>
+                <tr className="bg-bg-base border-b border-border-subtle">
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-text-muted uppercase tracking-widest">{t("name")}</th>
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-text-muted uppercase tracking-widest">{t("email")}</th>
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-text-muted uppercase tracking-widest">{t("role")}</th>
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-text-muted uppercase tracking-widest">{t("status")}</th>
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-bold text-text-muted uppercase tracking-widest">{t("actions")}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-border-subtle">
                 {isLoading ? (
                   <tr>
                     <td colSpan={5} className="px-6 py-10 text-center text-slate-400">
@@ -108,31 +108,31 @@ export default function UsersClient() {
                   </tr>
                 ) : (
                   users.map((u) => (
-                    <tr key={u.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-3 md:px-6 py-3 md:py-4 font-medium text-slate-900 text-xs md:text-sm">{u.name || "—"}</td>
-                      <td className="px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 text-slate-500 text-xs md:text-sm">
+                    <tr key={u.id} className="hover:bg-bg-base/50 transition-colors">
+                      <td className="px-3 md:px-6 py-3 md:py-4 font-medium text-text-primary text-xs md:text-sm">{u.name || "—"}</td>
+                      <td className="px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 text-text-muted text-xs md:text-sm">
                         <Mail className="w-4 h-4 shrink-0" /> {u.email}
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-4">
                         <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded border ${
                           u.role === "CONSERJE"
-                            ? 'bg-indigo-50 text-indigo-600 border-indigo-200'
-                            : 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                            ? 'bg-indigo-500/15 text-indigo-500 border-indigo-500/30'
+                            : 'bg-emerald-500/15 text-emerald-500 border-emerald-500/30'
                         }`}>
                           {u.role}
                         </span>
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-4">
-                        <span className={`text-xs font-semibold ${u.onboardingComplete ? 'text-green-600' : 'text-amber-500'}`}>
+                        <span className={`text-xs font-semibold ${u.onboardingComplete ? 'text-green-500' : 'text-amber-500'}`}>
                           {u.onboardingComplete ? t("active") : t("pending")}
                         </span>
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-4">
                         {processingId === u.id ? (
-                          <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
+                          <Loader2 className="w-5 h-5 animate-spin text-text-muted" />
                         ) : (
                           <select 
-                            className="bg-slate-100 border-transparent text-sm rounded-lg font-medium text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="bg-bg-base border border-border-subtle text-sm rounded-lg font-medium text-text-primary outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
                             value={u.role}
                             onChange={(e) => changeRole(u.id, e.target.value)}
                           >

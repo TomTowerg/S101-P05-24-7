@@ -11,6 +11,7 @@
 - Sprint 4 ✅ — Dashboard & Reporting (Dashboard conserje, filtros, estadísticas, reclamos)
 - #19 Final UI polish and animations ✅
 - #28 Responsive verification on 3 required breakpoints ✅
+- [UI] Dark mode / Light mode toggle #44 ✅
 - Fixes: Prisma sync (db push), cookies() async, proxy.ts routing, Resend SMTP, Web Push variables.
 
 **En progreso:**
