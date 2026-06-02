@@ -76,10 +76,10 @@ export default function ResidentDashboard() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#09090b]">
+      <div className="min-h-screen flex items-center justify-center bg-bg-base transition-theme">
         <div className="text-center">
           <Loader2 className="h-10 w-10 animate-spin text-[#f59e0b] mx-auto mb-4" />
-          <p className="text-white/60 font-medium tracking-wide">{tCommon('loading')}</p>
+          <p className="text-text-primary/60 font-medium tracking-wide">{tCommon('loading')}</p>
         </div>
       </div>
     );
@@ -93,34 +93,34 @@ export default function ResidentDashboard() {
   const alreadyPickedUp = packages.filter(p => p.status === 'DELIVERED').length;
 
   return (
-    <div className="min-h-screen bg-[#09090b] selection:bg-[#f59e0b] selection:text-[#09090b] pt-[68px]">
+    <div className="min-h-screen bg-bg-base text-text-primary selection:bg-[#f59e0b] selection:text-[#09090b] pt-[68px] transition-theme">
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none opacity-30">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#f59e0b] rounded-full blur-[120px] -mr-40 -mt-40 opacity-[0.05]" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600 rounded-full blur-[120px] -ml-40 -mb-40 opacity-[0.05]" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#f59e0b] rounded-full blur-[120px] -mr-40 -mt-40 opacity-[0.03]" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600 rounded-full blur-[120px] -ml-40 -mb-40 opacity-[0.03]" />
       </div>
 
       {/* Header */}
-      <div className="relative z-10 border-b border-white/[0.06] bg-[#18181b]/50 backdrop-blur-md">
+      <div className="relative z-10 border-b border-border-subtle bg-bg-surface/50 backdrop-blur-md transition-theme">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight sm:text-3xl">
+            <h1 className="text-2xl font-bold text-text-primary tracking-tight sm:text-3xl">
               {t('title')}
             </h1>
-            <p className="text-white/40 mt-1 text-sm sm:text-base">
+            <p className="text-text-primary/40 mt-1 text-sm sm:text-base">
               {t('subtitle')}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push("/dashboard/profile")}
-              className="inline-flex items-center justify-center px-5 py-2.5 bg-white/[0.03] hover:bg-white/[0.08] text-white/70 hover:text-white rounded-xl border border-white/[0.06] font-semibold transition-all duration-200"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-bg-surface/10 hover:bg-bg-surface/20 text-text-primary/70 hover:text-text-primary rounded-xl border border-border-subtle font-semibold transition-all duration-200 cursor-pointer"
             >
               <span className="text-xs uppercase tracking-widest">Profile</span>
             </button>
             <button
               onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl border border-red-500/20 font-semibold transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl border border-red-500/20 font-semibold transition-all duration-200 cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span className="text-xs uppercase tracking-widest">{t('signOut')}</span>
@@ -136,7 +136,7 @@ export default function ResidentDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Welcome/Profile Card */}
-          <div className="lg:col-span-8 bg-[#18181b]/40 backdrop-blur-xl rounded-2xl border border-white/[0.06] p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-2xl">
+          <div className="lg:col-span-8 bg-bg-surface/40 backdrop-blur-xl rounded-2xl border border-border-subtle p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-2xl transition-theme">
             <div className="relative">
               {session?.user?.image ? (
                 <img
@@ -151,14 +151,14 @@ export default function ResidentDashboard() {
                   </span>
                 </div>
               )}
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#34A853] border-4 border-[#18181b] rounded-full shadow-md" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#34A853] border-4 border-bg-surface rounded-full shadow-md" />
             </div>
             
             <div className="text-center sm:text-left space-y-1 flex-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
                 {t('welcome')}, {session?.user?.name || 'Usuario'}
               </h2>
-              <p className="text-white/40 text-sm">{session?.user?.email}</p>
+              <p className="text-text-primary/40 text-sm">{session?.user?.email}</p>
               
               <div className="pt-4 flex flex-wrap justify-center sm:justify-start items-center gap-3">
                 <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
@@ -166,25 +166,25 @@ export default function ResidentDashboard() {
                 </span>
                 
                 {isEditingApt ? (
-                  <form onSubmit={handleUpdateApartment} className="flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-left-2">
+                   <form onSubmit={handleUpdateApartment} className="flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-left-2">
                     <input 
                       autoFocus
-                      className="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-[#f59e0b]/50 w-24"
+                      className="bg-bg-surface/30 border border-border-subtle rounded-lg px-2 py-1 text-xs text-text-primary focus:outline-none focus:border-[#f59e0b]/50 w-24"
                       placeholder={t('aptPlaceholder')}
                       value={aptNumber}
                       onChange={e => setAptNumber(e.target.value)}
                       required
                     />
                     <input 
-                      className="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-[#f59e0b]/50 w-24"
+                      className="bg-bg-surface/30 border border-border-subtle rounded-lg px-2 py-1 text-xs text-text-primary focus:outline-none focus:border-[#f59e0b]/50 w-24"
                       placeholder={t('towerPlaceholderShort')}
                       value={tower}
                       onChange={e => setTower(e.target.value)}
                     />
-                    <button type="submit" disabled={isSavingApt} className="p-1.5 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors">
+                    <button type="submit" disabled={isSavingApt} className="p-1.5 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors cursor-pointer">
                       {isSavingApt ? <Loader2 className="w-3 h-3 animate-spin"/> : <Check className="w-3 h-3"/>}
                     </button>
-                    <button type="button" onClick={() => setIsEditingApt(false)} className="p-1.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors">
+                    <button type="button" onClick={() => setIsEditingApt(false)} className="p-1.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors cursor-pointer">
                       <X className="w-3 h-3"/>
                     </button>
                   </form>
@@ -199,7 +199,7 @@ export default function ResidentDashboard() {
                         setTower(currentApt?.tower || "");
                         setIsEditingApt(true);
                       }}
-                      className="p-1.5 bg-white/5 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+                      className="p-1.5 bg-bg-surface/10 text-text-primary/40 hover:text-text-primary hover:bg-bg-surface/20 rounded-lg transition-all cursor-pointer"
                     >
                       <Edit2 className="w-3 h-3" />
                     </button>
@@ -210,7 +210,7 @@ export default function ResidentDashboard() {
           </div>
 
           {/* Web Push Toggle Card */}
-          <div className="lg:col-span-4 bg-[#18181b]/40 backdrop-blur-xl rounded-2xl border border-white/[0.06] p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group">
+          <div className="lg:col-span-4 bg-bg-surface/40 backdrop-blur-xl rounded-2xl border border-border-subtle p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group transition-theme">
             <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-[#f59e0b]/10 rounded-full blur-2xl group-hover:bg-[#f59e0b]/20 transition-all duration-500" />
             
             <div className="relative z-10 space-y-4">
@@ -218,9 +218,9 @@ export default function ResidentDashboard() {
                 <div className={`p-2 rounded-lg ${isSubscribed ? 'bg-green-500/10' : 'bg-[#f59e0b]/10'}`}>
                   {isSubscribed ? <Bell className="w-4 h-4 text-green-400" /> : <BellOff className="w-4 h-4 text-[#f59e0b]" />}
                 </div>
-                <h3 className="font-bold text-white text-sm tracking-wide uppercase">{t('pushTitle')}</h3>
+                <h3 className="font-bold text-text-primary text-sm tracking-wide uppercase">{t('pushTitle')}</h3>
               </div>
-              <p className="text-white/30 text-xs leading-relaxed">
+              <p className="text-text-primary/30 text-xs leading-relaxed">
                 {t('pushDesc')}
               </p>
             </div>
@@ -235,9 +235,9 @@ export default function ResidentDashboard() {
                 <button
                   onClick={isSubscribed ? unsubscribe : subscribe}
                   disabled={isPushLoading}
-                  className={`w-full py-3 rounded-xl font-bold text-[10px] tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center gap-2 border ${
+                  className={`w-full py-3 rounded-xl font-bold text-[10px] tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center gap-2 border cursor-pointer ${
                     isSubscribed 
-                      ? 'bg-transparent border-white/10 text-white/40 hover:text-white hover:border-white/20' 
+                      ? 'bg-transparent border-border-subtle text-text-primary/40 hover:text-text-primary hover:border-text-primary/20' 
                       : 'bg-[#f59e0b] border-[#f59e0b] text-[#09090b] hover:bg-[#d97706]'
                   } disabled:opacity-50`}
                 >
@@ -286,20 +286,20 @@ export default function ResidentDashboard() {
         <div className="space-y-6">
           {isLoadingPackages ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
-              <Loader2 className="w-10 h-10 animate-spin text-white/10" />
-              <p className="text-white/20 text-sm font-medium tracking-widest uppercase">{tCommon('loading')}</p>
+              <Loader2 className="w-10 h-10 animate-spin text-text-primary/10" />
+              <p className="text-text-primary/20 text-sm font-medium tracking-widest uppercase">{tCommon('loading')}</p>
             </div>
           ) : packages.length === 0 ? (
             /* Empty State */
-            <div className="bg-[#18181b]/30 rounded-2xl border border-white/[0.04] p-16 text-center space-y-6">
-              <div className="inline-flex p-5 rounded-[2rem] bg-white/[0.02] border border-white/[0.05] shadow-inner mb-2">
-                <Package className="w-10 h-10 text-white/10" strokeWidth={1} />
+            <div className="bg-bg-surface/30 rounded-2xl border border-border-subtle p-16 text-center space-y-6 transition-theme">
+              <div className="inline-flex p-5 rounded-[2rem] bg-bg-surface/10 border border-border-subtle shadow-inner mb-2">
+                <Package className="w-10 h-10 text-text-primary/10" strokeWidth={1} />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">
+                <h3 className="text-xl font-bold text-text-primary tracking-tight">
                   {t('emptyTitle')}
                 </h3>
-                <p className="text-white/30 max-w-sm mx-auto text-sm">
+                <p className="text-text-primary/30 max-w-sm mx-auto text-sm">
                   {t('emptyDesc')}
                 </p>
               </div>
@@ -312,7 +312,7 @@ export default function ResidentDashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-[#18181b]/60 backdrop-blur-md rounded-2xl border border-white/[0.06] p-6 shadow-xl hover:border-[#f59e0b]/30 transition-all duration-300 group"
+                  className="bg-bg-surface/60 backdrop-blur-md rounded-2xl border border-border-subtle p-6 shadow-xl hover:border-[#f59e0b]/30 transition-all duration-300 group"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-indigo-500/10 rounded-xl">
@@ -327,14 +327,14 @@ export default function ResidentDashboard() {
                     </span>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-white/30 text-[9px] font-bold uppercase tracking-widest">Seguimiento</p>
-                    <h4 className="text-white font-mono font-bold text-lg leading-tight group-hover:text-[#f59e0b] transition-colors">{pkg.trackingCode}</h4>
+                    <p className="text-text-primary/30 text-[9px] font-bold uppercase tracking-widest">Seguimiento</p>
+                    <h4 className="text-text-primary font-mono font-bold text-lg leading-tight group-hover:text-[#f59e0b] transition-colors">{pkg.trackingCode}</h4>
                   </div>
-                  <div className="mt-6 pt-6 border-t border-white/[0.04] flex items-center justify-between">
-                    <span className="text-white/20 text-[10px] font-medium uppercase tracking-tighter">
+                  <div className="mt-6 pt-6 border-t border-border-subtle flex items-center justify-between">
+                    <span className="text-text-primary/20 text-[10px] font-medium uppercase tracking-tighter">
                       {new Date(pkg.createdAt).toLocaleDateString()}
                     </span>
-                    <span className="text-white/20 text-[10px] font-medium uppercase tracking-tighter">
+                    <span className="text-text-primary/20 text-[10px] font-medium uppercase tracking-tighter">
                       {new Date(pkg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -345,15 +345,15 @@ export default function ResidentDashboard() {
         </div>
 
         {/* Features Info Bar */}
-        <div className="bg-gradient-to-r from-indigo-500/5 via-transparent to-[#f59e0b]/5 rounded-2xl border border-white/[0.04] p-8 shadow-inner">
+        <div className="bg-gradient-to-r from-indigo-500/5 via-transparent to-[#f59e0b]/5 rounded-2xl border border-border-subtle p-8 shadow-inner transition-theme">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-1">
-              <h4 className="text-lg font-bold text-white italic">{t('comingSoonTitle')}</h4>
-              <p className="text-white/20 text-xs tracking-wide">Desarrollando la mejor experiencia para ti</p>
+              <h4 className="text-lg font-bold text-text-primary italic">{t('comingSoonTitle')}</h4>
+              <p className="text-text-primary/20 text-xs tracking-wide">Desarrollando la mejor experiencia para ti</p>
             </div>
             <div className="flex flex-wrap gap-3">
               {[t('f1'), t('f2'), t('f3'), t('f4'), t('f5')].map((f, i) => (
-                <span key={i} className="px-4 py-1.5 bg-white/[0.02] border border-white/[0.04] rounded-lg text-[10px] font-bold text-white/40 uppercase tracking-widest whitespace-nowrap">
+                <span key={i} className="px-4 py-1.5 bg-bg-surface/10 border border-border-subtle rounded-lg text-[10px] font-bold text-text-primary/40 uppercase tracking-widest whitespace-nowrap">
                   {f}
                 </span>
               ))}
@@ -374,11 +374,11 @@ function StatCard({ label, value, icon, color }: { label: string, value: string,
   };
 
   return (
-    <div className="bg-[#18181b]/40 backdrop-blur-md rounded-2xl border border-white/[0.06] p-6 shadow-xl hover:bg-[#1f1f23]/40 transition-all duration-300 group">
+    <div className="bg-bg-surface/40 backdrop-blur-md rounded-2xl border border-border-subtle p-6 shadow-xl hover:bg-bg-surface/60 transition-all duration-300 group">
       <div className="flex items-center justify-between pointer-events-none">
         <div className="space-y-1">
-          <p className="text-white/30 text-[10px] font-bold tracking-[0.2em] uppercase">{label}</p>
-          <p className="text-3xl font-bold text-white tracking-tight group-hover:scale-110 group-hover:origin-left transition-transform duration-500">{value}</p>
+          <p className="text-text-primary/30 text-[10px] font-bold tracking-[0.2em] uppercase">{label}</p>
+          <p className="text-3xl font-bold text-text-primary tracking-tight group-hover:scale-110 group-hover:origin-left transition-transform duration-500">{value}</p>
         </div>
         <div className={`p-3 rounded-xl border transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] ${colorMap[color]}`}>
           {icon}

@@ -135,10 +135,10 @@ export default function PackageQR({
 
       {/* Info Sections */}
       <div className="text-center mb-8 px-2">
-        <h3 className="text-slate-900 font-extrabold text-xl tracking-tight leading-none mb-2">
+        <h3 className="text-text-primary font-extrabold text-xl tracking-tight leading-none mb-2">
           {t("qrTitle")}
         </h3>
-        <p className="text-slate-500 text-sm font-medium">
+        <p className="text-text-muted text-sm font-medium">
           {t("qrSubtitle")}.
         </p>
       </div>
@@ -147,22 +147,22 @@ export default function PackageQR({
         {/* Tracking Details Card */}
         <div 
           onClick={copyToClipboard}
-          className="relative overflow-hidden bg-white border border-slate-200 p-4 rounded-xl cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all group active:scale-[0.98]"
+          className="relative overflow-hidden bg-bg-surface border border-border-subtle p-4 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:shadow-md transition-theme group active:scale-[0.98]"
         >
           <div className="flex items-center justify-between relative z-10">
             <div className="flex flex-col">
               <span className="text-[10px] uppercase tracking-[0.15em] text-indigo-500 font-black mb-1">
                 {t("trackingLabel")}
               </span>
-              <span className="font-mono font-bold text-slate-800 text-lg">
+              <span className="font-mono font-bold text-text-primary text-lg">
                 {trackingCode}
               </span>
             </div>
-            <div className="bg-slate-50 p-2 rounded-lg group-hover:bg-indigo-50 transition-colors">
+            <div className="bg-bg-base p-2 rounded-lg group-hover:bg-indigo-500/10 transition-colors">
               {copied ? (
                 <Check className="w-5 h-5 text-green-600" />
               ) : (
-                <Copy className="w-5 h-5 text-slate-400 group-hover:text-indigo-600" />
+                <Copy className="w-5 h-5 text-text-muted/60 group-hover:text-indigo-500" />
               )}
             </div>
           </div>
@@ -176,14 +176,14 @@ export default function PackageQR({
         <div className="grid grid-cols-2 gap-3 pt-2">
           <button
             onClick={handlePrint}
-            className="flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm active:shadow-none active:translate-y-0.5"
+            className="flex items-center justify-center gap-2.5 bg-bg-surface hover:bg-bg-base text-text-primary border border-border-subtle font-bold py-3.5 px-4 rounded-xl transition-theme shadow-sm active:shadow-none active:translate-y-0.5 cursor-pointer"
           >
-            <Printer className="w-5 h-5 text-slate-500" />
+            <Printer className="w-5 h-5 text-text-muted/60" />
             <span className="text-sm">{t("printQR")}</span>
           </button>
           <button
             onClick={downloadQR}
-            className="flex items-center justify-center gap-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-indigo-200 active:shadow-none active:translate-y-0.5"
+            className="flex items-center justify-center gap-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-indigo-950/20 active:shadow-none active:translate-y-0.5 cursor-pointer"
           >
             <Download className="w-5 h-5" />
             <span className="text-sm">{t("downloadQR")}</span>

@@ -129,7 +129,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="w-full font-sans bg-[#09090b] text-[#fafafa] selection:bg-[#f59e0b] selection:text-[#09090b] overflow-x-hidden">
+    <div className="w-full font-sans bg-bg-base text-text-primary selection:bg-[#f59e0b] selection:text-[#09090b] overflow-x-hidden transition-theme">
 
       {/* ══════════════════════════════════════
           SECCIÓN 1 — HERO
@@ -177,7 +177,7 @@ export default function Home() {
 
             {/* Descripción */}
             <p
-              className="text-sm md:text-base text-white/70 font-light leading-relaxed mb-8 max-w-sm"
+              className="text-sm md:text-base text-text-primary/70 font-light leading-relaxed mb-8 max-w-sm"
               style={fadeUp(mounted, 380)}
             >
               {t("heroDesc")}
@@ -204,11 +204,11 @@ export default function Home() {
               {FEATURES.map(({ icon: Icon, label }, i) => (
                 <li
                   key={label}
-                  className="flex items-center gap-2 text-white/50"
+                  className="flex items-center gap-2 text-text-primary/50"
                   style={fadeUp(mounted, 700 + i * 80)}
                 >
                   <Check className="w-3 h-3 text-[#f59e0b] shrink-0" strokeWidth={3} />
-                  <Icon className="w-3 h-3 text-white/30 shrink-0" strokeWidth={1.5} />
+                  <Icon className="w-3 h-3 text-text-primary/30 shrink-0" strokeWidth={1.5} />
                   <span className="text-[11px] tracking-wide font-light">{label}</span>
                 </li>
               ))}
@@ -228,10 +228,10 @@ export default function Home() {
                 <ScanLine className="w-5 h-5 text-[#f59e0b]" strokeWidth={1.5} />
               </div>
               <div className="flex flex-col gap-0.5">
-                <span className="text-white/40 text-[10px] font-light tracking-widest uppercase">{t("quickAccessLabel")}</span>
-                <span className="text-white/90 font-semibold text-xs">{t("quickAccessBtn")}</span>
+                <span className="text-text-primary/40 text-[10px] font-light tracking-widest uppercase">{t("quickAccessLabel")}</span>
+                <span className="text-text-primary/90 font-semibold text-xs">{t("quickAccessBtn")}</span>
               </div>
-              <ArrowRight className="absolute right-3 w-3.5 h-3.5 text-white/30 group-hover:text-[#f59e0b] group-hover:translate-x-0.5 transition-all duration-300" />
+              <ArrowRight className="absolute right-3 w-3.5 h-3.5 text-text-primary/30 group-hover:text-[#f59e0b] group-hover:translate-x-0.5 transition-all duration-300" />
             </Link>
           </div>
 
@@ -241,7 +241,7 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SECCIÓN 2 — ESTADÍSTICAS
       ══════════════════════════════════════ */}
-      <section className="relative z-10 border-t border-white/5 bg-[#18181b]">
+      <section className="relative z-10 border-t border-border-subtle bg-bg-surface transition-theme">
         <div
           ref={stats.ref}
           className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center"
@@ -253,7 +253,7 @@ export default function Home() {
               style={fadeUp(stats.inView, i * 120)}
             >
               <span className="text-3xl md:text-4xl font-bold text-[#f59e0b]">{value}</span>
-              <span className="text-xs text-[#a1a1aa] tracking-wide max-w-[180px] leading-relaxed">{label}</span>
+              <span className="text-xs text-text-muted tracking-wide max-w-[180px] leading-relaxed">{label}</span>
             </div>
           ))}
         </div>
@@ -262,7 +262,7 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SECCIÓN 3 — CÓMO FUNCIONA
       ══════════════════════════════════════ */}
-      <section id="como-funciona" className="bg-[#09090b] py-24 px-6">
+      <section id="como-funciona" className="bg-bg-base py-24 px-6 border-t border-border-subtle transition-theme">
         <div className="max-w-5xl mx-auto" ref={how.ref}>
 
           {/* Título */}
@@ -270,7 +270,7 @@ export default function Home() {
             <p className="text-[#f59e0b] text-xs font-semibold tracking-[0.3em] uppercase mb-3">
               {t("howEyebrow")}
             </p>
-            <h2 className="text-3xl md:text-4xl font-light text-[#fafafa] tracking-wide">
+            <h2 className="text-3xl md:text-4xl font-light text-text-primary tracking-wide">
               {t("howTitle1")} <span className="font-bold">{t("howTitle2")}</span>?
             </h2>
           </div>
@@ -295,7 +295,7 @@ export default function Home() {
                 style={fadeUp(how.inView, 200 + i * 150)}
               >
                 <div className="relative mb-6">
-                  <div className="w-20 h-20 rounded-2xl bg-[#18181b] border border-white/5 group-hover:border-[#f59e0b]/30 flex items-center justify-center transition-all duration-500 shadow-lg group-hover:shadow-[0_0_24px_rgba(245,158,11,0.1)]">
+                  <div className="w-20 h-20 rounded-2xl bg-bg-surface border border-border-subtle group-hover:border-[#f59e0b]/30 flex items-center justify-center transition-all duration-500 shadow-lg group-hover:shadow-[0_0_24px_rgba(245,158,11,0.1)]">
                     <Icon
                       className="w-8 h-8 text-[#f59e0b]/60 group-hover:text-[#f59e0b] transition-all duration-500 group-hover:scale-110"
                       strokeWidth={1.5}
@@ -305,8 +305,8 @@ export default function Home() {
                     {number}
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-[#fafafa] mb-3 tracking-wide">{title}</h3>
-                <p className="text-sm text-[#a1a1aa] leading-relaxed max-w-xs">{desc}</p>
+                <h3 className="text-base font-bold text-text-primary mb-3 tracking-wide">{title}</h3>
+                <p className="text-sm text-text-muted leading-relaxed max-w-xs">{desc}</p>
               </div>
             ))}
           </div>
@@ -316,7 +316,7 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SECCIÓN 4 — PARA QUIÉN ES
       ══════════════════════════════════════ */}
-      <section id="para-quien" className="bg-[#18181b] py-24 px-6 border-t border-white/5">
+      <section id="para-quien" className="bg-bg-surface py-24 px-6 border-t border-border-subtle transition-theme">
         <div className="max-w-5xl mx-auto" ref={roles.ref}>
 
           {/* Título */}
@@ -324,7 +324,7 @@ export default function Home() {
             <p className="text-[#fcd34d] text-xs font-semibold tracking-[0.3em] uppercase mb-3">
               {t("rolesEyebrow")}
             </p>
-            <h2 className="text-3xl md:text-4xl font-light text-[#fafafa] tracking-wide">
+            <h2 className="text-3xl md:text-4xl font-light text-text-primary tracking-wide">
               {t("rolesTitle1")} <span className="font-bold">{t("rolesTitle2")}</span>
             </h2>
           </div>
@@ -334,7 +334,7 @@ export default function Home() {
             {ROLES.map(({ role, accent, icon: Icon, label, headline, features, cta }, i) => (
               <div
                 key={role}
-                className="relative bg-[#27272a] border border-white/5 hover:border-white/15 rounded-2xl p-8 flex flex-col gap-6 transition-all duration-500 group overflow-hidden"
+                className="relative bg-bg-surface border border-border-subtle hover:border-text-primary/15 rounded-2xl p-8 flex flex-col gap-6 transition-all duration-500 group overflow-hidden"
                 style={fadeUp(roles.inView, 150 + i * 160)}
               >
                 {/* Glow ambiental */}
@@ -355,7 +355,7 @@ export default function Home() {
                     <p className="text-[10px] font-semibold tracking-[0.25em] uppercase" style={{ color: accent }}>
                       {label}
                     </p>
-                    <h3 className="text-lg font-bold text-[#fafafa] leading-tight">{headline}</h3>
+                    <h3 className="text-lg font-bold text-text-primary leading-tight">{headline}</h3>
                   </div>
                 </div>
 
@@ -368,7 +368,7 @@ export default function Home() {
                       style={fadeUp(roles.inView, 250 + i * 160 + fi * 60)}
                     >
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: accent }} strokeWidth={2.5} />
-                      <span className="text-sm text-[#d4d4d8]">{f}</span>
+                      <span className="text-sm text-text-muted">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -391,7 +391,7 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SECCIÓN 5 — BENEFICIOS
       ══════════════════════════════════════ */}
-      <section className="bg-[#09090b] py-24 px-6 border-t border-white/5">
+      <section className="bg-bg-base py-24 px-6 border-t border-border-subtle transition-theme">
         <div className="max-w-5xl mx-auto" ref={benefits.ref}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {BENEFITS.map(({ icon: Icon, title, desc }, i) => (
@@ -400,14 +400,14 @@ export default function Home() {
                 className="flex flex-col gap-4 group"
                 style={fadeUp(benefits.inView, i * 130)}
               >
-                <div className="w-10 h-10 rounded-xl bg-[#18181b] border border-white/5 group-hover:border-[#f59e0b]/30 flex items-center justify-center transition-all duration-400 group-hover:bg-[#f59e0b]/5">
+                <div className="w-10 h-10 rounded-xl bg-bg-surface border border-border-subtle group-hover:border-[#f59e0b]/30 flex items-center justify-center transition-all duration-400 group-hover:bg-[#f59e0b]/5">
                   <Icon
                     className="w-5 h-5 text-[#f59e0b] transition-transform duration-400 group-hover:scale-110"
                     strokeWidth={1.5}
                   />
                 </div>
-                <h3 className="text-base font-bold text-[#fafafa]">{title}</h3>
-                <p className="text-sm text-[#a1a1aa] leading-relaxed">{desc}</p>
+                <h3 className="text-base font-bold text-text-primary">{title}</h3>
+                <p className="text-sm text-text-muted leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -417,7 +417,7 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SECCIÓN 6 — CTA FINAL
       ══════════════════════════════════════ */}
-      <section className="bg-[#18181b] border-t border-white/5 py-24 px-6">
+      <section className="bg-bg-surface border-t border-border-subtle py-24 px-6 transition-theme">
         <div
           ref={cta.ref}
           className="max-w-2xl mx-auto text-center flex flex-col items-center gap-8"
@@ -432,11 +432,11 @@ export default function Home() {
 
           {/* Texto */}
           <div style={fadeUp(cta.inView, 120)}>
-            <h2 className="text-3xl md:text-4xl font-light text-[#fafafa] tracking-wide mb-4">
+            <h2 className="text-3xl md:text-4xl font-light text-text-primary tracking-wide mb-4">
               {t("ctaTitle1")}<br />
               <span className="font-bold">{t("ctaTitle2")}</span>
             </h2>
-            <p className="text-[#a1a1aa] text-sm leading-relaxed">
+            <p className="text-text-muted text-sm leading-relaxed">
               {t("ctaDesc")}
             </p>
           </div>
@@ -448,13 +448,13 @@ export default function Home() {
           >
             <Link
               href="/login?role=CONSERJE"
-              className="inline-flex items-center justify-center gap-2 bg-[#f59e0b] hover:bg-[#d97706] active:scale-95 text-[#09090b] px-8 py-3.5 rounded-full text-xs font-bold tracking-widest transition-all duration-200 uppercase animate-amber-pulse"
+              className="inline-flex items-center justify-center gap-2 bg-[#f59e0b] hover:bg-[#d97706] active:scale-95 text-[#09090b] px-8 py-3.5 rounded-full text-xs font-bold tracking-widest transition-all duration-200 uppercase animate-amber-pulse cursor-pointer"
             >
               <Package className="w-4 h-4" /> {t("ctaConserje")}
             </Link>
             <Link
               href="/login?role=RESIDENTE"
-              className="inline-flex items-center justify-center gap-2 bg-[#fcd34d]/10 hover:bg-[#fcd34d]/20 border border-[#fcd34d]/20 hover:border-[#fcd34d]/40 text-[#fcd34d] px-8 py-3.5 rounded-full text-xs font-bold tracking-widest transition-all duration-200 uppercase"
+              className="inline-flex items-center justify-center gap-2 bg-bg-base hover:bg-bg-surface border border-border-subtle hover:border-text-primary/20 text-text-primary px-8 py-3.5 rounded-full text-xs font-bold tracking-widest transition-all duration-200 uppercase cursor-pointer"
             >
               <Building2 className="w-4 h-4" /> {t("ctaResidente")}
             </Link>
@@ -463,14 +463,14 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#09090b] border-t border-white/5 py-8 px-6">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-white/30 text-xs">
-          <span className="font-light tracking-widest uppercase">{t("footerBrand")}</span>
-          <div className="flex items-center gap-6">
-            <Link href="/login" className="hover:text-white transition-colors duration-300">
+      <footer className="bg-bg-base border-t border-border-subtle py-8 px-6 transition-theme">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-text-primary/30 text-xs">
+          <p>© {new Date().getFullYear()} Loombox. {t("footerRights")}</p>
+          <div className="flex items-center gap-4">
+            <Link href="/login" className="hover:text-text-primary transition-colors duration-300">
               {t("footerLogin")}
             </Link>
-            <span className="text-white/10">·</span>
+            <span className="text-text-primary/10">·</span>
             <span>© {new Date().getFullYear()}</span>
           </div>
         </div>

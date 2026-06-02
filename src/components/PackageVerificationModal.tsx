@@ -99,8 +99,8 @@ export default function PackageVerificationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-      <div className="bg-white w-full max-w-sm md:max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-400">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+      <div className="bg-bg-surface w-full max-w-sm md:max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-400 transition-theme">
 
         {/* Header */}
         <div className="relative h-32 bg-indigo-600 flex items-center justify-center">
@@ -121,21 +121,21 @@ export default function PackageVerificationModal({
         <div className="p-4 md:p-8">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-10 gap-4">
-              <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-              <p className="text-slate-500 font-medium">{t("loadingText")}</p>
+              <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+              <p className="text-text-muted font-medium">{t("loadingText")}</p>
             </div>
           ) : error && !pkg ? (
             <div className="flex flex-col items-center justify-center py-6 text-center gap-4">
-              <div className="bg-red-50 p-4 rounded-full">
+              <div className="bg-red-500/10 p-4 rounded-full">
                 <AlertCircle className="w-10 h-10 text-red-500" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900">{t("errorTitle")}</h4>
-                <p className="text-slate-500 text-sm mt-1">{error}</p>
+                <h4 className="font-bold text-text-primary">{t("errorTitle")}</h4>
+                <p className="text-text-muted text-sm mt-1">{error}</p>
               </div>
               <button
                 onClick={onClose}
-                className="w-full mt-4 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors"
+                className="w-full mt-4 py-3 bg-bg-base text-text-primary font-bold rounded-xl hover:bg-bg-surface transition-colors cursor-pointer"
               >
                 {t("close")}
               </button>
@@ -143,26 +143,26 @@ export default function PackageVerificationModal({
           ) : pkg ? (
             <div className="space-y-6">
               <div className="text-center">
-                <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
+                <h3 className="text-xl md:text-2xl font-black text-text-primary tracking-tight">
                   {t("title")}
                 </h3>
-                <p className="text-indigo-600 font-mono text-sm font-bold mt-1">
+                <p className="text-indigo-500 font-mono text-sm font-bold mt-1">
                   {pkg.trackingCode}
                 </p>
               </div>
 
               {/* Package info grid */}
-              <div className="grid grid-cols-1 gap-4 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="grid grid-cols-1 gap-4 bg-bg-base p-6 rounded-2xl border border-border-subtle">
                 {/* Location */}
                 <div className="flex items-center gap-4">
-                  <div className="bg-white p-2 rounded-lg shadow-sm">
-                    <MapPin className="w-4 h-4 text-slate-400" />
+                  <div className="bg-bg-surface p-2 rounded-lg shadow-sm border border-border-subtle">
+                    <MapPin className="w-4 h-4 text-text-muted/60" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
                       {t("location")}
                     </p>
-                    <p className="font-bold text-slate-700">
+                    <p className="font-bold text-text-primary">
                       {t("apt")} {pkg.apartment.number}
                       {pkg.apartment.tower
                         ? ` · ${t("tower")} ${pkg.apartment.tower}`
@@ -173,14 +173,14 @@ export default function PackageVerificationModal({
 
                 {/* Received date */}
                 <div className="flex items-center gap-4">
-                  <div className="bg-white p-2 rounded-lg shadow-sm">
-                    <Calendar className="w-4 h-4 text-slate-400" />
+                  <div className="bg-bg-surface p-2 rounded-lg shadow-sm border border-border-subtle">
+                    <Calendar className="w-4 h-4 text-text-muted/60" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
                       {t("receivedSince")}
                     </p>
-                    <p className="font-bold text-slate-700">
+                    <p className="font-bold text-text-primary">
                       {new Date(pkg.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -189,14 +189,14 @@ export default function PackageVerificationModal({
                 {/* Description (optional) */}
                 {pkg.description && (
                   <div className="flex items-center gap-4">
-                    <div className="bg-white p-2 rounded-lg shadow-sm">
-                      <Truck className="w-4 h-4 text-slate-400" />
+                    <div className="bg-bg-surface p-2 rounded-lg shadow-sm border border-border-subtle">
+                      <Truck className="w-4 h-4 text-text-muted/60" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
                         {t("description")}
                       </p>
-                      <p className="font-bold text-slate-700 text-sm">
+                      <p className="font-bold text-text-primary text-sm">
                         {pkg.description}
                       </p>
                     </div>
@@ -206,14 +206,14 @@ export default function PackageVerificationModal({
                 {/* Already delivered: show who picked it up */}
                 {pkg.status === "DELIVERED" && pkg.receiverName && (
                   <div className="flex items-center gap-4">
-                    <div className="bg-green-50 p-2 rounded-lg shadow-sm">
+                    <div className="bg-green-500/10 p-2 rounded-lg shadow-sm border border-green-500/20">
                       <ClipboardCheck className="w-4 h-4 text-green-500" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
                         {tConcierge("receivedBy")}
                       </p>
-                      <p className="font-bold text-green-700 text-sm">
+                      <p className="font-bold text-green-500 text-sm">
                         {pkg.receiverName}
                       </p>
                     </div>
@@ -226,7 +226,7 @@ export default function PackageVerificationModal({
                 {pkg.status === "DELIVERED" ? (
                   <button
                     onClick={onClose}
-                    className="w-full flex items-center justify-center gap-2 py-4 bg-green-50 hover:bg-green-100 text-green-700 rounded-2xl border border-green-200 font-bold transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 py-4 bg-green-500/10 hover:bg-green-500/20 text-green-500 rounded-2xl border border-green-500/25 font-bold transition-colors cursor-pointer"
                   >
                     <CheckCircle2 className="w-5 h-5" />
                     {t("alreadyDelivered")} — {t("close")}
@@ -235,7 +235,7 @@ export default function PackageVerificationModal({
                   <>
                     {/* Error inline (when package loaded but action failed) */}
                     {error && (
-                      <div className="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm font-medium">
+                      <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm font-medium">
                         <AlertCircle className="w-4 h-4 flex-shrink-0" />
                         {error}
                       </div>
@@ -244,7 +244,7 @@ export default function PackageVerificationModal({
                     <div className="flex flex-col gap-1">
                       <label
                         htmlFor="receiverName"
-                        className="text-xs font-bold text-slate-500 uppercase tracking-wider"
+                        className="text-xs font-bold text-text-muted uppercase tracking-wider"
                       >
                         {t("receiverLabel")}
                       </label>
@@ -257,7 +257,7 @@ export default function PackageVerificationModal({
                           setError(null);
                         }}
                         placeholder={t("receiverPlaceholder")}
-                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow text-slate-800"
+                        className="w-full px-4 py-3 bg-bg-base border border-border-subtle rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-text-primary placeholder-text-muted/40"
                         disabled={delivering}
                         onKeyDown={(e) => e.key === "Enter" && handleDeliver()}
                       />
@@ -266,7 +266,7 @@ export default function PackageVerificationModal({
                     <button
                       onClick={handleDeliver}
                       disabled={delivering || !receiverName.trim()}
-                      className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl shadow-xl shadow-indigo-100 transition-all hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none"
+                      className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl shadow-xl shadow-indigo-950/20 transition-all hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
                     >
                       {delivering ? (
                         <>
@@ -285,7 +285,7 @@ export default function PackageVerificationModal({
 
                 <button
                   onClick={onClose}
-                  className="w-full py-4 bg-white text-slate-400 hover:text-slate-600 font-bold rounded-2xl transition-colors text-sm"
+                  className="w-full py-4 bg-transparent text-text-muted hover:text-text-primary font-bold rounded-2xl transition-colors text-sm cursor-pointer"
                 >
                   {t("cancel")}
                 </button>

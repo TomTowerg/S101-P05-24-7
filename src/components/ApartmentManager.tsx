@@ -93,20 +93,20 @@ export default function ApartmentManager() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-
+    <div className="bg-bg-surface rounded-2xl shadow-sm border border-border-subtle overflow-hidden transition-theme">
+ 
       {/* Header */}
-      <div className="px-4 md:px-8 py-4 md:py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between flex-wrap gap-3">
+      <div className="px-4 md:px-8 py-4 md:py-6 border-b border-border-subtle bg-bg-base/30 flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <Building2 className="w-5 h-5 text-slate-400" />
-          <h3 className="font-bold text-slate-800 text-lg">{t("title")}</h3>
-          <span className="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-wider rounded-md border border-indigo-100">
+          <Building2 className="w-5 h-5 text-text-muted/60" />
+          <h3 className="font-bold text-text-primary text-lg">{t("title")}</h3>
+          <span className="px-2 py-0.5 bg-indigo-500/15 text-indigo-500 text-[10px] font-bold uppercase tracking-wider rounded-md border border-indigo-500/25">
             {apartments.length}
           </span>
         </div>
         <button
           onClick={() => { setShowForm((v) => !v); setFormError(""); }}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-200"
+          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-200 cursor-pointer"
         >
           {showForm ? <X className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
           {showForm ? t("cancel") : t("addButton")}
@@ -115,7 +115,7 @@ export default function ApartmentManager() {
 
       {/* Success flash */}
       {successMsg && (
-        <div className="flex items-center gap-2 px-8 py-3 bg-emerald-50 border-b border-emerald-100 text-emerald-700 text-sm font-medium">
+        <div className="flex items-center gap-2 px-8 py-3 bg-emerald-500/10 border-b border-emerald-500/20 text-emerald-500 text-sm font-medium">
           <CheckCircle className="w-4 h-4 shrink-0" />
           {successMsg}
         </div>
@@ -123,33 +123,33 @@ export default function ApartmentManager() {
 
       {/* Inline add form */}
       {showForm && (
-        <form onSubmit={handleCreate} className="px-4 md:px-8 py-4 md:py-5 border-b border-slate-100 bg-indigo-50/30">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">{t("formTitle")}</p>
+        <form onSubmit={handleCreate} className="px-4 md:px-8 py-4 md:py-5 border-b border-border-subtle bg-indigo-500/5">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-3">{t("formTitle")}</p>
           <div className="flex flex-wrap gap-3 items-end">
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">{t("numberLabel")} *</label>
+              <label className="text-[10px] font-semibold text-text-muted uppercase tracking-wide">{t("numberLabel")} *</label>
               <input
                 type="text"
                 value={number}
                 onChange={(e) => { setNumber(e.target.value); setFormError(""); }}
                 placeholder={t("numberPlaceholder")}
-                className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-indigo-400 w-28"
+                className="bg-bg-base border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary outline-none focus:ring-2 focus:ring-indigo-500 w-28"
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">{t("towerLabel")}</label>
+              <label className="text-[10px] font-semibold text-text-muted uppercase tracking-wide">{t("towerLabel")}</label>
               <input
                 type="text"
                 value={tower}
                 onChange={(e) => setTower(e.target.value)}
                 placeholder={t("towerPlaceholder")}
-                className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-indigo-400 w-24"
+                className="bg-bg-base border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary outline-none focus:ring-2 focus:ring-indigo-500 w-24"
               />
             </div>
             <button
               type="submit"
               disabled={submitting}
-              className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all disabled:opacity-50 h-[38px]"
+              className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all disabled:opacity-50 h-[38px] cursor-pointer"
             >
               {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               {t("saveButton")}
@@ -165,23 +165,23 @@ export default function ApartmentManager() {
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-slate-200">
-              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colApt")}</th>
-              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colResident")}</th>
-              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("colPackages")}</th>
+            <tr className="bg-bg-base/60 border-b border-border-subtle">
+              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("colApt")}</th>
+              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("colResident")}</th>
+              <th className="px-4 md:px-8 py-3 md:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("colPackages")}</th>
               <th className="px-8 py-4" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-border-subtle">
             {loading ? (
               <tr>
                 <td colSpan={4} className="px-8 py-10 text-center">
-                  <Loader2 className="w-8 h-8 animate-spin text-slate-200 mx-auto" />
+                  <Loader2 className="w-8 h-8 animate-spin text-text-muted/30 mx-auto" />
                 </td>
               </tr>
             ) : apartments.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-8 py-12 text-center text-slate-400 italic text-sm">
+                <td colSpan={4} className="px-8 py-12 text-center text-text-muted italic text-sm">
                   {t("empty")}
                 </td>
               </tr>
@@ -190,45 +190,45 @@ export default function ApartmentManager() {
                 const resident = apt.residents[0] ?? null;
                 const inUse = apt._count.packages > 0 || apt.residents.length > 0;
                 return (
-                  <tr key={apt.id} className="hover:bg-slate-50/50 transition-colors">
-
+                  <tr key={apt.id} className="hover:bg-bg-base/50 transition-colors">
+ 
                     {/* Apartment */}
                     <td className="px-4 md:px-8 py-3 md:py-4">
-                      <span className="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">
+                      <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
                         {apt.number}{apt.tower ? ` · ${apt.tower}` : ""}
                       </span>
                     </td>
-
+ 
                     {/* Resident */}
                     <td className="px-4 md:px-8 py-3 md:py-4">
                       {resident ? (
                         <div className="flex items-center gap-2">
-                          <User className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                          <User className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                           <div>
-                            <p className="text-xs font-semibold text-slate-700">{resident.name ?? "—"}</p>
-                            <p className="text-[10px] text-slate-400">{resident.email}</p>
+                            <p className="text-xs font-semibold text-text-primary">{resident.name ?? "—"}</p>
+                            <p className="text-[10px] text-text-muted">{resident.email}</p>
                           </div>
                         </div>
                       ) : (
-                        <span className="text-xs text-slate-400 italic">{t("noResident")}</span>
+                        <span className="text-xs text-text-muted italic">{t("noResident")}</span>
                       )}
                     </td>
-
+ 
                     {/* Package count */}
                     <td className="px-4 md:px-8 py-3 md:py-4">
-                      <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                        <Package className="w-3.5 h-3.5 text-slate-300" />
+                      <div className="flex items-center gap-1.5 text-xs text-text-muted">
+                        <Package className="w-3.5 h-3.5 text-text-muted/40" />
                         {apt._count.packages}
                       </div>
                     </td>
-
+ 
                     {/* Delete */}
                     <td className="px-8 py-4 text-right">
                       <button
                         onClick={() => handleDelete(apt.id)}
                         disabled={inUse || deletingId === apt.id}
                         title={inUse ? t("errorInUse") : t("deleteButton")}
-                        className="p-1.5 rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-1.5 rounded-lg text-text-muted/40 hover:text-red-500 hover:bg-red-500/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                       >
                         {deletingId === apt.id
                           ? <Loader2 className="w-4 h-4 animate-spin" />

@@ -88,7 +88,8 @@
     "ctaConserje": "Panel Conserje",
     "ctaResidente": "Portal Residente",
     "footerBrand": "Loombox · Gestión Residencial",
-    "footerLogin": "Ingresar"
+    "footerLogin": "Ingresar",
+    "footerRights": "Todos los derechos reservados."
   },
   "Login": {
     "back": "Volver",

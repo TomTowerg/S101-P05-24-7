@@ -11,6 +11,7 @@
 - Sprint 4 ✅ — Dashboard & Reporting (Dashboard conserje, filtros, estadísticas, reclamos)
 - #19 Final UI polish and animations ✅
 - #28 Responsive verification on 3 required breakpoints ✅
+- [UI] Dark mode / Light mode toggle #44 ✅
 - Fixes: Prisma sync (db push), cookies() async, proxy.ts routing, Resend SMTP, Web Push variables.
 
 **En progreso:**
@@ -139,7 +140,7 @@ taskkill /PID <PID> /F
   - [Test] Responsive verification on 3 required breakpoints #28 ✅
 - **Sprint 5 (Próximo Sprint): Deployment & Testing** — PENDIENTE (Reagendado para el cierre final)
   - [Ops] Vercel & Supabase deployment setup #16
-  - [Ops] GitHub Actions CI/CD pipeline #17
+  - [Ops] GitHub Actions CI/CD pipeline #17 ✅
   - [Test] E2E testing implementation #18
 
 
