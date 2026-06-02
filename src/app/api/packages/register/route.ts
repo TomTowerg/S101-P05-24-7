@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-import webpush from "@/lib/webpush";
 
 // ── Input validation schema ───────────────────────────────────────────────────
 const registerPackageSchema = z.object({
@@ -98,6 +97,9 @@ export async function POST(request: NextRequest) {
   });
 
   // ── 6. Push Notification to Residents ─────────────────────────────────────
+  // Lazy import webpush to avoid initialization errors during build time
+  const webpush = (await import("@/lib/webpush")).default;
+
   // Find residents of this apartment with active push subscriptions
   const residents = await prisma.user.findMany({
     where: { apartmentId: apartment.id },
