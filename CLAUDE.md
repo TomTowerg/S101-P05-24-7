@@ -139,7 +139,7 @@ taskkill /PID <PID> /F
   - [Test] Responsive verification on 3 required breakpoints #28 ✅
 - **Sprint 5 (Próximo Sprint): Deployment & Testing** — PENDIENTE (Reagendado para el cierre final)
   - [Ops] Vercel & Supabase deployment setup #16
-  - [Ops] GitHub Actions CI/CD pipeline #17
+  - [Ops] GitHub Actions CI/CD pipeline #17 ✅
   - [Test] E2E testing implementation #18
 
 
