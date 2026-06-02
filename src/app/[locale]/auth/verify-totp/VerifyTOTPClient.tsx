@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function VerifyTOTPClient({ email, role }: { email: string; role: string }) {
   const t = useTranslations("totp");
+  const { update } = useSession();
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,8 +70,9 @@ export default function VerifyTOTPClient({ email, role }: { email: string; role:
         body: JSON.stringify({ code }),
       });
       if (res.ok) {
-        const dest = role === "CONSERJE" ? "/es/dashboard/conserje" : "/es/dashboard/resident";
-        window.location.href = dest;
+        const destination = role === "CONSERJE" ? "/es/dashboard/conserje" : "/es/dashboard/resident";
+        await update();
+        window.location.href = destination;
       } else {
         setOtp(new Array(6).fill(""));
         setActiveIndex(0);
