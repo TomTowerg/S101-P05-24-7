@@ -5,11 +5,6 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  experimental: {
-    turbopack: {
-      root: __dirname,
-    },
-  },
 };
 
 export default withNextIntl(nextConfig);
