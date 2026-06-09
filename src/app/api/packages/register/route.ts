@@ -106,15 +106,24 @@ export async function POST(request: NextRequest) {
     include: { pushSubscriptions: true },
   });
 
+  const hasPushSubscriptions = residents.some((r) => r.pushSubscriptions.length > 0);
+
+  // Update status synchronously before fire-and-forget so Vercel can't tear down the fn before it runs
+  if (hasPushSubscriptions) {
+    await prisma.package.update({
+      where: { id: newPackage.id },
+      data: { status: "NOTIFIED", notifiedAt: new Date() },
+    });
+  }
+
   const pushPayload = JSON.stringify({
-    title: isPerishable 
-      ? "ATENCION: Paquete Urgente / Perecedero Recibido" 
+    title: isPerishable
+      ? "ATENCION: Paquete Urgente / Perecedero Recibido"
       : "Nuevo paquete recibido",
     body: isPerishable
       ? `Se ha registrado un paquete perecedero o urgente con seguimiento ${trackingCode} para el departamento ${apartmentNumber}. Se requiere pronto retiro.`
       : `Se ha registrado un paquete con seguimiento ${trackingCode} para el departamento ${apartmentNumber}.`,
     url: "/dashboard/resident",
-    icon: "/icons/icon-192x192.png", // Ensure this exists or use a generic one
   });
 
   const pushPromises = residents.flatMap((resident) =>
@@ -133,22 +142,14 @@ export async function POST(request: NextRequest) {
         .catch((err) => {
           console.error(`Error sending push to ${resident.email}:`, err);
           if (err.statusCode === 404 || err.statusCode === 410) {
-            // Subscription expired or no longer valid, we should delete it
             return prisma.pushSubscription.delete({ where: { id: sub.id } });
           }
         })
     )
   );
 
-  // We don't await all of them to not block the response, but we can fire and forget or use waitUntil if in Edge
-  Promise.all(pushPromises).then(() => {
-    if (pushPromises.length > 0) {
-      prisma.package.update({
-        where: { id: newPackage.id },
-        data: { status: "NOTIFIED", notifiedAt: new Date() }
-      }).catch(console.error);
-    }
-  });
+  // Fire-and-forget: best effort, does not block the response
+  Promise.all(pushPromises);
 
   return NextResponse.json(
     {
