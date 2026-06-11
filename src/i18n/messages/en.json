@@ -289,11 +289,16 @@
     "searching": "Searching camera...",
     "scanning": "Scanning...",
     "errorHeader": "Camera Error",
-    "errorPermission": "Could not access camera. Please grant the necessary permissions.",
+    "errorPermission": "Could not access camera. Please grant camera permissions in your browser settings.",
     "errorNotFound": "No camera found on this device.",
-    "errorGeneric": "An error occurred while trying to start the scanner.",
+    "errorGeneric": "An error occurred while trying to start the scanner. Please try again.",
+    "errorHttps": "Camera access requires a secure connection (HTTPS). Please access the site via a secure URL.",
+    "errorBrowser": "Your browser does not support camera access. Please use an updated version of Chrome or Safari.",
+    "errorInvalidQR": "The scanned QR code does not match any registered package. Please verify the code and try again.",
     "success": "Code detected successfully",
-    "invalid": "The scanned code is not valid for this system"
+    "invalid": "The scanned code is not valid for this system",
+    "retry": "Try Again",
+    "scanAgain": "Scan Again"
   },
   "ApartmentManager": {
     "title": "Apartment Management",

@@ -4,12 +4,15 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
 import PackageRegistrationForm from "@/components/PackageRegistrationForm";
-import QRScanner from "@/components/QRScanner";
 import PackageVerificationModal from "@/components/PackageVerificationModal";
 import ApartmentManager from "@/components/ApartmentManager";
 import { motion } from "framer-motion";
-import { Loader2, LogOut, Package, Clock, CheckCircle2, History, User, QrCode } from "lucide-react";
+import { Loader2, Package, Clock, CheckCircle2, History, User, QrCode } from "lucide-react";
+
+// QRScanner uses browser-only APIs (getUserMedia, document) — must never be SSR'd
+const QRScanner = dynamic(() => import("@/components/QRScanner"), { ssr: false });
 
 interface PackageData {
   id: string;

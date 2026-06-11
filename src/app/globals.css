@@ -91,6 +91,12 @@ html.light {
   to   { transform: rotate(360deg); }
 }
 
+@keyframes scan-line {
+  0%   { top: 0%; }
+  50%  { top: 100%; }
+  100% { top: 0%; }
+}
+
 /* ─── Utilities ─────────────────────────────────── */
 
 @layer utilities {
@@ -105,6 +111,10 @@ html.light {
   }
   .animate-tracking-expand {
     animation: tracking-expand 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-scan-line {
+    animation: scan-line 3s ease-in-out infinite;
+    position: absolute;
   }
 }
 

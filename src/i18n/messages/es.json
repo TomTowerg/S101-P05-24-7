@@ -289,11 +289,16 @@
     "searching": "Buscando cámara...",
     "scanning": "Escaneando...",
     "errorHeader": "Error de Cámara",
-    "errorPermission": "No se pudo acceder a la cámara. Por favor, otorga los permisos necesarios.",
+    "errorPermission": "No se pudo acceder a la cámara. Por favor, otorga los permisos necesarios en la configuración de tu navegador.",
     "errorNotFound": "No se encontró ninguna cámara en este dispositivo.",
-    "errorGeneric": "Ocurrió un error al intentar iniciar el escáner.",
+    "errorGeneric": "Ocurrió un error al intentar iniciar el escáner. Intenta nuevamente.",
+    "errorHttps": "La cámara requiere una conexión segura (HTTPS). Accede al sitio desde una URL segura.",
+    "errorBrowser": "Tu navegador no admite acceso a la cámara. Usa Chrome o Safari actualizado.",
+    "errorInvalidQR": "El código QR escaneado no corresponde a ningún paquete registrado. Verifica el código e intenta nuevamente.",
     "success": "Código detectado con éxito",
-    "invalid": "El código escaneado no es válido para este sistema"
+    "invalid": "El código escaneado no es válido para este sistema",
+    "retry": "Reintentar",
+    "scanAgain": "Escanear de nuevo"
   },
   "ApartmentManager": {
     "title": "Gestión de Apartamentos",
