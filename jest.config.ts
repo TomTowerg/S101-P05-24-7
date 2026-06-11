@@ -14,7 +14,7 @@ const config: Config = {
     // Stub CSS imports
     "\\.(css|scss|sass)$": "<rootDir>/src/__tests__/__mocks__/fileMock.ts",
     // Mock next/dynamic for synchronous component testing
-    "^next/dynamic$": "<rootDir>/src/__tests__/__mocks__/nextDynamic.ts",
+    "^next/dynamic$": "<rootDir>/src/__tests__/__mocks__/nextDynamic.tsx",
   },
 
   transform: {

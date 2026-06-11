@@ -75,11 +75,11 @@ export default function Home() {
   useEffect(() => { setMounted(true); }, []);
 
   /* Refs de sección para scroll-trigger */
-  const stats   = useInView();
-  const how     = useInView();
-  const roles   = useInView();
-  const benefits= useInView();
-  const cta     = useInView();
+  const { ref: statsRef, inView: statsInView } = useInView();
+  const { ref: howRef, inView: howInView } = useInView();
+  const { ref: rolesRef, inView: rolesInView } = useInView();
+  const { ref: benefitsRef, inView: benefitsInView } = useInView();
+  const { ref: ctaRef, inView: ctaInView } = useInView();
 
   /* Datos desde i18n */
   const STATS = [
@@ -243,14 +243,14 @@ export default function Home() {
       ══════════════════════════════════════ */}
       <section className="relative z-10 border-t border-border-subtle bg-bg-surface transition-theme">
         <div
-          ref={stats.ref}
+          ref={statsRef}
           className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center"
         >
           {STATS.map(({ value, label }, i) => (
             <div
               key={label}
               className="flex flex-col items-center gap-2"
-              style={fadeUp(stats.inView, i * 120)}
+              style={fadeUp(statsInView, i * 120)}
             >
               <span className="text-3xl md:text-4xl font-bold text-[#f59e0b]">{value}</span>
               <span className="text-xs text-text-muted tracking-wide max-w-[180px] leading-relaxed">{label}</span>
@@ -263,10 +263,10 @@ export default function Home() {
           SECCIÓN 3 — CÓMO FUNCIONA
       ══════════════════════════════════════ */}
       <section id="como-funciona" className="bg-bg-base py-24 px-6 border-t border-border-subtle transition-theme">
-        <div className="max-w-5xl mx-auto" ref={how.ref}>
+        <div className="max-w-5xl mx-auto" ref={howRef}>
 
           {/* Título */}
-          <div className="text-center mb-16" style={fadeUp(how.inView, 0)}>
+          <div className="text-center mb-16" style={fadeUp(howInView, 0)}>
             <p className="text-[#f59e0b] text-xs font-semibold tracking-[0.3em] uppercase mb-3">
               {t("howEyebrow")}
             </p>
@@ -283,7 +283,7 @@ export default function Home() {
               className="hidden md:block absolute top-10 left-[17%] right-[17%] h-px bg-gradient-to-r from-[#f59e0b]/20 via-[#f59e0b]/50 to-[#f59e0b]/20"
               style={{
                 transformOrigin: "left",
-                transform: how.inView ? "scaleX(1)" : "scaleX(0)",
+                transform: howInView ? "scaleX(1)" : "scaleX(0)",
                 transition: "transform 1.1s ease 0.35s",
               }}
             />
@@ -292,7 +292,7 @@ export default function Home() {
               <div
                 key={number}
                 className="relative flex flex-col items-center text-center group"
-                style={fadeUp(how.inView, 200 + i * 150)}
+                style={fadeUp(howInView, 200 + i * 150)}
               >
                 <div className="relative mb-6">
                   <div className="w-20 h-20 rounded-2xl bg-bg-surface border border-border-subtle group-hover:border-[#f59e0b]/30 flex items-center justify-center transition-all duration-500 shadow-lg group-hover:shadow-[0_0_24px_rgba(245,158,11,0.1)]">
@@ -317,10 +317,10 @@ export default function Home() {
           SECCIÓN 4 — PARA QUIÉN ES
       ══════════════════════════════════════ */}
       <section id="para-quien" className="bg-bg-surface py-24 px-6 border-t border-border-subtle transition-theme">
-        <div className="max-w-5xl mx-auto" ref={roles.ref}>
+        <div className="max-w-5xl mx-auto" ref={rolesRef}>
 
           {/* Título */}
-          <div className="text-center mb-16" style={fadeUp(roles.inView, 0)}>
+          <div className="text-center mb-16" style={fadeUp(rolesInView, 0)}>
             <p className="text-[#fcd34d] text-xs font-semibold tracking-[0.3em] uppercase mb-3">
               {t("rolesEyebrow")}
             </p>
@@ -335,7 +335,7 @@ export default function Home() {
               <div
                 key={role}
                 className="relative bg-bg-surface border border-border-subtle hover:border-text-primary/15 rounded-2xl p-8 flex flex-col gap-6 transition-all duration-500 group overflow-hidden"
-                style={fadeUp(roles.inView, 150 + i * 160)}
+                style={fadeUp(rolesInView, 150 + i * 160)}
               >
                 {/* Glow ambiental */}
                 <div
@@ -365,7 +365,7 @@ export default function Home() {
                     <li
                       key={f}
                       className="flex items-start gap-3"
-                      style={fadeUp(roles.inView, 250 + i * 160 + fi * 60)}
+                      style={fadeUp(rolesInView, 250 + i * 160 + fi * 60)}
                     >
                       <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: accent }} strokeWidth={2.5} />
                       <span className="text-sm text-text-muted">{f}</span>
@@ -392,13 +392,13 @@ export default function Home() {
           SECCIÓN 5 — BENEFICIOS
       ══════════════════════════════════════ */}
       <section className="bg-bg-base py-24 px-6 border-t border-border-subtle transition-theme">
-        <div className="max-w-5xl mx-auto" ref={benefits.ref}>
+        <div className="max-w-5xl mx-auto" ref={benefitsRef}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {BENEFITS.map(({ icon: Icon, title, desc }, i) => (
               <div
                 key={title}
                 className="flex flex-col gap-4 group"
-                style={fadeUp(benefits.inView, i * 130)}
+                style={fadeUp(benefitsInView, i * 130)}
               >
                 <div className="w-10 h-10 rounded-xl bg-bg-surface border border-border-subtle group-hover:border-[#f59e0b]/30 flex items-center justify-center transition-all duration-400 group-hover:bg-[#f59e0b]/5">
                   <Icon
@@ -419,19 +419,19 @@ export default function Home() {
       ══════════════════════════════════════ */}
       <section className="bg-bg-surface border-t border-border-subtle py-24 px-6 transition-theme">
         <div
-          ref={cta.ref}
+          ref={ctaRef}
           className="max-w-2xl mx-auto text-center flex flex-col items-center gap-8"
         >
           {/* Ícono flotante */}
           <div
             className="w-16 h-16 rounded-2xl bg-[#f59e0b]/10 border border-[#f59e0b]/20 flex items-center justify-center animate-float"
-            style={fadeUp(cta.inView, 0)}
+            style={fadeUp(ctaInView, 0)}
           >
             <Package className="w-8 h-8 text-[#f59e0b]" strokeWidth={1.5} />
           </div>
 
           {/* Texto */}
-          <div style={fadeUp(cta.inView, 120)}>
+          <div style={fadeUp(ctaInView, 120)}>
             <h2 className="text-3xl md:text-4xl font-light text-text-primary tracking-wide mb-4">
               {t("ctaTitle1")}<br />
               <span className="font-bold">{t("ctaTitle2")}</span>
@@ -444,7 +444,7 @@ export default function Home() {
           {/* Botones */}
           <div
             className="flex flex-col sm:flex-row gap-4"
-            style={fadeUp(cta.inView, 240)}
+            style={fadeUp(ctaInView, 240)}
           >
             <Link
               href="/login?role=CONSERJE"

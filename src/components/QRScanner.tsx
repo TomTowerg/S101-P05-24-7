@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Camera, X, RefreshCw, AlertCircle, Maximize, ShieldAlert } from "lucide-react";
 
+import type { Html5Qrcode } from "html5-qrcode";
+
 interface QRScannerProps {
   onScanSuccess: (decodedText: string) => void;
   onScanError?: (errorMessage: string) => void;
@@ -35,7 +37,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
   const [error, setError] = useState<ScannerError | null>(null);
 
   // Refs to manage the scanner lifecycle safely
-  const scannerRef = useRef<any>(null);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
   const isMountedRef = useRef(true);
   const isStartingRef = useRef(false);
   const scannerId = "qr-reader-container";
@@ -110,7 +112,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
 
       // ── Progressive camera constraint fallback ──
       let started = false;
-      let lastError: any = null;
+      let lastError: unknown = null;
       // Track if the success/error callback already handled state
       // (e.g. invalid QR detected synchronously in test mocks)
       let callbackFired = false;
@@ -141,10 +143,10 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
           );
           started = true;
           break;
-        } catch (err: any) {
+        } catch (err) {
           lastError = err;
           // OverconstrainedError or NotFoundError with this constraint — try next
-          const msg = err?.toString?.() ?? "";
+          const msg = err instanceof Error ? err.message : String(err);
           if (
             msg.includes("OverconstrainedError") ||
             msg.includes("NotFoundError") ||
@@ -163,7 +165,7 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
       }
 
       if (!started) {
-        const errMsg: string = lastError?.toString?.() ?? "";
+        const errMsg: string = lastError instanceof Error ? lastError.message : String(lastError || "");
         let scannerError: ScannerError;
 
         if (errMsg.includes("NotAllowedError") || errMsg.includes("PermissionDenied")) {
@@ -185,12 +187,12 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
         // (guards against synchronous callbacks in the invalid-QR flow)
         setState("scanning");
       }
-    } catch (err: any) {
+    } catch (err) {
       if (!isMountedRef.current) {
         isStartingRef.current = false;
         return;
       }
-      const errMsg: string = err?.toString?.() ?? "";
+      const errMsg: string = err instanceof Error ? err.message : String(err);
       let scannerError: ScannerError;
 
       if (errMsg.includes("NotAllowedError") || errMsg.includes("PermissionDenied")) {

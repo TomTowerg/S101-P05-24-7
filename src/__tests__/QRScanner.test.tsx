@@ -81,12 +81,7 @@ function mockScannerError(errorMessage: string) {
 // ── Component import ──────────────────────────────────────────────────────────
 
 // Import *after* mocks are set up (use @/ alias so moduleNameMapper resolves to src/)
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const QRScanner = require("@/components/QRScanner").default as React.ComponentType<{
-  onScanSuccess: (text: string) => void;
-  onScanError?: (msg: string) => void;
-  onClose: () => void;
-}>;
+import QRScanner from "@/components/QRScanner";
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
