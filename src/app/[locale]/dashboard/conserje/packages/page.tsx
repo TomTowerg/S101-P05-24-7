@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Loader2, Search, Filter, X, Package, Clock, CheckCircle2 } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 interface Apartment {
   id: string;
@@ -259,15 +260,15 @@ export default function PackagesPage() {
             <tbody className="divide-y divide-slate-100">
               {packages.length === 0 && !isSearching ? (
                 <tr>
-                  <td colSpan={5} className="px-8 py-16 text-center">
-                    <Package className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                    <p className="text-slate-500 font-medium">{t("noResults")}</p>
-                    <button 
-                      onClick={clearFilters}
-                      className="mt-4 text-indigo-600 font-bold text-sm hover:underline"
-                    >
-                      {t("clearFilters")}
-                    </button>
+                  <td colSpan={5} className="p-8">
+                    <EmptyState
+                      icon={Package}
+                      title={t("noResults")}
+                      action={{
+                        label: t("clearFilters"),
+                        onClick: clearFilters
+                      }}
+                    />
                   </td>
                 </tr>
               ) : (

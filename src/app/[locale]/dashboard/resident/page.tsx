@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { usePushSubscription } from "@/hooks/usePushSubscription";
 import { motion } from "framer-motion";
+import EmptyState from "@/components/EmptyState";
 import { Bell, BellOff, Loader2, LogOut, Package, Clock, CheckCircle2, Info, Edit2, X, Check } from "lucide-react";
 
 export default function ResidentDashboard() {
@@ -291,20 +292,11 @@ export default function ResidentDashboard() {
               <p className="text-text-primary/20 text-sm font-medium tracking-widest uppercase">{tCommon('loading')}</p>
             </div>
           ) : packages.length === 0 ? (
-            /* Empty State */
-            <div className="bg-bg-surface/30 rounded-2xl border border-border-subtle p-16 text-center space-y-6 transition-theme">
-              <div className="inline-flex p-5 rounded-[2rem] bg-bg-surface/10 border border-border-subtle shadow-inner mb-2">
-                <Package className="w-10 h-10 text-text-primary/10" strokeWidth={1} />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-text-primary tracking-tight">
-                  {t('emptyTitle')}
-                </h3>
-                <p className="text-text-primary/30 max-w-sm mx-auto text-sm">
-                  {t('emptyDesc')}
-                </p>
-              </div>
-            </div>
+            <EmptyState
+              icon={Package}
+              title={t("emptyTitle")}
+              description={t("emptyDesc")}
+            />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {packages.map((pkg, index) => (

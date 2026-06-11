@@ -155,7 +155,8 @@
   "DashboardCommon": {
     "loading": "Cargando...",
     "redirecting": "Redirigiendo a tu panel de control...",
-    "scan": "Escanear QR"
+    "scan": "Escanear QR",
+    "back": "Volver"
   },
   "Concierge": {
     "title": "Panel del Conserje",
@@ -347,5 +348,35 @@
     "enable": "Activar",
     "verify": "Verificar",
     "invalidCode": "Código incorrecto. Verifica tu app e intenta nuevamente."
+  },
+  "Users": {
+    "title": "Administrar Usuarios",
+    "subtitle": "Administra los roles de residentes y conserjes",
+    "name": "Nombre",
+    "email": "Correo",
+    "role": "Rol",
+    "status": "Estado",
+    "actions": "Acciones",
+    "promote": "Hacer Conserje",
+    "demote": "Hacer Residente",
+    "active": "Activo",
+    "pending": "Pendiente de Onboarding",
+    "success": "Usuario actualizado con éxito",
+    "emptyTitle": "No hay usuarios registrados",
+    "emptyDesc": "Actualmente no hay residentes ni conserjes registrados en el sistema."
+  },
+  "Reports": {
+    "title": "Reportes y Estadísticas",
+    "subtitle": "Visualiza el flujo de encomiendas y estadísticas",
+    "packagesLast7Days": "Encomiendas en los últimos 7 días",
+    "statusDistribution": "Distribución de estados actuales",
+    "totalProcessed": "Total Procesado",
+    "mostActiveTower": "Torre más activa"
+  },
+  "Claims": {
+    "title": "Reclamos",
+    "subtitle": "Gestiona los reclamos y problemas",
+    "emptyTitle": "No hay reclamos registrados",
+    "emptyDesc": "No se han reportado reclamos o quejas en este edificio."
   }
 }

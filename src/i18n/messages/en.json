@@ -155,7 +155,8 @@
   "DashboardCommon": {
     "loading": "Loading...",
     "redirecting": "Redirecting to your dashboard...",
-    "scan": "Scan QR"
+    "scan": "Scan QR",
+    "back": "Back"
   },
   "Concierge": {
     "title": "Concierge Dashboard",
@@ -352,7 +353,15 @@
     "demote": "Make Resident",
     "active": "Active",
     "pending": "Pending Onboarding",
-    "success": "User updated successfully"
+    "success": "User updated successfully",
+    "emptyTitle": "No users found",
+    "emptyDesc": "No residents or concierges have registered in the system yet."
+  },
+  "Claims": {
+    "title": "Claims",
+    "subtitle": "Manage complaints and issues",
+    "emptyTitle": "No claims yet",
+    "emptyDesc": "No claims or complaints have been reported for this building."
   },
   "Reports": {
     "title": "Reports & Analytics",

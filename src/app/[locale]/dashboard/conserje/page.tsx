@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import PackageRegistrationForm from "@/components/PackageRegistrationForm";
 import PackageVerificationModal from "@/components/PackageVerificationModal";
 import ApartmentManager from "@/components/ApartmentManager";
+import EmptyState from "@/components/EmptyState";
 import { motion } from "framer-motion";
 import { Loader2, Package, Clock, CheckCircle2, History, User, QrCode } from "lucide-react";
 
@@ -171,8 +172,11 @@ export default function ConciergeDashboard() {
                     </tr>
                   ) : packages.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-8 py-12 text-center text-text-muted font-medium italic">
-                        {t('noPackages')}
+                      <td colSpan={5} className="p-8">
+                        <EmptyState
+                          icon={Package}
+                          title={t("noPackages")}
+                        />
                       </td>
                     </tr>
                   ) : (

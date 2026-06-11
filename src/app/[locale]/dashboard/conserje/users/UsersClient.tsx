@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Users, Loader2, Mail, ArrowLeft } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 interface UserData {
   id: string;
@@ -104,6 +105,16 @@ export default function UsersClient() {
                   <tr>
                     <td colSpan={5} className="px-6 py-10 text-center text-slate-400">
                       <Loader2 className="w-8 h-8 animate-spin mx-auto" />
+                    </td>
+                  </tr>
+                ) : users.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-8">
+                      <EmptyState
+                        icon={Users}
+                        title={t("emptyTitle")}
+                        description={t("emptyDesc")}
+                      />
                     </td>
                   </tr>
                 ) : (

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Building2, Plus, Trash2, User, Package, Loader2, X, CheckCircle } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 interface ApartmentResident {
   id: string;
@@ -181,8 +182,11 @@ export default function ApartmentManager() {
               </tr>
             ) : apartments.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-8 py-12 text-center text-text-muted italic text-sm">
-                  {t("empty")}
+                <td colSpan={4} className="p-8">
+                  <EmptyState
+                    icon={Building2}
+                    title={t("empty")}
+                  />
                 </td>
               </tr>
             ) : (

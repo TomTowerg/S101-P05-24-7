@@ -4,7 +4,8 @@ import { useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, ArrowRight, Loader2 } from "lucide-react";
+import { CheckCircle, ArrowRight, Loader2, Building2 } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 type Role = "CONSERJE" | "RESIDENTE";
 
@@ -104,9 +105,10 @@ export default function OnboardingClient({
               >
                 <h2 className="text-2xl font-semibold text-white text-center mb-8">{t("step2.title")}</h2>
                 {apartments.length === 0 ? (
-                  <div className="text-center p-6 bg-red-500/10 border border-red-500/20 rounded-xl">
-                    <p className="text-red-400">{t("step2.noApartments")}</p>
-                  </div>
+                  <EmptyState
+                    icon={Building2}
+                    title={t("step2.noApartments")}
+                  />
                 ) : (
                   <div className="max-w-md mx-auto">
                     <label className="block text-sm font-medium text-neutral-300 mb-2">
