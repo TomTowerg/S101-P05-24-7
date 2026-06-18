@@ -1,7 +1,7 @@
 import ProfileClient from "./ProfileClient";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { redirect } from "@/i18n/routing";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
