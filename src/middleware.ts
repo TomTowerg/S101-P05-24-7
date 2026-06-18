@@ -6,7 +6,7 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
-export default async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   const pathname = request.nextUrl.pathname;
 

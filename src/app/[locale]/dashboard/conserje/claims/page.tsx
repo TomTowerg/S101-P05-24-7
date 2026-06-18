@@ -1,7 +1,7 @@
 import ClaimsClient from "./ClaimsClient";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
 
 export const dynamic = 'force-dynamic';
 

@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
 import SetupTOTPClient from "./SetupTOTPClient";
 
 export const dynamic = "force-dynamic";

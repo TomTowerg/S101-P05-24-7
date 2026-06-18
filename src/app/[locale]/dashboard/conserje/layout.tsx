@@ -22,7 +22,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
   const navItems = [
     { href: "/dashboard/conserje", icon: LayoutDashboard, label: "Overview" },
     { href: "/dashboard/conserje/packages", icon: PackageSearch, label: "Packages" },
-    { href: "/dashboard/conserje/statistics", icon: BarChart3, label: "Statistics" },
+    { href: "/dashboard/conserje/reports", icon: BarChart3, label: "Reports" },
     { href: "/dashboard/conserje/claims", icon: AlertCircle, label: "Claims" }
   ];
 

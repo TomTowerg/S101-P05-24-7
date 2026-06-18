@@ -11,7 +11,7 @@ export default function ClaimsClient() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-bg-base pt-[68px] transition-theme">
+    <div className="min-h-screen bg-bg-base transition-theme">
       {/* Header */}
       <div className="bg-bg-surface border-b border-border-subtle transition-theme">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
