@@ -30,7 +30,8 @@
     "back": "Retroceder",
     "role": "Rol",
     "apartment": "Departamento",
-    "tower": "Torre"
+    "tower": "Torre",
+    "onboardingComplete": "¡Bienvenido! Tu perfil ha sido configurado."
   },
   "Home": {
     "eyebrow": "Gestión de Encomiendas · Edificios Residenciales",
@@ -216,7 +217,8 @@
     "confirming": "Procesando...",
     "errorNotFound": "No se pudo encontrar la información del paquete",
     "errorReceiverRequired": "Debe ingresar el nombre de la persona que retira",
-    "errorTitle": "Error"
+    "errorTitle": "Error",
+    "deliveryConfirmed": "Entrega confirmada exitosamente"
   },
   "Resident": {
     "trackingLabel": "Seguimiento",
@@ -337,6 +339,39 @@
     "lockedOut": "Demasiados intentos. Intenta en {minutes} minutos.",
     "codeSent": "Código enviado a tu correo",
     "success": "Verificación exitosa"
+  },
+  "Profile": {
+    "title": "Mi Perfil",
+    "apartment": "Departamento",
+    "role": "Rol",
+    "twoFactor": "Autenticación en dos pasos",
+    "twoFactorEnabled": "Activado",
+    "twoFactorDisabled": "Desactivado",
+    "disable2FA": "Desactivar 2FA",
+    "save": "Guardar",
+    "saved": "Perfil guardado",
+    "changeApartment": "Cambiar departamento"
+  },
+  "Users": {
+    "title": "Gestión de usuarios",
+    "name": "Nombre",
+    "email": "Correo",
+    "role": "Rol",
+    "apartment": "Departamento",
+    "lastLogin": "Último acceso",
+    "twoFactor": "2FA",
+    "actions": "Acciones",
+    "changeRole": "Cambiar rol",
+    "noUsers": "No hay usuarios registrados"
+  },
+  "Reports": {
+    "title": "Reportes",
+    "totalPackages": "Total encomiendas",
+    "delivered": "Entregadas",
+    "pending": "Pendientes",
+    "perishable": "Perecederas",
+    "thisMonth": "Este mes",
+    "today": "Hoy"
   },
   "totp": {
     "setupTitle": "Configura Google Authenticator",

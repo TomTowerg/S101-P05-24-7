@@ -1,0 +1,7 @@
+fix: avance 2 requirements - toasts, i18n completeness and VAPID in Docker
+
+- Install sonner and add Toaster to layout.tsx
+- Add toast.success/error to PackageRegistrationForm, PackageVerificationModal, OnboardingClient, ProfileClient
+- Add missing Profile, Users, Reports namespaces to es.json
+- Add VAPID keys to docker-compose.yml environment
+- All API text now translated in both ES and EN

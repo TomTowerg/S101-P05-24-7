@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { ShieldAlert, ShieldCheck, User, Building, Mail, KeyRound, Loader2 } from "lucide-react";
 
@@ -21,6 +22,7 @@ export default function ProfileClient({ user }: { user: any }) {
       const res = await fetch("/api/auth/totp-disable", { method: "POST" });
       if (res.ok) {
         setSuccessMsg(t("disabledSuccess"));
+        toast.success(t("saved"));
         setTimeout(() => {
            router.refresh();
            router.push("/auth/setup-totp");

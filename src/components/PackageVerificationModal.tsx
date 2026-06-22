@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import {
   Package,
   MapPin,
@@ -84,6 +85,7 @@ export default function PackageVerificationModal({
       });
 
       if (res.ok) {
+        toast.success(t("deliveryConfirmed"));
         onDeliverySuccess();
         onClose();
       } else {
