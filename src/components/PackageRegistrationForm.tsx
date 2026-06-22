@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { Package, CheckCircle, AlertCircle, Loader2, X, PlusCircle } from "lucide-react";
 import PackageQR from "./PackageQR";
 
@@ -61,10 +62,9 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
       const data = await response.json();
 
       if (!response.ok) {
-        setState({
-          status: "error",
-          message: data.error ?? t("errorGeneric"),
-        });
+        const msg = data.error ?? t("errorGeneric");
+        setState({ status: "error", message: msg });
+        toast.error(msg);
         return;
       }
 
@@ -73,10 +73,12 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
         message: t("successMessage"),
         registeredPackage: data.package,
       });
+      toast.success(t("successMessage"));
       setForm(INITIAL_FORM);
       if (onSuccess) onSuccess();
     } catch {
       setState({ status: "error", message: t("errorNetwork") });
+      toast.error(t("errorNetwork"));
     }
   }
 

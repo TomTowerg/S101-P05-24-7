@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, ArrowRight, Loader2 } from "lucide-react";
 
@@ -44,6 +45,7 @@ export default function OnboardingClient({
       });
       if (res.ok) {
         await update({ onboardingComplete: true });
+        toast.success(t("onboardingComplete"));
         const dest = role === "CONSERJE" ? "/es/dashboard/conserje" : "/es/dashboard/resident";
         window.location.href = dest;
       } else {

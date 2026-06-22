@@ -8,6 +8,7 @@ import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import Providers from "@/components/Providers";
 import PageTransition from "@/components/PageTransition";
+import { Toaster } from "sonner";
 
 const syne = Syne({
   variable: "--font-syne",
@@ -75,6 +76,7 @@ export default async function RootLayout({
             <main className="flex flex-col flex-1">
               <PageTransition>{children}</PageTransition>
             </main>
+            <Toaster position="top-right" richColors />
           </Providers>
         </NextIntlClientProvider>
       </body>
