@@ -109,19 +109,33 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // ── 6. Push Notification to Residents ─────────────────────────────────────
-  // Lazy import webpush to avoid initialization errors during build time
-  const webpush = (await import("@/lib/webpush")).default;
-
-  // Find residents of this apartment with active push subscriptions
+  // ── 6. Notify Residents ───────────────────────────────────────────────────
   const residents = await prisma.user.findMany({
     where: { apartmentId: apartment.id },
     include: { pushSubscriptions: true },
   });
 
+  const notificationTitle = isPerishable
+    ? "Paquete urgente recibido"
+    : "Nueva encomienda recibida";
+  const notificationMsg = isPerishable
+    ? `Paquete perecedero con código ${trackingCode} llegó al depto ${apartment.number}. Retiro urgente.`
+    : `El paquete ${trackingCode} llegó al depto ${apartment.number}.`;
+
+  // Persist in-app notifications so the bell always shows them
+  if (residents.length > 0) {
+    await prisma.notification.createMany({
+      data: residents.map((r) => ({
+        userId: r.id,
+        title: notificationTitle,
+        message: notificationMsg,
+      })),
+    });
+  }
+
   const hasPushSubscriptions = residents.some((r) => r.pushSubscriptions.length > 0);
 
-  // Update status synchronously before fire-and-forget so Vercel can't tear down the fn before it runs
+  // Update package status to NOTIFIED synchronously before fire-and-forget
   if (hasPushSubscriptions) {
     await prisma.package.update({
       where: { id: newPackage.id },
@@ -129,13 +143,12 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  // Lazy import webpush to avoid initialization errors during build time
+  const webpush = (await import("@/lib/webpush")).default;
+
   const pushPayload = JSON.stringify({
-    title: isPerishable
-      ? "ATENCION: Paquete Urgente / Perecedero Recibido"
-      : "Nuevo paquete recibido",
-    body: isPerishable
-      ? `Se ha registrado un paquete perecedero o urgente con seguimiento ${trackingCode} para el departamento ${apartment.number}. Se requiere pronto retiro.`
-      : `Se ha registrado un paquete con seguimiento ${trackingCode} para el departamento ${apartment.number}.`,
+    title: notificationTitle,
+    body: notificationMsg,
     url: "/dashboard/resident",
   });
 
@@ -143,13 +156,7 @@ export async function POST(request: NextRequest) {
     resident.pushSubscriptions.map((sub) =>
       webpush
         .sendNotification(
-          {
-            endpoint: sub.endpoint,
-            keys: {
-              p256dh: sub.p256dh,
-              auth: sub.auth,
-            },
-          },
+          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
           pushPayload
         )
         .catch((err) => {

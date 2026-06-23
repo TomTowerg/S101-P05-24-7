@@ -25,6 +25,7 @@ interface PackageData {
   trackingCode: string;
   status: string;
   createdAt: string;
+  pickedUpAt: string | null;
   receiverName: string | null;
   isPerishable: boolean;
   apartment: {
@@ -321,9 +322,19 @@ export default function ConciergeDashboard() {
                             <span className="text-xs text-text-muted/40 font-medium">—</span>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-xs text-text-muted/60 font-medium">
-                          {new Date(pkg.createdAt).toLocaleDateString()}{" "}
-                          {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        <td className="px-6 py-4">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-xs text-text-muted/60 font-medium whitespace-nowrap">
+                              {new Date(pkg.createdAt).toLocaleDateString()}{" "}
+                              {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                            </span>
+                            {pkg.status === "DELIVERED" && pkg.pickedUpAt && (
+                              <span className="text-[10px] text-emerald-500 font-semibold whitespace-nowrap">
+                                ↩ {new Date(pkg.pickedUpAt).toLocaleDateString()}{" "}
+                                {new Date(pkg.pickedUpAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="px-6 py-4">
                           <button
