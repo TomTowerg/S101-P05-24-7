@@ -64,7 +64,7 @@ export default function PackagesPage() {
       const res = await fetch("/api/apartments");
       if (res.ok) {
         const data = await res.json();
-        setApartments(data);
+        setApartments(data.sort((a: { number: string }, b: { number: string }) => parseInt(a.number) - parseInt(b.number)));
       }
     } catch (error) {
       console.error("Error fetching apartments:", error);

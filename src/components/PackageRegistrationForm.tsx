@@ -34,7 +34,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
   useEffect(() => {
     fetch("/api/apartments")
       .then(r => r.json())
-      .then(data => setApartments(data))
+      .then(data => setApartments(data.sort((a: { number: string }, b: { number: string }) => parseInt(a.number) - parseInt(b.number))))
       .catch(() => {})
       .finally(() => setIsLoadingApts(false));
   }, []);

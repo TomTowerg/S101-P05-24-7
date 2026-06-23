@@ -195,10 +195,10 @@
     "noResults": "No packages found matching your criteria.",
     "allTypes": "All Types",
     "typeStandard": "Standard",
-    "typePerishable": "Perishable",
+    "typePerishable": "Requires Cold",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "perishable": "Perishable"
+    "perishable": "Requires Cold"
   },
   "VerificationModal": {
     "title": "Verify Delivery",
@@ -292,8 +292,8 @@
     "trackingLabel": "Tracking",
     "errorGeneric": "An error occurred while registering the package",
     "errorNetwork": "Connection error. Check your network and try again",
-    "perishableLabel": "Is perishable / urgent",
-    "perishableDesc": "Mark if it requires refrigeration or fast delivery",
+    "perishableLabel": "Requires cold? (food, medications)",
+    "perishableDesc": "Mark this if the package contains food, medications, or other items requiring immediate attention",
     "qrTitle": "Package QR Code",
     "qrSubtitle": "Scan or print this code for pickup",
     "printQR": "Print Label",

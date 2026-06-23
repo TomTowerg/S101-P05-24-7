@@ -37,7 +37,10 @@ export default function ApartmentManager() {
     setLoading(true);
     try {
       const res = await fetch("/api/apartments");
-      if (res.ok) setApartments(await res.json());
+      if (res.ok) {
+        const data: ApartmentRow[] = await res.json();
+        setApartments(data.sort((a, b) => parseInt(a.number) - parseInt(b.number)));
+      }
     } finally {
       setLoading(false);
     }

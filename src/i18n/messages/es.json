@@ -195,10 +195,10 @@
     "noResults": "No se encontraron encomiendas que coincidan con tu búsqueda.",
     "allTypes": "Todos los Tipos",
     "typeStandard": "Estándar",
-    "typePerishable": "Perecible",
+    "typePerishable": "Comida / Frío",
     "startDate": "Fecha Inicio",
     "endDate": "Fecha Fin",
-    "perishable": "Perecible"
+    "perishable": "Comida / Frío"
   },
   "VerificationModal": {
     "title": "Verificar Entrega",
@@ -292,8 +292,8 @@
     "trackingLabel": "Tracking",
     "errorGeneric": "Ocurrió un error al registrar la encomienda",
     "errorNetwork": "Error de conexión. Verifica tu red e intenta nuevamente",
-    "perishableLabel": "Es perecible / urgente",
-    "perishableDesc": "Márcalo si requiere refrigeración o es entrega rápida",
+    "perishableLabel": "¿Requiere frío? (comida, medicamentos)",
+    "perishableDesc": "Marca esto si el paquete contiene alimentos, medicamentos u otros artículos que requieren atención inmediata",
     "qrTitle": "Código QR del Paquete",
     "qrSubtitle": "Escanea o imprime este código para el retiro",
     "printQR": "Imprimir Etiqueta",

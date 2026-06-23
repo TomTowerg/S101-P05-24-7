@@ -270,7 +270,7 @@ export default function ResidentDashboard() {
                             fetch("/api/apartments")
                               .then(r => r.json())
                               .then((data: {id: string; number: string; tower: string | null}[]) => {
-                                setAptOptions(data);
+                                setAptOptions(data.sort((a, b) => parseInt(a.number) - parseInt(b.number)));
                                 const current = data.find(a => a.number === currentApt?.number);
                                 if (current) setSelectedAptId(current.id);
                               })
@@ -469,7 +469,7 @@ export default function ResidentDashboard() {
                       {pkg.isPerishable && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">
                           <Flame className="w-3 h-3" aria-hidden="true" />
-                          Perecible
+                          Comida / Frío
                         </span>
                       )}
                     </div>
