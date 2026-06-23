@@ -5,12 +5,15 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { User, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
   const t        = useTranslations("Navbar");
   const locale   = useLocale();
   const pathname = usePathname();
   const router   = useRouter();
+
+  const { status } = useSession();
 
   // Detecta si el usuario ya scrolleó fuera del hero
   const [scrolled, setScrolled] = useState(false);
@@ -130,16 +133,18 @@ export default function Navbar() {
 
         {/* ── Derecha: Botón ingresar ── */}
         <div className="w-36 flex items-center justify-end">
-          <Link
-            href="/login"
-            aria-label="Iniciar sesión"
-            className={`flex items-center gap-2 transition-colors group ${scrolled ? "text-text-primary/60 hover:text-text-primary" : "text-text-primary/40 hover:text-text-primary"}`}
-          >
-            <User className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-            <span className="text-[10px] tracking-[0.2em] uppercase hidden sm:inline font-medium">
-              {t('login')}
-            </span>
-          </Link>
+          {status !== "authenticated" && (
+            <Link
+              href="/login"
+              aria-label="Iniciar sesión"
+              className={`flex items-center gap-2 transition-colors group ${scrolled ? "text-text-primary/60 hover:text-text-primary" : "text-text-primary/40 hover:text-text-primary"}`}
+            >
+              <User className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+              <span className="text-[10px] tracking-[0.2em] uppercase hidden sm:inline font-medium">
+                {t('login')}
+              </span>
+            </Link>
+          )}
         </div>
 
       </div>

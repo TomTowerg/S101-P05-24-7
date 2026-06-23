@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, ArrowRight, Loader2, Building2 } from "lucide-react";
+import { CheckCircle, ArrowRight, Loader2, Building2, X } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 
 type Role = "CONSERJE" | "RESIDENTE";
@@ -24,7 +24,7 @@ export default function OnboardingClient({
   initialRole: string;
 }) {
   const t = useTranslations("onboarding");
-  const { update } = useSession();
+  const { update, data: sessionData } = useSession();
   const role = initialRole as Role;
 
   // CONSERJE skips apartment selection → start at confirmation (step 3)
@@ -33,6 +33,40 @@ export default function OnboardingClient({
   const [apartmentId, setApartmentId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const hasSubmitted = useRef(false);
+
+  // Notify concierge modal state
+  const [showNotify, setShowNotify] = useState(false);
+  const [notifyForm, setNotifyForm] = useState({ name: "", email: "", message: "" });
+  const [isNotifying, setIsNotifying] = useState(false);
+  const [notifySent, setNotifySent] = useState(false);
+
+  const openNotifyModal = () => {
+    setNotifyForm({
+      name: sessionData?.user?.name || "",
+      email: sessionData?.user?.email || "",
+      message: "",
+    });
+    setShowNotify(true);
+  };
+
+  const handleNotify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsNotifying(true);
+    try {
+      const res = await fetch("/api/notify-concierge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(notifyForm),
+      });
+      if (res.ok) {
+        setNotifySent(true);
+      }
+    } catch {
+      // silent fail
+    } finally {
+      setIsNotifying(false);
+    }
+  };
 
   const handleComplete = async () => {
     if (isLoading || hasSubmitted.current) return;
@@ -119,7 +153,7 @@ export default function OnboardingClient({
                     <select
                       value={apartmentId}
                       onChange={(e) => setApartmentId(e.target.value)}
-                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
                     >
                       <option value="" disabled>{t("step2.placeholder")}</option>
                       {apartments.map((apt) => (
@@ -128,13 +162,22 @@ export default function OnboardingClient({
                         </option>
                       ))}
                     </select>
+                    <div className="mt-3 text-center">
+                      <button
+                        type="button"
+                        onClick={openNotifyModal}
+                        className="text-xs text-neutral-400 hover:text-indigo-400 underline underline-offset-2 transition-colors cursor-pointer"
+                      >
+                        ¿No encuentras tu departamento? Notificar al conserje
+                      </button>
+                    </div>
                   </div>
                 )}
                 <div className="mt-8 flex justify-end">
                   <button
                     disabled={!apartmentId}
                     onClick={() => setStep(3)}
-                    className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <span>{t("continue")}</span>
                     <ArrowRight size={18} />
@@ -179,7 +222,7 @@ export default function OnboardingClient({
                   {role === "RESIDENTE" ? (
                     <button
                       onClick={() => setStep(2)}
-                      className="text-neutral-400 hover:text-white px-4 py-2 font-medium transition-colors"
+                      className="text-neutral-400 hover:text-white px-4 py-2 font-medium transition-colors cursor-pointer"
                       disabled={isLoading}
                     >
                       {t("back")}
@@ -190,7 +233,7 @@ export default function OnboardingClient({
                   <button
                     onClick={handleComplete}
                     disabled={isLoading}
-                    className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
+                    className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {isLoading ? (
                       <Loader2 className="animate-spin" size={18} />
@@ -204,6 +247,82 @@ export default function OnboardingClient({
           </AnimatePresence>
         </div>
       </div>
+
+      {/* ── Notify Concierge Modal ── */}
+      {showNotify && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 w-full max-w-md"
+          >
+            {notifySent ? (
+              <div className="text-center py-4 space-y-3">
+                <CheckCircle className="w-12 h-12 text-green-400 mx-auto" />
+                <h3 className="text-white font-bold text-lg">Mensaje enviado</h3>
+                <p className="text-neutral-400 text-sm">El conserje recibirá una notificación con tu solicitud.</p>
+                <button
+                  onClick={() => { setShowNotify(false); setNotifySent(false); }}
+                  className="mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium transition-colors cursor-pointer"
+                >
+                  Cerrar
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-white font-bold text-lg">Notificar al conserje</h3>
+                  <button onClick={() => setShowNotify(false)} className="text-neutral-400 hover:text-white transition-colors cursor-pointer">
+                    <X size={20} />
+                  </button>
+                </div>
+                <p className="text-neutral-400 text-sm mb-4">El conserje recibirá una notificación push con tu mensaje.</p>
+                <form onSubmit={handleNotify} className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-neutral-300 mb-1">Nombre</label>
+                    <input
+                      type="text"
+                      required
+                      value={notifyForm.name}
+                      onChange={e => setNotifyForm(p => ({ ...p, name: e.target.value }))}
+                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-neutral-300 mb-1">Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={notifyForm.email}
+                      onChange={e => setNotifyForm(p => ({ ...p, email: e.target.value }))}
+                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-neutral-300 mb-1">Mensaje</label>
+                    <textarea
+                      required
+                      rows={3}
+                      placeholder="Ej: Vivo en el piso 6, departamento 601"
+                      value={notifyForm.message}
+                      onChange={e => setNotifyForm(p => ({ ...p, message: e.target.value }))}
+                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isNotifying}
+                    className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-lg font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer"
+                  >
+                    {isNotifying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                    Enviar notificación
+                  </button>
+                </form>
+              </>
+            )}
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

@@ -257,7 +257,6 @@
     "claimPackage": "Associated package (optional)",
     "claimDescription": "Description",
     "submitClaim": "Submit",
-    "cancel": "Cancel",
     "claimCreated": "Claim submitted successfully",
     "errorCreate": "Failed to submit claim. Please try again.",
     "typeWrongPackage": "Wrong package",
@@ -348,8 +347,12 @@
     "subtitle": "Manage your personal information and security settings",
     "personalInfo": "Personal Information",
     "security": "Security",
-    "role": "Role",
+    "email": "Email",
     "apartment": "Apartment",
+    "role": "Role",
+    "twoFactor": "Two-Factor Authentication",
+    "twoFactorEnabled": "Enabled",
+    "twoFactorDisabled": "Disabled",
     "enable2FA": "Enable Two-Factor Authentication",
     "disable2FA": "Disable Two-Factor Authentication",
     "twoFactorDesc": "Protect your account with a Google Authenticator TOTP code.",
@@ -358,7 +361,10 @@
     "verify": "Verify Code",
     "disableConfirm": "Are you sure you want to disable 2FA? This lowers your account security.",
     "enabledSuccess": "Two-Factor Authentication successfully enabled",
-    "disabledSuccess": "Two-Factor Authentication has been disabled"
+    "disabledSuccess": "Two-Factor Authentication has been disabled",
+    "save": "Save",
+    "saved": "Profile saved",
+    "changeApartment": "Change apartment"
   },
   "Users": {
     "title": "Manage Users",

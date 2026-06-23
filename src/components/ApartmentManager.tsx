@@ -191,30 +191,33 @@ export default function ApartmentManager() {
               </tr>
             ) : (
               apartments.map((apt) => {
-                const resident = apt.residents[0] ?? null;
                 const inUse = apt._count.packages > 0 || apt.residents.length > 0;
                 return (
                   <tr key={apt.id} className="hover:bg-bg-base/50 transition-colors">
- 
+
                     {/* Apartment */}
                     <td className="px-4 md:px-8 py-3 md:py-4">
                       <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
                         {apt.number}{apt.tower ? ` · ${apt.tower}` : ""}
                       </span>
                     </td>
- 
-                    {/* Resident */}
+
+                    {/* Residents */}
                     <td className="px-4 md:px-8 py-3 md:py-4">
-                      {resident ? (
-                        <div className="flex items-center gap-2">
-                          <User className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                          <div>
-                            <p className="text-xs font-semibold text-text-primary">{resident.name ?? "—"}</p>
-                            <p className="text-[10px] text-text-muted">{resident.email}</p>
-                          </div>
-                        </div>
-                      ) : (
+                      {apt.residents.length === 0 ? (
                         <span className="text-xs text-text-muted italic">{t("noResident")}</span>
+                      ) : (
+                        <div className="flex flex-col gap-1.5">
+                          {apt.residents.map((r) => (
+                            <div key={r.id} className="flex items-center gap-2">
+                              <User className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                              <div>
+                                <p className="text-xs font-semibold text-text-primary">{r.name ?? "—"}</p>
+                                <p className="text-[10px] text-text-muted">{r.email}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </td>
  

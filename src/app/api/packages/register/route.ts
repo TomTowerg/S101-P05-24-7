@@ -10,12 +10,9 @@ const registerPackageSchema = z.object({
     .min(3, "Tracking code must be at least 3 characters")
     .max(100)
     .trim(),
-  apartmentNumber: z
-    .string()
-    .min(1, "Apartment number is required")
-    .max(20)
-    .trim(),
+  apartmentNumber: z.string().max(20).trim().optional().or(z.literal("")),
   tower: z.string().max(20).trim().optional().or(z.literal("")),
+  apartmentId: z.string().optional(),
   description: z.string().max(500).trim().optional().or(z.literal("")),
   isPerishable: z.boolean().optional().default(false),
 });
@@ -54,22 +51,38 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { trackingCode, apartmentNumber, tower, description, isPerishable } = parsed.data;
+  const { trackingCode, apartmentNumber, tower, apartmentId, description, isPerishable } = parsed.data;
 
-  // ── 3. Upsert apartment (create if not exists) ────────────────────────────
-  const apartment = await prisma.apartment.upsert({
-    where: {
-      number_tower: {
+  // ── 3. Resolve apartment ──────────────────────────────────────────────────
+  let apartment;
+  if (apartmentId) {
+    // Direct ID lookup — used by the new SELECT-based form
+    apartment = await prisma.apartment.findUnique({ where: { id: apartmentId } });
+    if (!apartment) {
+      return NextResponse.json({ error: "Apartment not found" }, { status: 404 });
+    }
+  } else {
+    // Legacy: upsert by number+tower (backward compat)
+    if (!apartmentNumber) {
+      return NextResponse.json(
+        { error: "apartmentNumber or apartmentId required" },
+        { status: 422 }
+      );
+    }
+    apartment = await prisma.apartment.upsert({
+      where: {
+        number_tower: {
+          number: apartmentNumber,
+          tower: tower ?? "",
+        },
+      },
+      update: {},
+      create: {
         number: apartmentNumber,
         tower: tower ?? "",
       },
-    },
-    update: {},
-    create: {
-      number: apartmentNumber,
-      tower: tower ?? "",
-    },
-  });
+    });
+  }
 
   // ── 4. Check for duplicate tracking code ─────────────────────────────────
   const existing = await prisma.package.findUnique({ where: { trackingCode } });
@@ -121,8 +134,8 @@ export async function POST(request: NextRequest) {
       ? "ATENCION: Paquete Urgente / Perecedero Recibido"
       : "Nuevo paquete recibido",
     body: isPerishable
-      ? `Se ha registrado un paquete perecedero o urgente con seguimiento ${trackingCode} para el departamento ${apartmentNumber}. Se requiere pronto retiro.`
-      : `Se ha registrado un paquete con seguimiento ${trackingCode} para el departamento ${apartmentNumber}.`,
+      ? `Se ha registrado un paquete perecedero o urgente con seguimiento ${trackingCode} para el departamento ${apartment.number}. Se requiere pronto retiro.`
+      : `Se ha registrado un paquete con seguimiento ${trackingCode} para el departamento ${apartment.number}.`,
     url: "/dashboard/resident",
   });
 

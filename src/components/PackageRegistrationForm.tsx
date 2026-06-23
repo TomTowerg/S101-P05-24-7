@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Package, CheckCircle, AlertCircle, Loader2, X, PlusCircle } from "lucide-react";
@@ -19,8 +19,7 @@ interface FormState {
 
 const INITIAL_FORM = {
   trackingCode: "",
-  apartmentNumber: "",
-  tower: "",
+  apartmentId: "",
   description: "",
   isPerishable: false,
 };
@@ -29,6 +28,16 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
   const t = useTranslations("PackageForm");
   const [form, setForm] = useState(INITIAL_FORM);
   const [state, setState] = useState<FormState>({ status: "idle", message: "" });
+  const [apartments, setApartments] = useState<{id: string; number: string; tower: string | null}[]>([]);
+  const [isLoadingApts, setIsLoadingApts] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/apartments")
+      .then(r => r.json())
+      .then(data => setApartments(data))
+      .catch(() => {})
+      .finally(() => setIsLoadingApts(false));
+  }, []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -52,8 +61,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           trackingCode: form.trackingCode,
-          apartmentNumber: form.apartmentNumber,
-          tower: form.tower,
+          apartmentId: form.apartmentId,
           description: form.description,
           isPerishable: form.isPerishable,
         }),
@@ -113,7 +121,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
                 {state.registeredPackage.apartment.tower ? ` · ${t("towerLabel")} ${state.registeredPackage.apartment.tower}` : ""}
               </p>
             </div>
- 
+
             {/* QR Section */}
             <div className="bg-bg-base/30 rounded-3xl p-4 md:p-8 border border-border-subtle">
               <PackageQR
@@ -123,7 +131,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
                 recipientName={state.registeredPackage.recipientName || undefined}
               />
             </div>
- 
+
             {/* Actions */}
             <div className="grid grid-cols-1 gap-3">
               <button
@@ -184,47 +192,34 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
           />
         </div>
 
-        {/* Apartment + Tower (same row) */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="apartmentNumber"
-              className="block text-sm font-medium text-text-primary mb-1.5"
-            >
-              {t("apartmentLabel")}
-              <span className="text-red-500 ml-1">*</span>
-            </label>
-            <input
-              id="apartmentNumber"
-              name="apartmentNumber"
-              type="text"
+        {/* Apartment SELECT */}
+        <div>
+          <label htmlFor="apartmentId" className="block text-sm font-medium text-text-primary mb-1.5">
+            {t("apartmentLabel")}
+            <span className="text-red-500 ml-1">*</span>
+          </label>
+          {isLoadingApts ? (
+            <div className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-muted text-sm flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Cargando departamentos...
+            </div>
+          ) : (
+            <select
+              id="apartmentId"
+              name="apartmentId"
               required
-              value={form.apartmentNumber}
-              onChange={handleChange}
-              placeholder={t("apartmentPlaceholder")}
-              className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-primary placeholder-text-muted/40 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="tower"
-              className="block text-sm font-medium text-text-primary mb-1.5"
+              value={form.apartmentId}
+              onChange={(e) => setForm(prev => ({ ...prev, apartmentId: e.target.value }))}
+              className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow cursor-pointer"
             >
-              {t("towerLabel")}
-              <span className="text-text-muted text-xs ml-1">
-                ({t("optional")})
-              </span>
-            </label>
-            <input
-              id="tower"
-              name="tower"
-              type="text"
-              value={form.tower}
-              onChange={handleChange}
-              placeholder={t("towerPlaceholder")}
-              className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-primary placeholder-text-muted/40 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow"
-            />
-          </div>
+              <option value="" disabled>{t("apartmentPlaceholder")}</option>
+              {apartments.map(apt => (
+                <option key={apt.id} value={apt.id}>
+                  {apt.number}{apt.tower ? ` · ${apt.tower}` : ""}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         {/* Description */}
@@ -268,7 +263,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
             <p className="text-xs text-red-400/80 mt-0.5">{t("perishableDesc")}</p>
           </div>
         </div>
- 
+
         {/* Submit */}
         <button
           type="submit"
