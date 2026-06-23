@@ -352,27 +352,6 @@
     "saved": "Perfil guardado",
     "changeApartment": "Cambiar departamento"
   },
-  "Users": {
-    "title": "Gestión de usuarios",
-    "name": "Nombre",
-    "email": "Correo",
-    "role": "Rol",
-    "apartment": "Departamento",
-    "lastLogin": "Último acceso",
-    "twoFactor": "2FA",
-    "actions": "Acciones",
-    "changeRole": "Cambiar rol",
-    "noUsers": "No hay usuarios registrados"
-  },
-  "Reports": {
-    "title": "Reportes",
-    "totalPackages": "Total encomiendas",
-    "delivered": "Entregadas",
-    "pending": "Pendientes",
-    "perishable": "Perecederas",
-    "thisMonth": "Este mes",
-    "today": "Hoy"
-  },
   "totp": {
     "setupTitle": "Configura Google Authenticator",
     "setupSubtitle": "Escanea el código QR con tu app autenticadora",
@@ -410,8 +389,24 @@
   },
   "Claims": {
     "title": "Reclamos",
-    "subtitle": "Gestiona los reclamos y problemas",
+    "subtitle": "Gestiona los reclamos y problemas reportados",
     "emptyTitle": "No hay reclamos registrados",
-    "emptyDesc": "No se han reportado reclamos o quejas en este edificio."
+    "emptyDesc": "No se han reportado reclamos o quejas en este edificio.",
+    "newClaim": "Nuevo Reclamo",
+    "type": "Tipo de reclamo",
+    "package": "Encomienda asociada",
+    "description": "Descripción",
+    "submit": "Enviar Reclamo",
+    "typeWrongPackage": "Paquete equivocado",
+    "typeDamaged": "Paquete dañado",
+    "typeMissing": "Paquete perdido",
+    "typeOther": "Otro",
+    "statusOpen": "Abierto",
+    "statusInProgress": "En proceso",
+    "statusResolved": "Resuelto",
+    "claimCreated": "Reclamo enviado exitosamente",
+    "errorCreate": "Error al enviar el reclamo. Intenta nuevamente.",
+    "statusUpdated": "Estado actualizado exitosamente",
+    "errorUpdate": "Error al actualizar el estado. Intenta nuevamente."
   }
 }

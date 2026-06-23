@@ -36,6 +36,7 @@ model User {
   pushSubscriptions  PushSubscription[]
   trustedDevices     TrustedDevice[]
   otpSessions        OtpSession[]
+  claims             Claim[]
 }
 
 enum UserRole {
@@ -150,6 +151,7 @@ model Package {
   pickedUpBy     User?     @relation("PickedUpPackages", fields: [pickedUpById], references: [id])
 
   events PackageEvent[]
+  claims Claim[]
 
   @@index([apartmentId])
   @@index([registeredById])
@@ -187,6 +189,36 @@ enum PackageEventType {
   PICKED_UP  // Package was picked up
   RETURNED   // Package was returned to sender
   NOTE_ADDED // A note was added manually
+}
+
+model Claim {
+  id          String      @id @default(cuid())
+  description String
+  status      ClaimStatus @default(OPEN)
+  type        ClaimType
+  packageId   String?
+  userId      String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  package     Package?    @relation(fields: [packageId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([packageId])
+  @@index([status])
+}
+
+enum ClaimStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum ClaimType {
+  WRONG_PACKAGE
+  DAMAGED
+  MISSING
+  OTHER
 }
 
 model PushSubscription {

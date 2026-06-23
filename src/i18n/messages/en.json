@@ -30,7 +30,8 @@
     "back": "Go back",
     "role": "Role",
     "apartment": "Apartment",
-    "tower": "Tower"
+    "tower": "Tower",
+    "onboardingComplete": "Welcome! Your profile has been configured."
   },
   "Home": {
     "eyebrow": "Parcel Management · Residential Buildings",
@@ -216,7 +217,8 @@
     "confirming": "Processing...",
     "errorNotFound": "Could not find the package information",
     "errorReceiverRequired": "You must enter the name of the person picking up the package",
-    "errorTitle": "Error"
+    "errorTitle": "Error",
+    "deliveryConfirmed": "Delivery confirmed successfully"
   },
   "Resident": {
     "title": "My Parcels",
@@ -359,9 +361,25 @@
   },
   "Claims": {
     "title": "Claims",
-    "subtitle": "Manage complaints and issues",
+    "subtitle": "Manage reported complaints and issues",
     "emptyTitle": "No claims yet",
-    "emptyDesc": "No claims or complaints have been reported for this building."
+    "emptyDesc": "No claims or complaints have been reported for this building.",
+    "newClaim": "New Claim",
+    "type": "Claim type",
+    "package": "Associated package",
+    "description": "Description",
+    "submit": "Submit Claim",
+    "typeWrongPackage": "Wrong package",
+    "typeDamaged": "Damaged package",
+    "typeMissing": "Missing package",
+    "typeOther": "Other",
+    "statusOpen": "Open",
+    "statusInProgress": "In progress",
+    "statusResolved": "Resolved",
+    "claimCreated": "Claim submitted successfully",
+    "errorCreate": "Failed to submit claim. Please try again.",
+    "statusUpdated": "Status updated successfully",
+    "errorUpdate": "Failed to update status. Please try again."
   },
   "Reports": {
     "title": "Reports & Analytics",
