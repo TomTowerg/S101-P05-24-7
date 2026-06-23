@@ -78,7 +78,7 @@ export default async function RootLayout({
             <main className="flex flex-col flex-1">
               <PageTransition>{children}</PageTransition>
             </main>
-            <Toaster position="top-right" richColors />
+            <Toaster position="bottom-right" richColors duration={3000} />
           </Providers>
         </NextIntlClientProvider>
       </body>

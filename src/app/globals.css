@@ -1,33 +1,51 @@
 @import "tailwindcss";
 
 @theme {
+  /* Surface tokens */
   --color-bg-base: var(--bg-base);
   --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-2: var(--bg-surface-2);
+
+  /* Text tokens */
   --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+
+  /* Border */
   --color-border-subtle: var(--border-subtle);
 
-  --color-accent-primary: #12bbf0; /* Neon Cyan */
-  --color-accent-glow: rgba(18, 187, 240, 0.4);
+  /* Brand accent */
+  --color-accent: #6366F1;
+  --color-accent-hover: #4F46E5;
 
+  /* Semantic status colors */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+
+  /* Fonts */
   --font-sans: var(--font-inter);
   --font-display: var(--font-syne);
-  --font-serif: var(--font-playfair);
 }
 
 :root {
-  --bg-base: #0f0820;          /* Original body background */
-  --bg-surface: #18112b;       /* Card/sidebar background */
-  --text-primary: #f5f0ff;     /* Main text */
-  --text-muted: #9f96b5;       /* Muted text */
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  /* Dark mode (default) */
+  --bg-base: #0A0B14;
+  --bg-surface: #111827;
+  --bg-surface-2: #1F2937;
+  --text-primary: #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+  --border-subtle: rgba(255, 255, 255, 0.06);
 }
 
 html.light {
-  --bg-base: #f8fafc;          /* slate-50 */
-  --bg-surface: #ffffff;       /* white */
-  --text-primary: #0f172a;     /* slate-900 */
-  --text-muted: #475569;       /* slate-600 */
+  --bg-base: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
   --border-subtle: rgba(15, 23, 42, 0.08);
 }
 
@@ -50,6 +68,11 @@ html.light {
 }
 
 /* ─── Keyframes ─────────────────────────────────── */
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
 
 @keyframes amber-pulse {
   0%, 100% {
@@ -115,6 +138,26 @@ html.light {
   .animate-scan-line {
     animation: scan-line 3s ease-in-out infinite;
     position: absolute;
+  }
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--bg-surface) 25%,
+      rgba(255, 255, 255, 0.04) 50%,
+      var(--bg-surface) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+  /* Minimal OLED glow — use on primary CTA elements only */
+  .glow-indigo {
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.25), 0 0 48px rgba(99, 102, 241, 0.1);
+  }
+  .glow-indigo-sm {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+  }
+  .glow-text-indigo {
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
   }
 }
 

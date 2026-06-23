@@ -11,8 +11,9 @@ import PackageRegistrationForm from "@/components/PackageRegistrationForm";
 import PackageVerificationModal from "@/components/PackageVerificationModal";
 import ApartmentManager from "@/components/ApartmentManager";
 import EmptyState from "@/components/EmptyState";
-import { motion } from "framer-motion";
-import { Loader2, Package, Clock, CheckCircle2, History, User, QrCode } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, Package, Clock, CheckCircle2, History, User, QrCode, Flame } from "lucide-react";
+import StatCard from "@/components/ui/StatCard";
 
 // QRScanner uses browser-only APIs (getUserMedia, document) — must never be SSR'd
 const QRScanner = dynamic(() => import("@/components/QRScanner"), { ssr: false });
@@ -96,7 +97,12 @@ export default function ConciergeDashboard() {
     <div className="p-6 md:p-10 space-y-10 pb-24 md:pb-10">
         
         {/* Welcome Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="lg:col-span-2 bg-bg-surface rounded-2xl shadow-sm border border-border-subtle p-8 flex items-center gap-6 transition-theme">
             <div className="relative">
               {session?.user?.image ? (
@@ -122,11 +128,11 @@ export default function ConciergeDashboard() {
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-8 shadow-xl shadow-indigo-950/20 flex flex-col justify-center items-center text-center">
+          <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-8 shadow-xl glow-indigo flex flex-col justify-center items-center text-center">
             <h3 className="text-indigo-100 font-bold text-[10px] uppercase tracking-[0.2em] mb-4">{t('comingSoonTitle')}</h3>
             <button
               onClick={() => setIsScanning(true)}
-              className="group relative flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95 shadow-xl hover:shadow-indigo-900/30 cursor-pointer"
+              className="group relative flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95 shadow-xl hover:shadow-indigo-900/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-700"
             >
               <QrCode className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               {tCommon('scan').toUpperCase()}
@@ -137,16 +143,41 @@ export default function ConciergeDashboard() {
             </button>
             <p className="mt-4 text-indigo-200/60 text-[9px] font-bold uppercase tracking-widest">{t('f3')}</p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <StatCard label={t("totalParcels")} value={isLoadingPackages ? '--' : totalParcels.toString()} icon={<Package className="w-6 h-6" />} color="blue" />
-          <StatCard label={t("pendingDelivery")} value={isLoadingPackages ? '--' : pendingDelivery.toString()} icon={<Clock className="w-6 h-6" />} color="amber" />
-          <StatCard label={t("deliveredToday")} value={isLoadingPackages ? '--' : deliveredToday.toString()} icon={<CheckCircle2 className="w-6 h-6" />} color="green" />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {isLoadingPackages ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" aria-hidden="true">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="bg-bg-surface rounded-2xl shadow-sm border border-border-subtle p-8 flex items-center justify-between">
+                  <div className="space-y-2">
+                    <div className="h-2.5 w-24 animate-shimmer rounded" />
+                    <div className="h-8 w-16 animate-shimmer rounded" />
+                  </div>
+                  <div className="h-14 w-14 animate-shimmer rounded-2xl" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <StatCard label={t("totalParcels")} value={totalParcels.toString()} icon={<Package className="w-6 h-6" />} color="blue" />
+              <StatCard label={t("pendingDelivery")} value={pendingDelivery.toString()} icon={<Clock className="w-6 h-6" />} color="amber" />
+              <StatCard label={t("deliveredToday")} value={deliveredToday.toString()} icon={<CheckCircle2 className="w-6 h-6" />} color="green" />
+            </div>
+          )}
+        </motion.div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
+        <motion.div
+          className="grid grid-cols-1 xl:grid-cols-12 gap-10"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
           {/* Recent History Table */}
           <div className="xl:col-span-8 bg-bg-surface rounded-2xl shadow-sm border border-border-subtle overflow-hidden flex flex-col transition-theme">
             <div className="px-8 py-6 border-b border-border-subtle flex items-center justify-between bg-bg-base/30">
@@ -169,11 +200,15 @@ export default function ConciergeDashboard() {
                 </thead>
                 <tbody className="divide-y divide-border-subtle">
                   {isLoadingPackages ? (
-                    <tr>
-                      <td colSpan={5} className="px-8 py-10 text-center">
-                        <Loader2 className="w-8 h-8 animate-spin text-text-muted/30 mx-auto" />
-                      </td>
-                    </tr>
+                    Array.from({ length: 5 }).map((_, i) => (
+                      <tr key={i} aria-hidden="true">
+                        <td className="px-8 py-4"><div className="h-4 w-28 animate-shimmer rounded-md" /></td>
+                        <td className="px-8 py-4"><div className="h-7 w-16 animate-shimmer rounded-lg" /></td>
+                        <td className="px-8 py-4"><div className="h-5 w-20 animate-shimmer rounded-full" /></td>
+                        <td className="px-8 py-4 hidden md:table-cell"><div className="h-4 w-24 animate-shimmer rounded-md" /></td>
+                        <td className="px-8 py-4"><div className="h-4 w-20 animate-shimmer rounded-md" /></td>
+                      </tr>
+                    ))
                   ) : packages.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="p-8">
@@ -193,10 +228,14 @@ export default function ConciergeDashboard() {
                         className="hover:bg-bg-base/50 transition-colors"
                       >
                         <td className="px-8 py-4">
-                          <span className="font-mono text-xs font-bold text-indigo-500">{pkg.trackingCode}</span>
+                          <span className="font-mono text-xs font-bold text-indigo-400 glow-text-indigo">{pkg.trackingCode}</span>
                           {pkg.isPerishable && (
-                            <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30">
-                              🔥 {t("perishable")}
+                            <span
+                              aria-label={t("perishable")}
+                              className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                            >
+                              <Flame className="w-3 h-3" aria-hidden="true" />
+                              {t("perishable")}
                             </span>
                           )}
                         </td>
@@ -230,18 +269,34 @@ export default function ConciergeDashboard() {
           <div className="xl:col-span-4 self-start sticky top-[88px]">
             <PackageRegistrationForm onSuccess={fetchPackages} />
           </div>
-        </div>
+        </motion.div>
 
         {/* Apartment Management */}
-        <ApartmentManager />
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <ApartmentManager />
+        </motion.div>
 
         {/* Scanner Overlay */}
-        {isScanning && (
-          <QRScanner 
-            onScanSuccess={handleScanSuccess}
-            onClose={() => setIsScanning(false)}
-          />
-        )}
+        <AnimatePresence>
+          {isScanning && (
+            <motion.div
+              key="scanner"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <QRScanner
+                onScanSuccess={handleScanSuccess}
+                onClose={() => setIsScanning(false)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {showVerification && scannedId && (
           <PackageVerificationModal 
@@ -255,26 +310,6 @@ export default function ConciergeDashboard() {
             }}
           />
         )}
-    </div>
-  );
-}
-
-function StatCard({ label, value, icon, color }: { label: string, value: string, icon: React.ReactNode, color: 'blue' | 'amber' | 'green' }) {
-  const styles = {
-    blue: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-    amber: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-    green: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-  };
-
-  return (
-    <div className="bg-bg-surface rounded-2xl shadow-sm border border-border-subtle p-8 flex items-center justify-between hover:border-indigo-500/30 transition-theme group">
-      <div>
-        <p className="text-text-muted text-[10px] font-bold tracking-[0.2em] uppercase mb-1">{label}</p>
-        <p className="text-4xl font-black text-text-primary tracking-tighter group-hover:scale-110 transition-transform origin-left">{value}</p>
-      </div>
-      <div className={`p-4 rounded-2xl border transition-all duration-300 group-hover:rotate-12 ${styles[color]}`}>
-        {icon}
-      </div>
     </div>
   );
 }

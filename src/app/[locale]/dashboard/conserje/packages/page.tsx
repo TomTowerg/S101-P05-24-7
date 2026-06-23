@@ -2,10 +2,15 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { Loader2, Search, Filter, X, Package, Clock, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import StatusBadge from "@/components/ui/StatusBadge";
+import { SkeletonTable } from "@/components/ui/Skeleton";
 import EmptyState from "@/components/EmptyState";
+import {
+  Loader2, Search, Filter, X, Package, Flame, ChevronRight,
+} from "lucide-react";
 
 interface Apartment {
   id: string;
@@ -29,7 +34,6 @@ interface PackageData {
 
 export default function PackagesPage() {
   const t = useTranslations("Concierge");
-  const tCommon = useTranslations("DashboardCommon");
   const { status } = useSession();
   const router = useRouter();
 
@@ -37,6 +41,7 @@ export default function PackagesPage() {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -113,212 +118,330 @@ export default function PackagesPage() {
     setEndDate("");
   };
 
+  const hasActiveFilters = !!(searchQuery || statusFilter || apartmentFilter || typeFilter || startDate || endDate);
+
+  const selectStyle = "w-full px-3 py-2.5 bg-bg-base border border-border-subtle rounded-xl text-sm font-medium text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors cursor-pointer appearance-none";
+
   if (status === "loading" || (isLoading && packages.length === 0)) {
     return (
-      <div className="flex-1 flex items-center justify-center p-10">
-        <div className="text-center">
-          <Loader2 className="h-10 w-10 animate-spin text-indigo-600 mx-auto mb-4" />
-          <p className="text-slate-600 font-medium">{tCommon('loading')}</p>
+      <div className="p-6 md:p-10 space-y-6">
+        <div className="h-8 w-64 animate-shimmer rounded-lg" />
+        <div className="bg-bg-surface border border-border-subtle rounded-2xl p-6">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
+            {[0, 1, 2, 3].map(i => <div key={i} className="h-11 animate-shimmer rounded-xl" />)}
+          </div>
+        </div>
+        <div className="bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden">
+          <SkeletonTable rows={6} cols={5} />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 md:p-10 space-y-8 pb-24 md:pb-10">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{t("searchPackages")}</h1>
-          <p className="text-slate-500 text-sm font-medium">{t("f1")}</p>
-        </div>
-      </div>
+    <div className="p-6 md:p-10 space-y-6 pb-24 md:pb-10">
 
-      {/* Filters Section */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col gap-4">
-        {/* Top Row: Search and Selects */}
-        <div className="flex flex-col xl:flex-row gap-4">
-          
-          {/* Search Bar */}
-          <div className="flex-1 relative">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-slate-400" />
-            </div>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <h1 className="text-2xl font-bold text-text-primary tracking-tight">{t("searchPackages")}</h1>
+        <p className="text-text-muted text-sm font-medium mt-0.5">{t("f1")}</p>
+      </motion.div>
+
+      {/* Filters */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-bg-surface border border-border-subtle rounded-2xl p-5 space-y-4 transition-theme"
+      >
+        <div className="flex flex-col xl:flex-row gap-3">
+          {/* Search */}
+          <div className="flex-[2] relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" aria-hidden="true" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              className="w-full pl-9 pr-9 py-2.5 bg-bg-base border border-border-subtle rounded-xl text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-indigo-500/50 transition-colors"
             />
             {searchQuery && (
-              <button 
+              <button
                 onClick={() => setSearchQuery("")}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
               >
-                <X className="h-4 w-4" />
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
-            {/* Status Filter */}
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full sm:w-48 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none cursor-pointer"
-            >
-              <option value="">{t("allStatuses")}</option>
-              <option value="PENDING">{t("statusPENDING")}</option>
-              <option value="NOTIFIED">{t("statusNOTIFIED")}</option>
-              <option value="DELIVERED">{t("statusDELIVERED")}</option>
-            </select>
+          {/* Status */}
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={selectStyle}>
+            <option value="">{t("allStatuses")}</option>
+            <option value="PENDING">{t("statusPENDING")}</option>
+            <option value="NOTIFIED">{t("statusNOTIFIED")}</option>
+            <option value="DELIVERED">{t("statusDELIVERED")}</option>
+          </select>
 
-            {/* Type Filter */}
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="w-full sm:w-48 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none cursor-pointer"
-            >
-              <option value="">{t("allTypes")}</option>
-              <option value="standard">{t("typeStandard")}</option>
-              <option value="perishable">{t("typePerishable")}</option>
-            </select>
+          {/* Type */}
+          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className={selectStyle}>
+            <option value="">{t("allTypes")}</option>
+            <option value="standard">{t("typeStandard")}</option>
+            <option value="perishable">{t("typePerishable")}</option>
+          </select>
 
-            {/* Apartment Filter */}
-            <select
-              value={apartmentFilter}
-              onChange={(e) => setApartmentFilter(e.target.value)}
-              className="w-full sm:w-48 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none cursor-pointer"
-            >
-              <option value="">{t("allApartments")}</option>
-              {apartments.map(apt => (
-                <option key={apt.id} value={apt.id}>
-                  {apt.number} {apt.tower ? `· ${apt.tower}` : ''}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Apartment */}
+          <select value={apartmentFilter} onChange={(e) => setApartmentFilter(e.target.value)} className={selectStyle}>
+            <option value="">{t("allApartments")}</option>
+            {apartments.map((apt) => (
+              <option key={apt.id} value={apt.id}>
+                {apt.number}{apt.tower ? ` · ${apt.tower}` : ""}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Bottom Row: Dates and Actions */}
-        <div className="flex flex-col sm:flex-row justify-between items-end gap-4">
-          <div className="flex gap-4 w-full sm:w-auto">
-            <div className="w-full sm:w-48">
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t("startDate")}</label>
+        <div className="flex flex-col sm:flex-row items-end gap-3">
+          <div className="flex gap-3 w-full sm:w-auto">
+            <div>
+              <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
+                {t("startDate")}
+              </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                className="px-3 py-2 bg-bg-base border border-border-subtle rounded-xl text-sm text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors"
               />
             </div>
-            <div className="w-full sm:w-48">
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t("endDate")}</label>
+            <div>
+              <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
+                {t("endDate")}
+              </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                className="px-3 py-2 bg-bg-base border border-border-subtle rounded-xl text-sm text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors"
               />
             </div>
           </div>
-
           <button
             onClick={clearFilters}
-            disabled={!(searchQuery || statusFilter || apartmentFilter || typeFilter || startDate || endDate)}
-            className={`px-5 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all w-full sm:w-auto ${
-              (searchQuery || statusFilter || apartmentFilter || typeFilter || startDate || endDate)
-                ? 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 border border-transparent cursor-pointer'
-                : 'bg-transparent text-transparent border border-transparent cursor-default pointer-events-none'
+            disabled={!hasActiveFilters}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 ${
+              hasActiveFilters
+                ? "bg-bg-base text-text-muted hover:text-text-primary border border-border-subtle hover:border-indigo-500/30"
+                : "opacity-0 pointer-events-none"
             }`}
           >
-            <Filter className="w-4 h-4" />
+            <Filter className="w-3.5 h-3.5" aria-hidden="true" />
             {t("clearFilters")}
           </button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Results Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative">
-        {isSearching && (
-          <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
-            <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+      {/* Results count */}
+      {!isLoading && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="text-xs text-text-muted font-medium px-1"
+        >
+          {isSearching ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Buscando...
+            </span>
+          ) : (
+            `Mostrando ${packages.length} resultado${packages.length !== 1 ? "s" : ""}`
+          )}
+        </motion.p>
+      )}
+
+      {/* Results table */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className={`bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden transition-theme relative ${isSearching ? "opacity-60" : ""}`}
+      >
+        {isLoading ? (
+          <SkeletonTable rows={6} cols={5} />
+        ) : packages.length === 0 ? (
+          <div className="p-10">
+            <EmptyState
+              icon={Package}
+              title={t("noResults")}
+              action={{ label: t("clearFilters"), onClick: clearFilters }}
+            />
           </div>
-        )}
-        
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200">
-                <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('tracking')}</th>
-                <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('apt')}</th>
-                <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('status')}</th>
-                <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest hidden md:table-cell">{t('receivedBy')}</th>
-                <th className="px-8 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('date')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {packages.length === 0 && !isSearching ? (
-                <tr>
-                  <td colSpan={5} className="p-8">
-                    <EmptyState
-                      icon={Package}
-                      title={t("noResults")}
-                      action={{
-                        label: t("clearFilters"),
-                        onClick: clearFilters
-                      }}
-                    />
-                  </td>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-bg-base/60 border-b border-border-subtle">
+                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("tracking")}</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("apt")}</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("status")}</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest hidden md:table-cell">{t("receivedBy")}</th>
+                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("date")}</th>
+                  <th className="px-6 py-4 w-10" />
                 </tr>
-              ) : (
-                packages.map((pkg) => (
-                  <tr key={pkg.id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-8 py-4 font-mono text-xs font-bold text-indigo-600 flex items-center gap-2">
-                      {pkg.trackingCode}
-                      {pkg.isPerishable && (
-                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" title={t("perishable")} />
-                      )}
+              </thead>
+              <tbody className="divide-y divide-border-subtle">
+                {packages.map((pkg, index) => (
+                  <motion.tr
+                    key={pkg.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.03, ease: [0.16, 1, 0.3, 1] }}
+                    onClick={() => setSelectedPackage(pkg)}
+                    className="hover:bg-white/[0.02] transition-colors cursor-pointer group"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-indigo-400 glow-text-indigo">
+                          {pkg.trackingCode}
+                        </span>
+                        {pkg.isPerishable && (
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[9px] font-bold">
+                            <Flame className="w-2.5 h-2.5" aria-hidden="true" />
+                            {t("perishable")}
+                          </span>
+                        )}
+                      </div>
                     </td>
-                    <td className="px-8 py-4">
-                      <span className="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">
-                        {pkg.apartment.number} {pkg.apartment.tower ? `· ${pkg.apartment.tower}` : ''}
+                    <td className="px-6 py-4">
+                      <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
+                        {pkg.apartment.number}{pkg.apartment.tower ? ` · ${pkg.apartment.tower}` : ""}
                       </span>
                     </td>
-                    <td className="px-8 py-4">
-                      <StatusBadge status={pkg.status} t={t} />
+                    <td className="px-6 py-4">
+                      <StatusBadge status={pkg.status as any} />
                     </td>
-                    <td className="px-8 py-4 hidden md:table-cell">
+                    <td className="px-6 py-4 hidden md:table-cell">
                       {pkg.receiverName ? (
-                        <span className="text-xs font-semibold text-slate-700">{pkg.receiverName}</span>
+                        <span className="text-xs font-semibold text-text-primary">{pkg.receiverName}</span>
                       ) : (
-                        <span className="text-xs text-slate-300 font-medium">—</span>
+                        <span className="text-xs text-text-muted/40 font-medium">—</span>
                       )}
                     </td>
-                    <td className="px-8 py-4 text-xs text-slate-400 font-medium">
-                      {new Date(pkg.createdAt).toLocaleDateString()} {new Date(pkg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <td className="px-6 py-4 text-xs text-text-muted font-medium whitespace-nowrap">
+                      {new Date(pkg.createdAt).toLocaleDateString()}{" "}
+                      {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                    <td className="px-6 py-4">
+                      <ChevronRight className="w-4 h-4 text-text-muted/40 group-hover:text-indigo-400 transition-colors" aria-hidden="true" />
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Package detail drawer */}
+      <AnimatePresence>
+        {selectedPackage && (
+          <>
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setSelectedPackage(null)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              aria-hidden="true"
+            />
+            <motion.aside
+              key="drawer"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 280 }}
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-bg-surface border-l border-border-subtle z-50 flex flex-col overflow-hidden"
+              role="complementary"
+              aria-label="Detalle del paquete"
+            >
+              {/* Drawer header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-border-subtle">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/25">
+                    <Package className="w-5 h-5 text-indigo-400" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Encomienda</p>
+                    <p className="font-mono text-sm font-bold text-indigo-400 glow-text-indigo">
+                      {selectedPackage.trackingCode}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedPackage(null)}
+                  className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-base transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+                  aria-label="Cerrar"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Drawer body */}
+              <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5">
+                {/* Status */}
+                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("status")}</span>
+                  <StatusBadge status={selectedPackage.status as any} />
+                </div>
+
+                {/* Apartment */}
+                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("apt")}</span>
+                  <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
+                    {selectedPackage.apartment.number}
+                    {selectedPackage.apartment.tower ? ` · ${selectedPackage.apartment.tower}` : ""}
+                  </span>
+                </div>
+
+                {/* Receiver */}
+                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("receivedBy")}</span>
+                  <span className="text-sm font-semibold text-text-primary">
+                    {selectedPackage.receiverName || "—"}
+                  </span>
+                </div>
+
+                {/* Date */}
+                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("date")}</span>
+                  <span className="text-sm font-medium text-text-primary">
+                    {new Date(selectedPackage.createdAt).toLocaleDateString()}{" "}
+                    {new Date(selectedPackage.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </div>
+
+                {/* Perishable */}
+                {selectedPackage.isPerishable && (
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+                    <Flame className="w-4 h-4 text-red-400 shrink-0" aria-hidden="true" />
+                    <div>
+                      <p className="text-xs font-bold text-red-400 uppercase tracking-wider">{t("perishable")}</p>
+                      <p className="text-xs text-text-muted mt-0.5">Este paquete requiere atención prioritaria</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </div>
-  );
-}
-
-function StatusBadge({ status, t }: { status: string, t: any }) {
-  const styles: Record<string, string> = {
-    PENDING: 'bg-slate-100 text-slate-600 border-slate-200',
-    NOTIFIED: 'bg-blue-50 text-blue-600 border-blue-100',
-    DELIVERED: 'bg-green-50 text-green-600 border-green-200'
-  };
-
-  return (
-    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${styles[status] || styles.PENDING}`}>
-      {t(`status${status}`) || status}
-    </span>
   );
 }
