@@ -173,7 +173,7 @@ export default function PackageVerificationModal({
                   </div>
                 </div>
 
-                {/* Received date */}
+                {/* Received date + time */}
                 <div className="flex items-center gap-4">
                   <div className="bg-bg-surface p-2 rounded-lg shadow-sm border border-border-subtle">
                     <Calendar className="w-4 h-4 text-text-muted/60" />
@@ -183,10 +183,33 @@ export default function PackageVerificationModal({
                       {t("receivedSince")}
                     </p>
                     <p className="font-bold text-text-primary">
-                      {new Date(pkg.createdAt).toLocaleDateString()}
+                      {new Date(pkg.createdAt).toLocaleDateString()}{" "}
+                      <span className="text-text-muted font-semibold">
+                        {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </span>
                     </p>
                   </div>
                 </div>
+
+                {/* Pickup date + time (only when DELIVERED) */}
+                {pkg.status === "DELIVERED" && pkg.pickedUpAt && (
+                  <div className="flex items-center gap-4">
+                    <div className="bg-emerald-500/10 p-2 rounded-lg shadow-sm border border-emerald-500/20">
+                      <Calendar className="w-4 h-4 text-emerald-500" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
+                        {t("pickedUpAtLabel")}
+                      </p>
+                      <p className="font-bold text-emerald-500">
+                        {new Date(pkg.pickedUpAt).toLocaleDateString()}{" "}
+                        <span className="font-semibold">
+                          {new Date(pkg.pickedUpAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Description (optional) */}
                 {pkg.description && (

@@ -32,7 +32,6 @@ export async function PATCH(
   }
 
   try {
-    // We use a transaction or nested writes
     const updatedPackage = await prisma.package.update({
       where: { id },
       data: {
@@ -45,10 +44,51 @@ export async function PATCH(
             type: "PICKED_UP",
             notes: `Entregado a: ${receiverName.trim()}`,
             createdById: token.id as string,
-          }
-        }
+          },
+        },
       },
     });
+
+    // Notify residents of the apartment that the package was picked up
+    const residents = await prisma.user.findMany({
+      where: { apartmentId: updatedPackage.apartmentId },
+      include: { pushSubscriptions: true },
+    });
+
+    if (residents.length > 0) {
+      const notificationMsg = `El paquete ${updatedPackage.trackingCode} fue retirado por ${receiverName.trim()}.`;
+
+      await prisma.notification.createMany({
+        data: residents.map((r) => ({
+          userId: r.id,
+          title: "Encomienda retirada",
+          message: notificationMsg,
+        })),
+      });
+
+      const webpush = (await import("@/lib/webpush")).default;
+      const pushPayload = JSON.stringify({
+        title: "Encomienda retirada",
+        body: notificationMsg,
+        url: "/dashboard/resident",
+      });
+
+      const pushPromises = residents.flatMap((resident) =>
+        resident.pushSubscriptions.map((sub) =>
+          webpush
+            .sendNotification(
+              { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
+              pushPayload
+            )
+            .catch((err: any) => {
+              if (err.statusCode === 404 || err.statusCode === 410) {
+                return prisma.pushSubscription.delete({ where: { id: sub.id } });
+              }
+            })
+        )
+      );
+      Promise.all(pushPromises);
+    }
 
     return NextResponse.json(updatedPackage);
   } catch (error) {

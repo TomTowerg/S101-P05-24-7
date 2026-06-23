@@ -466,16 +466,30 @@ export default function ResidentDashboard() {
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-1 border-t border-border-subtle">
-                      <p className="text-xs text-text-muted">
-                        {new Date(pkg.createdAt).toLocaleDateString()}{" "}
-                        {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                      </p>
+                    <div className="pt-1 border-t border-border-subtle space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{t("arrivedAt")}</p>
+                        <p className="text-xs text-text-muted">
+                          {new Date(pkg.createdAt).toLocaleDateString()}{" "}
+                          {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </p>
+                      </div>
+                      {pkg.status === "DELIVERED" && pkg.pickedUpAt && (
+                        <div className="flex items-center justify-between">
+                          <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">{t("pickedUpAt")}</p>
+                          <p className="text-xs font-semibold text-emerald-500">
+                            {new Date(pkg.pickedUpAt).toLocaleDateString()}{" "}
+                            {new Date(pkg.pickedUpAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                          </p>
+                        </div>
+                      )}
                       {pkg.isPerishable && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-                          <Flame className="w-3 h-3" aria-hidden="true" />
-                          {t("perishableBadge")}
-                        </span>
+                        <div className="flex justify-end">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                            <Flame className="w-3 h-3" aria-hidden="true" />
+                            {t("perishableBadge")}
+                          </span>
+                        </div>
                       )}
                     </div>
                     <button

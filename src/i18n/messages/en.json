@@ -242,7 +242,9 @@
     "resultCount": "Showing {count} result(s)",
     "packageDrawerTitle": "Package",
     "closeDrawerAriaLabel": "Close",
-    "perishableNote": "This package requires priority attention"
+    "perishableNote": "This package requires priority attention",
+    "arrivedAt": "Arrived on",
+    "pickedUpAt": "Picked up on"
   },
   "VerificationModal": {
     "title": "Verify Delivery",
@@ -250,7 +252,8 @@
     "location": "Location",
     "apt": "Apt",
     "tower": "Tower",
-    "receivedSince": "Received on",
+    "receivedSince": "Arrived on",
+    "pickedUpAtLabel": "Picked up on",
     "description": "Description",
     "alreadyDelivered": "Already delivered",
     "close": "Close",
@@ -324,7 +327,9 @@
     "notifySuccessDesc": "The concierge was notified.",
     "notifyMessageLabel": "Message to concierge",
     "notifyMessagePlaceholder": "Ex: I live on floor 6, apartment 601",
-    "notifySendButton": "Send notification"
+    "notifySendButton": "Send notification",
+    "arrivedAt": "Arrived on",
+    "pickedUpAt": "Picked up on"
   },
   "Index": {
     "title": "Delivery Management",

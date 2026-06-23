@@ -242,7 +242,9 @@
     "resultCount": "Mostrando {count} resultado(s)",
     "packageDrawerTitle": "Encomienda",
     "closeDrawerAriaLabel": "Cerrar",
-    "perishableNote": "Este paquete requiere atención prioritaria"
+    "perishableNote": "Este paquete requiere atención prioritaria",
+    "arrivedAt": "Llegó el",
+    "pickedUpAt": "Retirado el"
   },
   "VerificationModal": {
     "title": "Verificar Entrega",
@@ -250,7 +252,8 @@
     "location": "Ubicación",
     "apt": "Depto",
     "tower": "Torre",
-    "receivedSince": "Recibido el",
+    "receivedSince": "Llegó el",
+    "pickedUpAtLabel": "Retirado el",
     "description": "Descripción",
     "alreadyDelivered": "Ya ha sido entregado",
     "close": "Cerrar",
@@ -324,7 +327,9 @@
     "notifySuccessDesc": "El conserje fue notificado.",
     "notifyMessageLabel": "Mensaje al conserje",
     "notifyMessagePlaceholder": "Ej: Vivo en el piso 6, departamento 601",
-    "notifySendButton": "Enviar notificación"
+    "notifySendButton": "Enviar notificación",
+    "arrivedAt": "Llegó el",
+    "pickedUpAt": "Retirado el"
   },
   "Index": {
     "title": "Gestión de Encomiendas",

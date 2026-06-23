@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { User, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function Navbar() {
   const t        = useTranslations("Navbar");
@@ -131,9 +132,11 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* ── Derecha: Botón ingresar ── */}
-        <div className="w-36 flex items-center justify-end">
-          {status !== "authenticated" && (
+        {/* ── Derecha: campana o botón ingresar ── */}
+        <div className="w-36 flex items-center justify-end gap-2">
+          {status === "authenticated" ? (
+            <NotificationBell />
+          ) : (
             <Link
               href="/login"
               aria-label="Iniciar sesión"

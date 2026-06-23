@@ -24,6 +24,7 @@ interface PackageData {
   trackingCode: string;
   status: string;
   createdAt: string;
+  pickedUpAt: string | null;
   receiverName: string | null;
   isPerishable: boolean;
   apartment: {
@@ -438,14 +439,29 @@ export default function PackagesPage() {
                   </span>
                 </div>
 
-                {/* Date */}
+                {/* Arrival date + time */}
                 <div className="flex items-center justify-between py-4 border-b border-border-subtle">
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("date")}</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("arrivedAt")}</span>
                   <span className="text-sm font-medium text-text-primary">
                     {new Date(selectedPackage.createdAt).toLocaleDateString()}{" "}
-                    {new Date(selectedPackage.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    <span className="text-text-muted">
+                      {new Date(selectedPackage.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </span>
                   </span>
                 </div>
+
+                {/* Pickup date + time (only when DELIVERED) */}
+                {selectedPackage.status === "DELIVERED" && selectedPackage.pickedUpAt && (
+                  <div className="flex items-center justify-between py-4 border-b border-border-subtle">
+                    <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("pickedUpAt")}</span>
+                    <span className="text-sm font-medium text-emerald-500">
+                      {new Date(selectedPackage.pickedUpAt).toLocaleDateString()}{" "}
+                      <span className="font-semibold">
+                        {new Date(selectedPackage.pickedUpAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    </span>
+                  </div>
+                )}
 
                 {/* Perishable */}
                 {selectedPackage.isPerishable && (
