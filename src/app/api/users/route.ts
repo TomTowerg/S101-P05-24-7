@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { z } from "zod";
+
+const updateRoleSchema = z.object({
+  userId: z.string().min(1),
+  role: z.enum(["RESIDENTE", "CONSERJE"]),
+});
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -31,11 +37,11 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
-  const { userId, role } = await request.json();
-  
-  if (!userId || !role) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  const parsed = updateRoleSchema.safeParse(await request.json());
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
+  const { userId, role } = parsed.data;
 
   // Basic guard so they don't demote themselves accidentally
   if (userId === session.user.id) {

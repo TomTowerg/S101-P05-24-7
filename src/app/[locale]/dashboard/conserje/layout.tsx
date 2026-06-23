@@ -58,8 +58,8 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                 key={item.href}
                 href={item.href as any}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
-                  active 
-                    ? "bg-indigo-50 text-indigo-600" 
+                  active
+                    ? "bg-indigo-500/15 text-indigo-600"
                     : "text-text-muted hover:bg-bg-base hover:text-text-primary"
                 }`}
               >
@@ -72,7 +72,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
 
         <div className="p-4 border-t border-border-subtle">
           <div className="mb-4 px-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold border border-indigo-200">
+            <div className="w-10 h-10 rounded-full bg-indigo-500/15 flex items-center justify-center text-indigo-400 font-bold border border-indigo-500/25">
               {session?.user?.name?.charAt(0) || "C"}
             </div>
             <div className="overflow-hidden">
@@ -96,7 +96,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
       </main>
 
       {/* Mobile Navigation (Bottom bar) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-bg-surface border-t border-border-subtle flex justify-around p-2 z-50 transition-theme">
+      <nav aria-label="Navegación móvil" className="md:hidden fixed bottom-0 left-0 right-0 bg-bg-surface border-t border-border-subtle flex justify-around p-2 z-50 transition-theme">
          {navItems.map((item) => {
             const active = isActive(item.href);
             return (
@@ -107,12 +107,12 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                   active ? "text-indigo-600" : "text-text-muted"
                 }`}
               >
-                <item.icon className="w-5 h-5 mb-1" />
-                <span className="text-[9px] font-bold uppercase">{item.label}</span>
+                <item.icon className="w-5 h-5 mb-1" aria-hidden="true" />
+                <span className="text-[10px] font-bold uppercase">{item.label}</span>
               </Link>
             );
           })}
-      </div>
+      </nav>
     </div>
   );
 }

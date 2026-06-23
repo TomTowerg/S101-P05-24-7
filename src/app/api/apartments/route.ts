@@ -17,24 +17,34 @@ async function requireConcierge() {
   return session;
 }
 
-// GET /api/apartments — list all apartments with resident info
+// GET /api/apartments — list apartments
+// CONSERJE: full data including resident names and emails
+// RESIDENTE: apartment identifiers only (no PII)
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (session.user.role === "CONSERJE") {
+    const apartments = await prisma.apartment.findMany({
+      orderBy: [{ tower: "asc" }, { number: "asc" }],
+      include: {
+        residents: {
+          where: { role: "RESIDENTE", onboardingComplete: true },
+          select: { id: true, name: true, email: true },
+        },
+        _count: { select: { packages: true } },
+      },
+    });
+    return NextResponse.json(apartments);
+  }
+
+  // RESIDENTE: number and tower only — no resident PII
   const apartments = await prisma.apartment.findMany({
     orderBy: [{ tower: "asc" }, { number: "asc" }],
-    include: {
-      residents: {
-        where: { role: "RESIDENTE", onboardingComplete: true },
-        select: { id: true, name: true, email: true },
-      },
-      _count: { select: { packages: true } },
-    },
+    select: { id: true, number: true, tower: true, floor: true },
   });
-
   return NextResponse.json(apartments);
 }
 

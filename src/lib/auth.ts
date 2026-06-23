@@ -31,7 +31,6 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      allowDangerousEmailAccountLinking: true,
     }),
 
     // ── OTP: Email Magic Link ────────────────────────────────────────────────
@@ -75,10 +74,12 @@ export const authOptions: NextAuthOptions = {
 
         clearLoginRateLimit(email);
 
-        // Persist the role chosen on the login screen
-        await prisma.user.update({ where: { email }, data: { role } });
+        // Only set role on first login (when DB role is unset)
+        if (!user.role) {
+          await prisma.user.update({ where: { email }, data: { role } });
+        }
 
-        return { id: user.id, email: user.email!, name: user.name, role };
+        return { id: user.id, email: user.email!, name: user.name, role: user.role || role };
       },
     }),
   ],

@@ -47,9 +47,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No TOTP secret found" }, { status: 400 });
   }
 
-  console.log("TOTP verify attempt - secret from DB:", user.totpSecret?.substring(0, 10), "code:", code);
   const isValid = verifyTOTP(user.totpSecret, code);
-  console.log("TOTP verify result:", isValid);
   if (!isValid) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }

@@ -124,7 +124,7 @@ export default function ResidentDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-bg-base transition-theme">
         <div className="text-center">
-          <Loader2 className="h-10 w-10 animate-spin text-[#f59e0b] mx-auto mb-4" />
+          <Loader2 className="h-10 w-10 animate-spin text-amber-500 mx-auto mb-4" />
           <p className="text-text-primary/60 font-medium tracking-wide">{tCommon('loading')}</p>
         </div>
       </div>
@@ -139,10 +139,10 @@ export default function ResidentDashboard() {
   const alreadyPickedUp = packages.filter(p => p.status === 'DELIVERED').length;
 
   return (
-    <div className="min-h-screen bg-bg-base text-text-primary selection:bg-[#f59e0b] selection:text-[#09090b] pt-[68px] transition-theme">
+    <div className="min-h-screen bg-bg-base text-text-primary selection:bg-amber-500 selection:text-zinc-950 pt-[68px] transition-theme">
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none opacity-30">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#f59e0b] rounded-full blur-[120px] -mr-40 -mt-40 opacity-[0.03]" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500 rounded-full blur-[120px] -mr-40 -mt-40 opacity-[0.03]" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600 rounded-full blur-[120px] -ml-40 -mb-40 opacity-[0.03]" />
       </div>
 
@@ -188,7 +188,7 @@ export default function ResidentDashboard() {
                 <img
                   src={session.user.image}
                   alt="Profile"
-                  className="w-20 h-20 rounded-2xl border-2 border-[#f59e0b]/20 object-cover shadow-lg"
+                  className="w-20 h-20 rounded-2xl border-2 border-amber-500/20 object-cover shadow-lg"
                 />
               ) : (
                 <div className="w-20 h-20 rounded-2xl bg-indigo-600/10 border-2 border-indigo-600/20 flex items-center justify-center shadow-lg">
@@ -197,7 +197,7 @@ export default function ResidentDashboard() {
                   </span>
                 </div>
               )}
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#34A853] border-4 border-bg-surface rounded-full shadow-md" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-4 border-bg-surface rounded-full shadow-md" />
             </div>
             
             <div className="text-center sm:text-left space-y-1 flex-1">
@@ -215,14 +215,14 @@ export default function ResidentDashboard() {
                    <form onSubmit={handleUpdateApartment} className="flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-left-2">
                     <input 
                       autoFocus
-                      className="bg-bg-surface/30 border border-border-subtle rounded-lg px-2 py-1 text-xs text-text-primary focus:outline-none focus:border-[#f59e0b]/50 w-24"
+                      className="bg-bg-surface/30 border border-border-subtle rounded-lg px-2 py-1 text-xs text-text-primary focus:outline-none focus:border-amber-500/50 w-24"
                       placeholder={t('aptPlaceholder')}
                       value={aptNumber}
                       onChange={e => setAptNumber(e.target.value)}
                       required
                     />
                     <input 
-                      className="bg-bg-surface/30 border border-border-subtle rounded-lg px-2 py-1 text-xs text-text-primary focus:outline-none focus:border-[#f59e0b]/50 w-24"
+                      className="bg-bg-surface/30 border border-border-subtle rounded-lg px-2 py-1 text-xs text-text-primary focus:outline-none focus:border-amber-500/50 w-24"
                       placeholder={t('towerPlaceholderShort')}
                       value={tower}
                       onChange={e => setTower(e.target.value)}
@@ -236,7 +236,7 @@ export default function ResidentDashboard() {
                   </form>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 bg-[#f59e0b]/10 border border-[#f59e0b]/20 rounded-full text-[10px] font-bold text-[#f59e0b] uppercase tracking-widest">
+                    <span className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full text-[10px] font-bold text-amber-500 uppercase tracking-widest">
                       DEPTO: { currentApt ? `${currentApt.number}${currentApt.tower ? ` - ${currentApt.tower}` : ''}` : "--" }
                     </span>
                     <button 
@@ -257,12 +257,12 @@ export default function ResidentDashboard() {
 
           {/* Web Push Toggle Card */}
           <div className="lg:col-span-4 bg-bg-surface/40 backdrop-blur-xl rounded-2xl border border-border-subtle p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group transition-theme">
-            <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-[#f59e0b]/10 rounded-full blur-2xl group-hover:bg-[#f59e0b]/20 transition-all duration-500" />
+            <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all duration-500" />
             
             <div className="relative z-10 space-y-4">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${isSubscribed ? 'bg-green-500/10' : 'bg-[#f59e0b]/10'}`}>
-                  {isSubscribed ? <Bell className="w-4 h-4 text-green-400" /> : <BellOff className="w-4 h-4 text-[#f59e0b]" />}
+                <div className={`p-2 rounded-lg ${isSubscribed ? 'bg-green-500/10' : 'bg-amber-500/10'}`}>
+                  {isSubscribed ? <Bell className="w-4 h-4 text-green-400" /> : <BellOff className="w-4 h-4 text-amber-500" />}
                 </div>
                 <h3 className="font-bold text-text-primary text-sm tracking-wide uppercase">{t('pushTitle')}</h3>
               </div>
@@ -284,7 +284,7 @@ export default function ResidentDashboard() {
                   className={`w-full py-3 rounded-xl font-bold text-[10px] tracking-[0.2em] uppercase transition-all duration-300 flex items-center justify-center gap-2 border cursor-pointer ${
                     isSubscribed 
                       ? 'bg-transparent border-border-subtle text-text-primary/40 hover:text-text-primary hover:border-text-primary/20' 
-                      : 'bg-[#f59e0b] border-[#f59e0b] text-[#09090b] hover:bg-[#d97706]'
+                      : 'bg-amber-500 border-amber-500 text-zinc-950 hover:bg-amber-600'
                   } disabled:opacity-50`}
                 >
                   {isPushLoading ? (
@@ -349,7 +349,7 @@ export default function ResidentDashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-bg-surface/60 backdrop-blur-md rounded-2xl border border-border-subtle p-6 shadow-xl hover:border-[#f59e0b]/30 transition-all duration-300 group"
+                  className="bg-bg-surface/60 backdrop-blur-md rounded-2xl border border-border-subtle p-6 shadow-xl hover:border-amber-500/30 transition-all duration-300 group"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-indigo-500/10 rounded-xl">
@@ -358,14 +358,14 @@ export default function ResidentDashboard() {
                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border ${
                       pkg.status === 'DELIVERED' 
                         ? 'bg-green-500/10 text-green-400 border-green-500/20' 
-                        : 'bg-amber-500/10 text-amber-400 border-amber-500/20 animate-pulse'
+                        : 'bg-amber-500/10 text-amber-400 border-amber-500/20 motion-safe:animate-pulse'
                     }`}>
                       {pkg.status}
                     </span>
                   </div>
                   <div className="space-y-1">
                     <p className="text-text-primary/30 text-[9px] font-bold uppercase tracking-widest">Seguimiento</p>
-                    <h4 className="text-text-primary font-mono font-bold text-lg leading-tight group-hover:text-[#f59e0b] transition-colors">{pkg.trackingCode}</h4>
+                    <h4 className="text-text-primary font-mono font-bold text-lg leading-tight group-hover:text-amber-500 transition-colors">{pkg.trackingCode}</h4>
                   </div>
                   <div className="mt-6 pt-6 border-t border-border-subtle flex items-center justify-between">
                     <span className="text-text-primary/20 text-[10px] font-medium uppercase tracking-tighter">
@@ -461,7 +461,7 @@ export default function ResidentDashboard() {
                     <button
                       type="submit"
                       disabled={isSubmittingClaim || claimDesc.trim().length < 10}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-[#09090b] rounded-xl font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-50 cursor-pointer"
+                      className="flex items-center gap-2 px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-zinc-950 rounded-xl font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-50 cursor-pointer"
                     >
                       {isSubmittingClaim && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                       {t("submitClaim")}
@@ -527,7 +527,7 @@ export default function ResidentDashboard() {
         </div>
 
         {/* Features Info Bar */}
-        <div className="bg-gradient-to-r from-indigo-500/5 via-transparent to-[#f59e0b]/5 rounded-2xl border border-border-subtle p-8 shadow-inner transition-theme">
+        <div className="bg-gradient-to-r from-indigo-500/5 via-transparent to-amber-500/5 rounded-2xl border border-border-subtle p-8 shadow-inner transition-theme">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-1">
               <h4 className="text-lg font-bold text-text-primary italic">{t('comingSoonTitle')}</h4>
@@ -551,13 +551,13 @@ export default function ResidentDashboard() {
 function StatCard({ label, value, icon, color }: { label: string, value: string, icon: React.ReactNode, color: 'indigo' | 'amber' | 'green' }) {
   const colorMap = {
     indigo: 'text-indigo-400 bg-indigo-400/10 border-indigo-400/20',
-    amber: 'text-[#f59e0b] bg-[#f59e0b]/10 border-[#f59e0b]/20',
+    amber: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
     green: 'text-green-400 bg-green-400/10 border-green-400/20'
   };
 
   return (
     <div className="bg-bg-surface/40 backdrop-blur-md rounded-2xl border border-border-subtle p-6 shadow-xl hover:bg-bg-surface/60 transition-all duration-300 group">
-      <div className="flex items-center justify-between pointer-events-none">
+      <div className="flex items-center justify-between">
         <div className="space-y-1">
           <p className="text-text-primary/30 text-[10px] font-bold tracking-[0.2em] uppercase">{label}</p>
           <p className="text-3xl font-bold text-text-primary tracking-tight group-hover:scale-110 group-hover:origin-left transition-transform duration-500">{value}</p>

@@ -29,6 +29,17 @@ export async function GET(
       return NextResponse.json({ error: "Package not found" }, { status: 404 });
     }
 
+    // IDOR guard: residents can only access packages for their own apartment
+    if (token.role === "RESIDENTE") {
+      const user = await prisma.user.findUnique({
+        where: { id: token.id as string },
+        select: { apartmentId: true },
+      });
+      if (!user?.apartmentId || user.apartmentId !== pkg.apartmentId) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+    }
+
     return NextResponse.json(pkg);
   } catch (error) {
     console.error("Error fetching package:", error);

@@ -44,7 +44,7 @@ export async function POST(req: Request) {
          });
 
          // Max-Age in seconds
-         setCookieHeader = `loombox_trusted_device=${deviceToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`;
+         setCookieHeader = `loombox_trusted_device=${deviceToken}; Path=/; HttpOnly; SameSite=Strict; Secure; Max-Age=${30 * 24 * 60 * 60}`;
       }
 
       const response = NextResponse.json({ success: true });

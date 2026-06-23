@@ -30,15 +30,21 @@ export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (session?.user?.email) {
-    await prisma.user.update({
+    const dbUser = await prisma.user.findUnique({
       where: { email: session.user.email },
-      data: { role },
+      select: { role: true },
     });
+    // Only assign role on first OAuth login (when DB role is unset)
+    if (!dbUser?.role) {
+      await prisma.user.update({
+        where: { email: session.user.email },
+        data: { role },
+      });
+    }
   }
 
-  // Redirect to the intended destination.
-  // The JWT callback in authOptions will re-read the role from DB
-  // on the next request, so no sign-out/sign-in cycle is needed.
-  const redirectUrl = new URL(next, request.url);
+  // Validate next is a relative path to prevent open redirect
+  const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+  const redirectUrl = new URL(safeNext, request.url);
   return NextResponse.redirect(redirectUrl);
 }

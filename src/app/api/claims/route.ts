@@ -45,6 +45,16 @@ export async function POST(request: NextRequest) {
   if (packageId) {
     const pkg = await prisma.package.findUnique({ where: { id: packageId } });
     if (!pkg) return NextResponse.json({ error: "Package not found" }, { status: 404 });
+    // Residents can only file claims for packages in their own apartment
+    if (token.role === "RESIDENTE") {
+      const user = await prisma.user.findUnique({
+        where: { id: token.id as string },
+        select: { apartmentId: true },
+      });
+      if (!user?.apartmentId || user.apartmentId !== pkg.apartmentId) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+    }
   }
 
   const claim = await prisma.claim.create({
