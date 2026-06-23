@@ -134,9 +134,12 @@ export default function ResidentDashboard() {
         await updateSession();
         await fetchPackages();
         setIsEditingApt(false);
+      } else {
+        toast.error("Error al guardar el departamento. Intenta nuevamente.");
       }
     } catch (error) {
       console.error("Error updating apartment:", error);
+      toast.error("Error al guardar el departamento. Intenta nuevamente.");
     } finally {
       setIsSavingApt(false);
     }

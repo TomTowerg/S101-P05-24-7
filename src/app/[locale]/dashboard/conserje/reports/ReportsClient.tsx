@@ -8,7 +8,7 @@ import {
   AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell,
 } from "recharts";
-import { BarChart3, ArrowLeft, Package, Building } from "lucide-react";
+import { BarChart3, ArrowLeft, Package, Building, AlertCircle } from "lucide-react";
 import StatCard from "@/components/ui/StatCard";
 import { SkeletonCard } from "@/components/ui/Skeleton";
 
@@ -21,21 +21,28 @@ export default function ReportsClient() {
 
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchReports = async () => {
+    setIsLoading(true);
+    setError(false);
+    try {
+      const res = await fetch("/api/reports");
+      if (!res.ok) {
+        setError(true);
+      } else {
+        const json = await res.json();
+        setData(json);
+      }
+    } catch (e) {
+      console.error(e);
+      setError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const res = await fetch("/api/reports");
-        if (res.ok) {
-          const json = await res.json();
-          setData(json);
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchReports();
   }, []);
 
@@ -48,8 +55,8 @@ export default function ReportsClient() {
         transition={{ duration: 0.5, ease }}
         className="bg-bg-surface border-b border-border-subtle transition-theme"
       >
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center flex-wrap gap-3">
+          <div className="flex items-center gap-4 flex-1 min-w-0">
             <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-950/20 glow-indigo-sm">
               <BarChart3 className="w-6 h-6 text-white" aria-hidden="true" />
             </div>
@@ -69,6 +76,25 @@ export default function ReportsClient() {
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-6 py-10 space-y-8">
+        {/* Error state */}
+        {!isLoading && error && (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+              <AlertCircle className="w-7 h-7 text-red-400" />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-bold text-text-primary">Error al cargar los reportes</p>
+              <p className="text-xs text-text-muted mt-1">No se pudo conectar con el servidor</p>
+            </div>
+            <button
+              onClick={() => { setError(false); fetchReports(); }}
+              className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors cursor-pointer"
+            >
+              Reintentar
+            </button>
+          </div>
+        )}
+
         {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}

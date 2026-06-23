@@ -84,10 +84,12 @@ export default function OnboardingClient({
         const dest = role === "CONSERJE" ? "/es/dashboard/conserje" : "/es/dashboard/resident";
         window.location.href = dest;
       } else {
+        toast.error("Error al completar el registro. Intenta nuevamente.");
         hasSubmitted.current = false;
       }
     } catch (e) {
       console.error(e);
+      toast.error("Error al completar el registro. Intenta nuevamente.");
       hasSubmitted.current = false;
     } finally {
       setIsLoading(false);

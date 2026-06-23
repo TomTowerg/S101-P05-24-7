@@ -127,8 +127,8 @@ export default function ClaimsClient() {
         transition={{ duration: 0.5, ease }}
         className="bg-bg-surface border-b border-border-subtle transition-theme"
       >
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center flex-wrap gap-3">
+          <div className="flex items-center gap-4 flex-1 min-w-0">
             <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-950/20 glow-indigo-sm">
               <AlertCircle className="w-6 h-6 text-white" aria-hidden="true" />
             </div>

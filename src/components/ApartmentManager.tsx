@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Building2, Plus, Trash2, User, Package, Loader2, X, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 import EmptyState from "@/components/EmptyState";
 
 interface ApartmentResident {
@@ -32,6 +33,7 @@ export default function ApartmentManager() {
   const [formError, setFormError]   = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const fetchApartments = useCallback(async () => {
     setLoading(true);
@@ -84,7 +86,7 @@ export default function ApartmentManager() {
     try {
       const res = await fetch(`/api/apartments/${id}`, { method: "DELETE" });
       if (res.status === 409) {
-        alert(t("errorInUse"));
+        toast.error(t("errorInUse"));
         return;
       }
       if (res.ok) {
@@ -234,16 +236,35 @@ export default function ApartmentManager() {
  
                     {/* Delete */}
                     <td className="px-8 py-4 text-right">
-                      <button
-                        onClick={() => handleDelete(apt.id)}
-                        disabled={inUse || deletingId === apt.id}
-                        title={inUse ? t("errorInUse") : t("deleteButton")}
-                        className="p-1.5 rounded-lg text-text-muted/40 hover:text-red-500 hover:bg-red-500/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-                      >
-                        {deletingId === apt.id
-                          ? <Loader2 className="w-4 h-4 animate-spin" />
-                          : <Trash2 className="w-4 h-4" />}
-                      </button>
+                      {confirmDeleteId === apt.id ? (
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="text-[10px] text-text-muted font-medium">¿Confirmar?</span>
+                          <button
+                            onClick={() => { handleDelete(apt.id); setConfirmDeleteId(null); }}
+                            disabled={deletingId === apt.id}
+                            className="px-2 py-1 rounded-lg bg-red-500/15 text-red-400 text-[10px] font-bold hover:bg-red-500/25 transition-colors cursor-pointer disabled:opacity-50"
+                          >
+                            {deletingId === apt.id ? <Loader2 className="w-3 h-3 animate-spin" /> : "Sí"}
+                          </button>
+                          <button
+                            onClick={() => setConfirmDeleteId(null)}
+                            className="px-2 py-1 rounded-lg bg-bg-base text-text-muted text-[10px] font-bold hover:bg-bg-surface-2 transition-colors cursor-pointer"
+                          >
+                            No
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => !inUse && setConfirmDeleteId(apt.id)}
+                          disabled={inUse || deletingId === apt.id}
+                          title={inUse ? t("errorInUse") : t("deleteButton")}
+                          className="p-1.5 rounded-lg text-text-muted/40 hover:text-red-500 hover:bg-red-500/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          {deletingId === apt.id
+                            ? <Loader2 className="w-4 h-4 animate-spin" />
+                            : <Trash2 className="w-4 h-4" />}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 );
