@@ -17,6 +17,15 @@ export function usePushSubscription() {
     }
   }, []);
 
+  // Auto-subscribe once service worker is ready and permission allows
+  useEffect(() => {
+    if (!isSupported || isLoading || subscription) return;
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+    if (Notification.permission === 'denied') return;
+    subscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSupported, isLoading]);
+
   const registerServiceWorker = async () => {
     try {
       const registration = await navigator.serviceWorker.register('/sw.js');

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
+import { usePushSubscription } from "@/hooks/usePushSubscription";
 import PackageRegistrationForm from "@/components/PackageRegistrationForm";
 import PackageVerificationModal from "@/components/PackageVerificationModal";
 import ApartmentManager from "@/components/ApartmentManager";
@@ -22,6 +23,7 @@ interface PackageData {
   status: string;
   createdAt: string;
   receiverName: string | null;
+  isPerishable: boolean;
   apartment: {
     number: string;
     tower: string | null;
@@ -34,6 +36,8 @@ export default function ConciergeDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   
+  usePushSubscription(); // auto-requests permission and subscribes silently
+
   const [packages, setPackages] = useState<PackageData[]>([]);
   const [isLoadingPackages, setIsLoadingPackages] = useState(true);
   const [isScanning, setIsScanning] = useState(false);
@@ -188,7 +192,14 @@ export default function ConciergeDashboard() {
                         transition={{ delay: index * 0.05 }}
                         className="hover:bg-bg-base/50 transition-colors"
                       >
-                        <td className="px-8 py-4 font-mono text-xs font-bold text-indigo-500">{pkg.trackingCode}</td>
+                        <td className="px-8 py-4">
+                          <span className="font-mono text-xs font-bold text-indigo-500">{pkg.trackingCode}</span>
+                          {pkg.isPerishable && (
+                            <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                              🔥 {t("perishable")}
+                            </span>
+                          )}
+                        </td>
                         <td className="px-8 py-4">
                           <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
                             {pkg.apartment.number} {pkg.apartment.tower ? `· ${pkg.apartment.tower}` : ''}
