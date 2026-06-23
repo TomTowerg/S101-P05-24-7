@@ -5,10 +5,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  AlertCircle, ArrowLeft, Plus, X, Loader2,
-  Package, Clock, CheckCircle2, ChevronDown,
+  AlertCircle, ArrowLeft, Loader2,
+  Package, Clock, CheckCircle2,
 } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 
@@ -26,11 +26,6 @@ interface Claim {
   package: { trackingCode: string; apartment: { number: string; tower: string | null } } | null;
 }
 
-interface RecentPackage {
-  id: string;
-  trackingCode: string;
-  apartment: { number: string; tower: string | null };
-}
 
 const STATUS_STYLES: Record<ClaimStatus, string> = {
   OPEN:        "bg-red-500/15 text-red-400 border-red-500/30",
@@ -59,15 +54,7 @@ export default function ClaimsClient() {
 
   const [claims, setClaims] = useState<Claim[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [packages, setPackages] = useState<RecentPackage[]>([]);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-
-  // Form state
-  const [formType, setFormType] = useState<ClaimType>("OTHER");
-  const [formDesc, setFormDesc] = useState("");
-  const [formPackageId, setFormPackageId] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchClaims = useCallback(async () => {
     setIsLoading(true);
@@ -79,42 +66,9 @@ export default function ClaimsClient() {
     }
   }, []);
 
-  const fetchPackages = useCallback(async () => {
-    const res = await fetch("/api/packages");
-    if (res.ok) setPackages(await res.json());
-  }, []);
-
   useEffect(() => {
     fetchClaims();
-    fetchPackages();
-  }, [fetchClaims, fetchPackages]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const res = await fetch("/api/claims", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ description: formDesc, type: formType, packageId: formPackageId || undefined }),
-      });
-      if (res.ok) {
-        const newClaim = await res.json();
-        setClaims(prev => [newClaim, ...prev]);
-        toast.success(t("claimCreated"));
-        setShowForm(false);
-        setFormDesc("");
-        setFormType("OTHER");
-        setFormPackageId("");
-      } else {
-        toast.error(t("errorCreate"));
-      }
-    } catch {
-      toast.error(t("errorCreate"));
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  }, [fetchClaims]);
 
   const handleStatusUpdate = async (claimId: string, status: ClaimStatus) => {
     setUpdatingId(claimId);
@@ -167,13 +121,6 @@ export default function ClaimsClient() {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setShowForm(v => !v)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors cursor-pointer"
-            >
-              {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-              {t("newClaim")}
-            </button>
-            <button
               onClick={() => router.push("/dashboard/conserje")}
               className="px-5 py-2.5 bg-bg-base border border-border-subtle hover:bg-bg-surface text-text-primary rounded-xl font-bold transition-all text-sm flex items-center gap-2 cursor-pointer"
             >
@@ -185,91 +132,6 @@ export default function ClaimsClient() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 space-y-6">
-        {/* New Claim Form */}
-        <AnimatePresence>
-          {showForm && (
-            <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              className="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-sm"
-            >
-              <h2 className="font-bold text-text-primary mb-5 text-lg">{t("newClaim")}</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Type */}
-                <div>
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest block mb-1.5">{t("type")}</label>
-                  <div className="relative">
-                    <select
-                      value={formType}
-                      onChange={e => setFormType(e.target.value as ClaimType)}
-                      className="w-full appearance-none bg-bg-base border border-border-subtle text-text-primary rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
-                    >
-                      <option value="WRONG_PACKAGE">{t("typeWrongPackage")}</option>
-                      <option value="DAMAGED">{t("typeDamaged")}</option>
-                      <option value="MISSING">{t("typeMissing")}</option>
-                      <option value="OTHER">{t("typeOther")}</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* Package (optional) */}
-                <div>
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest block mb-1.5">{t("package")}</label>
-                  <div className="relative">
-                    <select
-                      value={formPackageId}
-                      onChange={e => setFormPackageId(e.target.value)}
-                      className="w-full appearance-none bg-bg-base border border-border-subtle text-text-primary rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
-                    >
-                      <option value="">— {t("package")} —</option>
-                      {packages.map(pkg => (
-                        <option key={pkg.id} value={pkg.id}>
-                          {pkg.trackingCode} · Depto {pkg.apartment.number}{pkg.apartment.tower ? ` ${pkg.apartment.tower}` : ""}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div>
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest block mb-1.5">{t("description")}</label>
-                  <textarea
-                    value={formDesc}
-                    onChange={e => setFormDesc(e.target.value)}
-                    required
-                    minLength={10}
-                    rows={3}
-                    placeholder="Describe el problema con detalle..."
-                    className="w-full bg-bg-base border border-border-subtle text-text-primary rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-                  />
-                </div>
-
-                <div className="flex gap-3 justify-end pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowForm(false)}
-                    className="px-5 py-2.5 bg-bg-base border border-border-subtle text-text-muted hover:text-text-primary rounded-xl font-bold text-sm transition-colors cursor-pointer"
-                  >
-                    {tCommon("back")}
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || formDesc.trim().length < 10}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors disabled:opacity-50 cursor-pointer"
-                  >
-                    {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                    {t("submit")}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Claims List */}
         {isLoading ? (
           <div className="flex justify-center py-20">
