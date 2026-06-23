@@ -31,7 +31,18 @@
     "role": "Role",
     "apartment": "Apartment",
     "tower": "Tower",
-    "onboardingComplete": "Welcome! Your profile has been configured."
+    "onboardingComplete": "Welcome! Your profile has been configured.",
+    "findAptLink": "Can't find your apartment? Notify the concierge",
+    "notifySuccessTitle": "Message sent",
+    "notifySuccessDesc": "The concierge will receive a notification with your request.",
+    "notifyCloseButton": "Close",
+    "notifyModalTitle": "Notify the concierge",
+    "notifyModalDesc": "The concierge will receive a push notification with your message.",
+    "notifyNameLabel": "Name",
+    "notifyEmailLabel": "Email",
+    "notifyMessageLabel": "Message",
+    "notifyMessagePlaceholder": "Ex: I live on floor 6, apartment 601",
+    "notifySendButton": "Send notification"
   },
   "Home": {
     "eyebrow": "Parcel Management · Residential Buildings",
@@ -157,7 +168,15 @@
     "loading": "Loading...",
     "redirecting": "Redirecting to your dashboard...",
     "scan": "Scan QR",
-    "back": "Back"
+    "back": "Back",
+    "statusPending": "Pending",
+    "statusNotified": "Notified",
+    "statusDelivered": "Delivered",
+    "statusResolved": "Resolved",
+    "qrModalTitle": "Package QR",
+    "qrDownload": "Download QR",
+    "qrClose": "Close",
+    "viewQR": "View QR"
   },
   "Concierge": {
     "title": "Concierge Dashboard",
@@ -198,7 +217,32 @@
     "typePerishable": "Requires Cold",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "perishable": "Requires Cold"
+    "perishable": "Requires Cold",
+    "navResumen": "Overview",
+    "navPaquetes": "Packages",
+    "navReportes": "Reports",
+    "navReclamos": "Claims",
+    "notificationsLabel": "Notifications",
+    "markAllRead": "Mark all as read",
+    "markAsRead": "Mark as read",
+    "noNotifications": "No notifications",
+    "alertsLabel": "Alerts",
+    "timeNow": "just now",
+    "timeMinutesAgo": "{count} min ago",
+    "timeHoursAgo": "{count} h ago",
+    "timeYesterdayAt": "yesterday at {time}",
+    "conciergeRoleBadge": "Concierge",
+    "viewAll": "View all",
+    "aptManagementTitle": "Apartment Management",
+    "quickNavPackagesDesc": "Filters, search and full management",
+    "quickNavReportsDesc": "Statistics and trends",
+    "quickNavClaimsDesc": "Manage resident cases",
+    "pendingBadge": "{count} pending",
+    "searching": "Searching...",
+    "resultCount": "Showing {count} result(s)",
+    "packageDrawerTitle": "Package",
+    "closeDrawerAriaLabel": "Close",
+    "perishableNote": "This package requires priority attention"
   },
   "VerificationModal": {
     "title": "Verify Delivery",
@@ -265,7 +309,22 @@
     "typeOther": "Other",
     "statusOpen": "Open",
     "statusInProgress": "In progress",
-    "statusResolved": "Resolved"
+    "statusResolved": "Resolved",
+    "profileTitle": "My Profile",
+    "loadingApts": "Loading...",
+    "selectAptPlaceholder": "Select...",
+    "findAptLink": "Can't find your unit?",
+    "noAptTitle": "No apartment assigned yet",
+    "noAptDesc": "Select your apartment in your profile to see your packages.",
+    "noAptButton": "Assign apartment",
+    "perishableBadge": "Food / Cold",
+    "claimDescPlaceholder": "Describe the issue...",
+    "notifyModalTitle": "Notify concierge",
+    "notifySuccessTitle": "Message sent",
+    "notifySuccessDesc": "The concierge was notified.",
+    "notifyMessageLabel": "Message to concierge",
+    "notifyMessagePlaceholder": "Ex: I live on floor 6, apartment 601",
+    "notifySendButton": "Send notification"
   },
   "Index": {
     "title": "Delivery Management",
@@ -298,7 +357,9 @@
     "qrSubtitle": "Scan or print this code for pickup",
     "printQR": "Print Label",
     "downloadQR": "Download QR",
-    "close": "Close"
+    "close": "Close",
+    "loadingApartments": "Loading apartments...",
+    "closeErrorButton": "Close"
   },
   "Scanner": {
     "title": "Scan QR Code",
@@ -340,7 +401,10 @@
     "colPackages": "Packages",
     "deleteButton": "Delete",
     "noResident": "No resident",
-    "empty": "No apartments registered yet. Add the first one."
+    "empty": "No apartments registered yet. Add the first one.",
+    "confirmDelete": "Confirm?",
+    "confirmYes": "Yes",
+    "confirmNo": "No"
   },
   "Profile": {
     "title": "My Profile",
@@ -402,7 +466,18 @@
     "claimCreated": "Claim submitted successfully",
     "errorCreate": "Failed to submit claim. Please try again.",
     "statusUpdated": "Status updated successfully",
-    "errorUpdate": "Failed to update status. Please try again."
+    "errorUpdate": "Failed to update status. Please try again.",
+    "filterStatusLabel": "Status",
+    "filterStatusAll": "All statuses",
+    "filterTypeLabel": "Type",
+    "filterTypeAll": "All types",
+    "clearFilters": "Clear",
+    "resultCount": "Showing {count} claim(s)",
+    "resultCountFiltered": " (filtered)",
+    "loadingAriaLabel": "Loading",
+    "noResultsTitle": "No results",
+    "noResultsDesc": "Try adjusting the filters",
+    "deptPrefix": "Apt"
   },
   "Reports": {
     "title": "Reports & Analytics",
@@ -410,7 +485,11 @@
     "packagesLast7Days": "Packages Over Last 7 Days",
     "statusDistribution": "Current Status Distribution",
     "totalProcessed": "Total Processed",
-    "mostActiveTower": "Most Active Tower"
+    "mostActiveTower": "Most Active Tower",
+    "reportErrorTitle": "Error loading reports",
+    "reportErrorDesc": "Could not connect to the server",
+    "reportRetryButton": "Retry",
+    "chartTotal": "Total"
   },
   "otp": {
     "title": "Two-step verification",

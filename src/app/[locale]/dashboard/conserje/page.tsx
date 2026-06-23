@@ -15,6 +15,7 @@ import EmptyState from "@/components/EmptyState";
 import { SkeletonCard } from "@/components/ui/Skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Package, Clock, CheckCircle2, History, User, Flame, QrCode, BarChart2, AlertCircle, ArrowRight, Building2 } from "lucide-react";
+import QRModal from "@/components/QRModal";
 import StatCard from "@/components/ui/StatCard";
 
 const QRScanner = dynamic(() => import("@/components/QRScanner"), { ssr: false });
@@ -45,6 +46,7 @@ export default function ConciergeDashboard() {
   const [isScanning, setIsScanning] = useState(false);
   const [scannedId, setScannedId] = useState<string | null>(null);
   const [showVerification, setShowVerification] = useState(false);
+  const [qrModal, setQrModal] = useState<{ packageId: string; trackingCode: string } | null>(null);
 
   const fetchPackages = useCallback(async () => {
     try {
@@ -129,17 +131,17 @@ export default function ConciergeDashboard() {
             <div className="flex-1 space-y-2">
               <div>
                 <h1 className="text-xl font-bold text-text-primary tracking-tight">
-                  {t("welcome")}, {session?.user?.name?.split(" ")[0] || "Conserje"}
+                  {t("welcome")}, {session?.user?.name?.split(" ")[0] || t("conciergeRoleBadge")}
                 </h1>
                 <p className="text-sm text-text-muted mt-0.5">{session?.user?.email}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="px-2.5 py-1 rounded-md bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 text-[10px] font-bold uppercase tracking-wider">
-                  CONSERJE
+                  {t("conciergeRoleBadge").toUpperCase()}
                 </span>
                 {!isLoadingPackages && pendingDelivery > 0 && (
                   <span className="px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold">
-                    {pendingDelivery} pendiente{pendingDelivery !== 1 ? "s" : ""}
+                    {t("pendingBadge", { count: pendingDelivery })}
                   </span>
                 )}
               </div>
@@ -190,22 +192,22 @@ export default function ConciergeDashboard() {
               href: "/dashboard/conserje/packages",
               icon: <Package className="w-5 h-5 text-indigo-400" />,
               bg: "bg-indigo-500/10 border-indigo-500/20",
-              label: "Paquetes",
-              desc: "Filtros, búsqueda y gestión completa",
+              label: t("navPaquetes"),
+              desc: t("quickNavPackagesDesc"),
             },
             {
               href: "/dashboard/conserje/reports",
               icon: <BarChart2 className="w-5 h-5 text-emerald-400" />,
               bg: "bg-emerald-500/10 border-emerald-500/20",
-              label: "Reportes",
-              desc: "Estadísticas y tendencias",
+              label: t("navReportes"),
+              desc: t("quickNavReportsDesc"),
             },
             {
               href: "/dashboard/conserje/claims",
               icon: <AlertCircle className="w-5 h-5 text-amber-400" />,
               bg: "bg-amber-500/10 border-amber-500/20",
-              label: "Reclamos",
-              desc: "Gestionar casos de residentes",
+              label: t("navReclamos"),
+              desc: t("quickNavClaimsDesc"),
             },
           ].map((item) => (
             <Link
@@ -248,7 +250,7 @@ export default function ConciergeDashboard() {
                 href="/dashboard/conserje/packages"
                 className="flex items-center gap-1 text-xs text-text-muted hover:text-indigo-400 transition-colors font-medium"
               >
-                Ver todos
+                {t("viewAll")}
                 <ArrowRight className="w-3 h-3" aria-hidden="true" />
               </Link>
             </div>
@@ -262,6 +264,7 @@ export default function ConciergeDashboard() {
                     <th className="px-6 py-3.5 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("status")}</th>
                     <th className="px-6 py-3.5 text-[10px] font-bold text-text-muted uppercase tracking-widest hidden md:table-cell">{t("receivedBy")}</th>
                     <th className="px-6 py-3.5 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("date")}</th>
+                    <th className="px-6 py-3.5 w-10" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle">
@@ -273,6 +276,7 @@ export default function ConciergeDashboard() {
                         <td className="px-6 py-4"><div className="h-5 w-20 animate-shimmer rounded-full" /></td>
                         <td className="px-6 py-4 hidden md:table-cell"><div className="h-4 w-24 animate-shimmer rounded-md" /></td>
                         <td className="px-6 py-4"><div className="h-4 w-20 animate-shimmer rounded-md" /></td>
+                        <td className="px-6 py-4" />
                       </tr>
                     ))
                   ) : packages.length === 0 ? (
@@ -321,6 +325,15 @@ export default function ConciergeDashboard() {
                           {new Date(pkg.createdAt).toLocaleDateString()}{" "}
                           {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => setQrModal({ packageId: pkg.id, trackingCode: pkg.trackingCode })}
+                            className="p-1.5 rounded-lg text-text-muted/40 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
+                            aria-label="Ver QR"
+                          >
+                            <QrCode className="w-4 h-4" aria-hidden="true" />
+                          </button>
+                        </td>
                       </motion.tr>
                     ))
                   )}
@@ -344,7 +357,7 @@ export default function ConciergeDashboard() {
         >
           <div className="px-6 py-5 border-b border-border-subtle flex items-center gap-3 bg-bg-base/30">
             <Building2 className="w-5 h-5 text-text-muted/60" aria-hidden="true" />
-            <h2 className="font-bold text-text-primary">Gestión de Apartamentos</h2>
+            <h2 className="font-bold text-text-primary">{t("aptManagementTitle")}</h2>
           </div>
           <div className="p-6">
             <ApartmentManager />
@@ -381,6 +394,15 @@ export default function ConciergeDashboard() {
           onDeliverySuccess={() => {
             fetchPackages();
           }}
+        />
+      )}
+
+      {qrModal && (
+        <QRModal
+          packageId={qrModal.packageId}
+          trackingCode={qrModal.trackingCode}
+          open={true}
+          onClose={() => setQrModal(null)}
         />
       )}
     </div>

@@ -24,21 +24,21 @@ type NotificationItem = {
   createdAt: string;
 };
 
-function formatRelativeTime(dateStr: string): string {
+function formatRelativeTime(dateStr: string, t: (key: string, values?: Record<string, string | number | Date>) => string): string {
   const date = new Date(dateStr);
   const diffMs = Date.now() - date.getTime();
   const diffMin = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMin < 1) return "ahora";
-  if (diffMin < 60) return `hace ${diffMin} ${diffMin === 1 ? "minuto" : "minutos"}`;
-  if (diffHours < 24) return `hace ${diffHours} ${diffHours === 1 ? "hora" : "horas"}`;
+  if (diffMin < 1) return t("timeNow");
+  if (diffMin < 60) return t("timeMinutesAgo", { count: diffMin });
+  if (diffHours < 24) return t("timeHoursAgo", { count: diffHours });
   if (diffDays === 1) {
     const timeStr = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    return `ayer a las ${timeStr}`;
+    return t("timeYesterdayAt", { time: timeStr });
   }
-  return date.toLocaleDateString("es-CL", { day: "numeric", month: "short" });
+  return date.toLocaleDateString(undefined, { day: "numeric", month: "short" });
 }
 
 export default function ConciergeLayout({ children }: { children: ReactNode }) {
@@ -80,10 +80,10 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
   };
 
   const navItems = [
-    { href: "/dashboard/conserje", icon: LayoutDashboard, label: "Resumen" },
-    { href: "/dashboard/conserje/packages", icon: PackageSearch, label: "Paquetes" },
-    { href: "/dashboard/conserje/reports", icon: BarChart3, label: "Reportes" },
-    { href: "/dashboard/conserje/claims", icon: AlertCircle, label: "Reclamos" }
+    { href: "/dashboard/conserje", icon: LayoutDashboard, label: t("navResumen") },
+    { href: "/dashboard/conserje/packages", icon: PackageSearch, label: t("navPaquetes") },
+    { href: "/dashboard/conserje/reports", icon: BarChart3, label: t("navReportes") },
+    { href: "/dashboard/conserje/claims", icon: AlertCircle, label: t("navReclamos") }
   ];
 
   const isActive = (path: string) => {
@@ -105,7 +105,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
             </div>
             <div>
               <h2 className="font-bold text-text-primary text-lg leading-none tracking-tight">Loombox</h2>
-              <span className="text-[10px] uppercase tracking-widest font-bold text-indigo-600">Conserje</span>
+              <span className="text-[10px] uppercase tracking-widest font-bold text-indigo-600">{t("conciergeRoleBadge")}</span>
             </div>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
               {session?.user?.name?.charAt(0) || "C"}
             </div>
             <div className="overflow-hidden">
-              <p className="text-sm font-bold text-text-primary truncate">{session?.user?.name || "Conserje"}</p>
+              <p className="text-sm font-bold text-text-primary truncate">{session?.user?.name || t("conciergeRoleBadge")}</p>
               <p className="text-[10px] text-text-muted truncate">{session?.user?.email}</p>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
             <button
               onClick={() => setShowNotifications((v) => !v)}
               className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-semibold text-sm text-text-muted hover:bg-bg-base hover:text-text-primary transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
-              aria-label="Notificaciones"
+              aria-label={t("notificationsLabel")}
             >
               <div className="relative">
                 <Bell className="w-4 h-4" aria-hidden="true" />
@@ -156,7 +156,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                   </span>
                 )}
               </div>
-              Notificaciones
+              {t("notificationsLabel")}
               {unreadCount > 0 && (
                 <span className="ml-auto px-1.5 py-0.5 rounded-full bg-red-500/15 text-red-400 text-[10px] font-bold">
                   {unreadCount > 99 ? "99+" : unreadCount}
@@ -187,13 +187,13 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                   >
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle bg-bg-base/50 shrink-0">
-                      <span className="text-sm font-bold text-text-primary">Notificaciones</span>
+                      <span className="text-sm font-bold text-text-primary">{t("notificationsLabel")}</span>
                       {unreadCount > 0 && (
                         <button
                           onClick={markAllRead}
                           className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
                         >
-                          Marcar todas como leídas
+                          {t("markAllRead")}
                         </button>
                       )}
                     </div>
@@ -205,7 +205,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                           <div className="w-12 h-12 rounded-2xl bg-bg-base flex items-center justify-center border border-border-subtle">
                             <Bell className="w-5 h-5 text-text-muted/30" aria-hidden="true" />
                           </div>
-                          <p className="text-xs font-medium text-text-muted">Sin notificaciones</p>
+                          <p className="text-xs font-medium text-text-muted">{t("noNotifications")}</p>
                         </div>
                       ) : (
                         notifications.map((n) => (
@@ -226,12 +226,12 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                                     onClick={() => markRead(n.id)}
                                     className="shrink-0 px-2 py-0.5 rounded-md bg-indigo-500/15 text-indigo-400 text-[10px] font-bold hover:bg-indigo-500/25 transition-colors cursor-pointer whitespace-nowrap"
                                   >
-                                    Marcar leída
+                                    {t("markAsRead")}
                                   </button>
                                 )}
                               </div>
                               <p className="text-[11px] text-text-muted mt-1 leading-relaxed break-words">{n.message}</p>
-                              <p className="text-[10px] text-text-muted/50 mt-1.5 font-medium">{formatRelativeTime(n.createdAt)}</p>
+                              <p className="text-[10px] text-text-muted/50 mt-1.5 font-medium">{formatRelativeTime(n.createdAt, t)}</p>
                             </div>
                           </div>
                         ))
@@ -280,7 +280,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
             className={`flex flex-col items-center p-2 rounded-lg relative ${
               unreadCount > 0 ? "text-red-400" : "text-text-muted"
             } cursor-pointer`}
-            aria-label="Notificaciones"
+            aria-label={t("notificationsLabel")}
           >
             <div className="relative">
               <Bell className="w-5 h-5 mb-1" />
@@ -290,7 +290,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
                 </span>
               )}
             </div>
-            <span className="text-[10px] font-bold uppercase">Avisos</span>
+            <span className="text-[10px] font-bold uppercase">{t("alertsLabel")}</span>
           </button>
       </nav>
     </div>

@@ -238,19 +238,19 @@ export default function ApartmentManager() {
                     <td className="px-8 py-4 text-right">
                       {confirmDeleteId === apt.id ? (
                         <div className="flex items-center justify-end gap-2">
-                          <span className="text-[10px] text-text-muted font-medium">¿Confirmar?</span>
+                          <span className="text-[10px] text-text-muted font-medium">{t("confirmDelete")}</span>
                           <button
                             onClick={() => { handleDelete(apt.id); setConfirmDeleteId(null); }}
                             disabled={deletingId === apt.id}
                             className="px-2 py-1 rounded-lg bg-red-500/15 text-red-400 text-[10px] font-bold hover:bg-red-500/25 transition-colors cursor-pointer disabled:opacity-50"
                           >
-                            {deletingId === apt.id ? <Loader2 className="w-3 h-3 animate-spin" /> : "Sí"}
+                            {deletingId === apt.id ? <Loader2 className="w-3 h-3 animate-spin" /> : t("confirmYes")}
                           </button>
                           <button
                             onClick={() => setConfirmDeleteId(null)}
                             className="px-2 py-1 rounded-lg bg-bg-base text-text-muted text-[10px] font-bold hover:bg-bg-surface-2 transition-colors cursor-pointer"
                           >
-                            No
+                            {t("confirmNo")}
                           </button>
                         </div>
                       ) : (

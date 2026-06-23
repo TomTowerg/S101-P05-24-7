@@ -9,8 +9,9 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import { SkeletonTable } from "@/components/ui/Skeleton";
 import EmptyState from "@/components/EmptyState";
 import {
-  Loader2, Search, Filter, X, Package, Flame, ChevronRight,
+  Loader2, Search, Filter, X, Package, Flame, ChevronRight, QrCode,
 } from "lucide-react";
+import QRModal from "@/components/QRModal";
 
 interface Apartment {
   id: string;
@@ -42,6 +43,7 @@ export default function PackagesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(null);
+  const [qrModal, setQrModal] = useState<{ packageId: string; trackingCode: string } | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -256,10 +258,10 @@ export default function PackagesPage() {
           {isSearching ? (
             <span className="flex items-center gap-2">
               <Loader2 className="w-3 h-3 animate-spin" />
-              Buscando...
+              {t("searching")}
             </span>
           ) : (
-            `Mostrando ${packages.length} resultado${packages.length !== 1 ? "s" : ""}`
+            t("resultCount", { count: packages.length })
           )}
         </motion.p>
       )}
@@ -337,7 +339,16 @@ export default function PackagesPage() {
                       {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </td>
                     <td className="px-6 py-4">
-                      <ChevronRight className="w-4 h-4 text-text-muted/40 group-hover:text-indigo-400 transition-colors" aria-hidden="true" />
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setQrModal({ packageId: pkg.id, trackingCode: pkg.trackingCode }); }}
+                          className="p-1.5 rounded-lg text-text-muted/40 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
+                          aria-label="Ver QR"
+                        >
+                          <QrCode className="w-4 h-4" aria-hidden="true" />
+                        </button>
+                        <ChevronRight className="w-4 h-4 text-text-muted/40 group-hover:text-indigo-400 transition-colors" aria-hidden="true" />
+                      </div>
                     </td>
                   </motion.tr>
                 ))}
@@ -346,6 +357,15 @@ export default function PackagesPage() {
           </div>
         )}
       </motion.div>
+
+      {qrModal && (
+        <QRModal
+          packageId={qrModal.packageId}
+          trackingCode={qrModal.trackingCode}
+          open={true}
+          onClose={() => setQrModal(null)}
+        />
+      )}
 
       {/* Package detail drawer */}
       <AnimatePresence>
@@ -378,7 +398,7 @@ export default function PackagesPage() {
                     <Package className="w-5 h-5 text-indigo-400" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Encomienda</p>
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("packageDrawerTitle")}</p>
                     <p className="font-mono text-sm font-bold text-indigo-400 glow-text-indigo">
                       {selectedPackage.trackingCode}
                     </p>
@@ -387,7 +407,7 @@ export default function PackagesPage() {
                 <button
                   onClick={() => setSelectedPackage(null)}
                   className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-base transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
-                  aria-label="Cerrar"
+                  aria-label={t("closeDrawerAriaLabel")}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -433,7 +453,7 @@ export default function PackagesPage() {
                     <Flame className="w-4 h-4 text-red-400 shrink-0" aria-hidden="true" />
                     <div>
                       <p className="text-xs font-bold text-red-400 uppercase tracking-wider">{t("perishable")}</p>
-                      <p className="text-xs text-text-muted mt-0.5">Este paquete requiere atención prioritaria</p>
+                      <p className="text-xs text-text-muted mt-0.5">{t("perishableNote")}</p>
                     </div>
                   </div>
                 )}

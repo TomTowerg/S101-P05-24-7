@@ -83,14 +83,14 @@ export default function ReportsClient() {
               <AlertCircle className="w-7 h-7 text-red-400" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-text-primary">Error al cargar los reportes</p>
-              <p className="text-xs text-text-muted mt-1">No se pudo conectar con el servidor</p>
+              <p className="text-sm font-bold text-text-primary">{t("reportErrorTitle")}</p>
+              <p className="text-xs text-text-muted mt-1">{t("reportErrorDesc")}</p>
             </div>
             <button
               onClick={() => { setError(false); fetchReports(); }}
               className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors cursor-pointer"
             >
-              Reintentar
+              {t("reportRetryButton")}
             </button>
           </div>
         )}
@@ -226,7 +226,7 @@ export default function ReportsClient() {
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none flex-col">
                   <span className="text-3xl font-black text-text-primary">{data.summary.totalProcessed}</span>
-                  <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-0.5">Total</span>
+                  <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-0.5">{t("chartTotal")}</span>
                 </div>
               </div>
               <div className="mt-5 flex flex-col gap-2.5">

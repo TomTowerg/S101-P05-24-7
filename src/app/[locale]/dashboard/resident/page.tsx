@@ -15,8 +15,9 @@ import { SkeletonCard } from "@/components/ui/Skeleton";
 import Modal from "@/components/ui/Modal";
 import {
   Bell, BellOff, Loader2, LogOut, Package, Clock,
-  CheckCircle2, Edit2, X, Check, AlertCircle, Plus, Flame, User, Building2,
+  CheckCircle2, Edit2, X, Check, AlertCircle, Plus, Flame, User, Building2, QrCode,
 } from "lucide-react";
+import QRModal from "@/components/QRModal";
 
 export default function ResidentDashboard() {
   const t = useTranslations("Resident");
@@ -58,6 +59,7 @@ export default function ResidentDashboard() {
   const [claimPackageId, setClaimPackageId] = useState("");
   const [claimDesc, setClaimDesc] = useState("");
   const [isSubmittingClaim, setIsSubmittingClaim] = useState(false);
+  const [qrModal, setQrModal] = useState<{ packageId: string; trackingCode: string } | null>(null);
 
   const fetchPackages = useCallback(async () => {
     try {
@@ -178,7 +180,7 @@ export default function ResidentDashboard() {
             {/* Header de la tarjeta */}
             <div className="flex items-center gap-3 pb-4 border-b border-border-subtle">
               <User className="w-4 h-4 text-text-muted/60" aria-hidden="true" />
-              <h2 className="text-sm font-bold text-text-primary tracking-tight">Mi Perfil</h2>
+              <h2 className="text-sm font-bold text-text-primary tracking-tight">{t("profileTitle")}</h2>
             </div>
 
             {/* Info del usuario */}
@@ -224,7 +226,7 @@ export default function ResidentDashboard() {
                       >
                         {isLoadingAptOptions ? (
                           <div className="flex items-center gap-1.5 px-2 py-1 text-xs text-text-muted">
-                            <Loader2 className="w-3.5 h-3.5 animate-spin" /> Cargando...
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" /> {t("loadingApts")}
                           </div>
                         ) : (
                           <select
@@ -234,7 +236,7 @@ export default function ResidentDashboard() {
                             autoFocus
                             className="w-36 px-2 py-1 rounded-lg bg-bg-base border border-border-subtle text-text-primary text-xs font-bold focus:outline-none focus:border-indigo-500/50 transition-colors cursor-pointer"
                           >
-                            <option value="" disabled>Seleccionar...</option>
+                            <option value="" disabled>{t("selectAptPlaceholder")}</option>
                             {aptOptions.map(apt => (
                               <option key={apt.id} value={apt.id}>
                                 {apt.number}{apt.tower ? ` · ${apt.tower}` : ""}
@@ -300,7 +302,7 @@ export default function ResidentDashboard() {
                       onClick={() => { setNotifyMsg(""); setNotifySent(false); setShowNotifyConcierge(true); }}
                       className="text-[10px] text-text-muted hover:text-indigo-400 underline underline-offset-1 transition-colors cursor-pointer mt-1"
                     >
-                      ¿No encuentras tu depto?
+                      {t("findAptLink")}
                     </button>
                   )}
                 </div>
@@ -414,8 +416,8 @@ export default function ResidentDashboard() {
                   <Building2 className="w-7 h-7 text-amber-400" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-text-primary">Aún no tienes un departamento asignado</p>
-                  <p className="text-xs text-text-muted mt-1">Selecciona tu departamento en tu perfil para ver tus encomiendas.</p>
+                  <p className="text-sm font-bold text-text-primary">{t("noAptTitle")}</p>
+                  <p className="text-xs text-text-muted mt-1">{t("noAptDesc")}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -425,7 +427,7 @@ export default function ResidentDashboard() {
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/20 text-sm font-bold hover:bg-amber-500/25 transition-colors cursor-pointer"
                 >
                   <Building2 className="w-4 h-4" aria-hidden="true" />
-                  Asignar departamento
+                  {t("noAptButton")}
                 </button>
               </div>
             ) : packages.length === 0 ? (
@@ -472,10 +474,17 @@ export default function ResidentDashboard() {
                       {pkg.isPerishable && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">
                           <Flame className="w-3 h-3" aria-hidden="true" />
-                          Comida / Frío
+                          {t("perishableBadge")}
                         </span>
                       )}
                     </div>
+                    <button
+                      onClick={() => setQrModal({ packageId: pkg.id, trackingCode: pkg.trackingCode })}
+                      className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-border-subtle bg-bg-surface hover:border-indigo-500/30 hover:bg-indigo-500/5 text-text-muted hover:text-indigo-400 text-xs font-bold transition-colors cursor-pointer"
+                    >
+                      <QrCode className="w-3.5 h-3.5" aria-hidden="true" />
+                      {tCommon("viewQR")}
+                    </button>
                   </motion.div>
                 ))}
               </div>
@@ -561,7 +570,7 @@ export default function ResidentDashboard() {
                   required
                   minLength={10}
                   rows={4}
-                  placeholder="Describe el problema..."
+                  placeholder={t("claimDescPlaceholder")}
                   className="w-full px-3 py-2.5 rounded-xl bg-bg-base border border-border-subtle text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-indigo-500/50 transition-colors resize-none"
                 />
                 <p className={`text-[10px] font-medium ${claimDesc.length >= 10 ? "text-emerald-400" : "text-text-muted"}`}>
@@ -593,13 +602,13 @@ export default function ResidentDashboard() {
           <Modal
             open={showNotifyConcierge}
             onClose={() => { setShowNotifyConcierge(false); setNotifySent(false); }}
-            title="Notificar al conserje"
+            title={t("notifyModalTitle")}
           >
             {notifySent ? (
               <div className="text-center py-4 space-y-2">
                 <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-                <p className="text-text-primary font-bold">Mensaje enviado</p>
-                <p className="text-text-muted text-sm">El conserje fue notificado.</p>
+                <p className="text-text-primary font-bold">{t("notifySuccessTitle")}</p>
+                <p className="text-text-muted text-sm">{t("notifySuccessDesc")}</p>
               </div>
             ) : (
               <form onSubmit={async (e) => {
@@ -623,11 +632,11 @@ export default function ResidentDashboard() {
                 }
               }} className="space-y-4">
                 <div>
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1.5">Mensaje al conserje</label>
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider block mb-1.5">{t("notifyMessageLabel")}</label>
                   <textarea
                     required
                     rows={3}
-                    placeholder="Ej: Vivo en el piso 6, departamento 601"
+                    placeholder={t("notifyMessagePlaceholder")}
                     value={notifyMsg}
                     onChange={e => setNotifyMsg(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl bg-bg-base border border-border-subtle text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-indigo-500/50 resize-none"
@@ -639,7 +648,7 @@ export default function ResidentDashboard() {
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold transition-colors cursor-pointer disabled:opacity-50"
                 >
                   {isNotifying && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Enviar notificación
+                  {t("notifySendButton")}
                 </button>
               </form>
             )}
@@ -708,6 +717,15 @@ export default function ResidentDashboard() {
         </motion.div>
 
       </main>
+
+      {qrModal && (
+        <QRModal
+          packageId={qrModal.packageId}
+          trackingCode={qrModal.trackingCode}
+          open={true}
+          onClose={() => setQrModal(null)}
+        />
+      )}
     </div>
   );
 }

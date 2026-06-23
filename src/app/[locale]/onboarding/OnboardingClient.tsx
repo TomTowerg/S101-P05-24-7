@@ -170,7 +170,7 @@ export default function OnboardingClient({
                         onClick={openNotifyModal}
                         className="text-xs text-neutral-400 hover:text-indigo-400 underline underline-offset-2 transition-colors cursor-pointer"
                       >
-                        ¿No encuentras tu departamento? Notificar al conserje
+                        {t("findAptLink")}
                       </button>
                     </div>
                   </div>
@@ -261,27 +261,27 @@ export default function OnboardingClient({
             {notifySent ? (
               <div className="text-center py-4 space-y-3">
                 <CheckCircle className="w-12 h-12 text-green-400 mx-auto" />
-                <h3 className="text-white font-bold text-lg">Mensaje enviado</h3>
-                <p className="text-neutral-400 text-sm">El conserje recibirá una notificación con tu solicitud.</p>
+                <h3 className="text-white font-bold text-lg">{t("notifySuccessTitle")}</h3>
+                <p className="text-neutral-400 text-sm">{t("notifySuccessDesc")}</p>
                 <button
                   onClick={() => { setShowNotify(false); setNotifySent(false); }}
                   className="mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium transition-colors cursor-pointer"
                 >
-                  Cerrar
+                  {t("notifyCloseButton")}
                 </button>
               </div>
             ) : (
               <>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-white font-bold text-lg">Notificar al conserje</h3>
+                  <h3 className="text-white font-bold text-lg">{t("notifyModalTitle")}</h3>
                   <button onClick={() => setShowNotify(false)} className="text-neutral-400 hover:text-white transition-colors cursor-pointer">
                     <X size={20} />
                   </button>
                 </div>
-                <p className="text-neutral-400 text-sm mb-4">El conserje recibirá una notificación push con tu mensaje.</p>
+                <p className="text-neutral-400 text-sm mb-4">{t("notifyModalDesc")}</p>
                 <form onSubmit={handleNotify} className="space-y-3">
                   <div>
-                    <label className="block text-xs font-medium text-neutral-300 mb-1">Nombre</label>
+                    <label className="block text-xs font-medium text-neutral-300 mb-1">{t("notifyNameLabel")}</label>
                     <input
                       type="text"
                       required
@@ -291,7 +291,7 @@ export default function OnboardingClient({
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-neutral-300 mb-1">Email</label>
+                    <label className="block text-xs font-medium text-neutral-300 mb-1">{t("notifyEmailLabel")}</label>
                     <input
                       type="email"
                       required
@@ -301,11 +301,11 @@ export default function OnboardingClient({
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-neutral-300 mb-1">Mensaje</label>
+                    <label className="block text-xs font-medium text-neutral-300 mb-1">{t("notifyMessageLabel")}</label>
                     <textarea
                       required
                       rows={3}
-                      placeholder="Ej: Vivo en el piso 6, departamento 601"
+                      placeholder={t("notifyMessagePlaceholder")}
                       value={notifyForm.message}
                       onChange={e => setNotifyForm(p => ({ ...p, message: e.target.value }))}
                       className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
@@ -317,7 +317,7 @@ export default function OnboardingClient({
                     className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-lg font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {isNotifying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                    Enviar notificación
+                    {t("notifySendButton")}
                   </button>
                 </form>
               </>

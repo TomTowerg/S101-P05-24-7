@@ -159,14 +159,14 @@ export default function ClaimsClient() {
           <div className="flex flex-col sm:flex-row items-end gap-3">
             <div className="flex-1 w-full">
               <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
-                Estado
+                {t("filterStatusLabel")}
               </label>
               <select
                 value={statusFilter}
                 onChange={e => setStatusFilter(e.target.value)}
                 className={`w-full ${selectStyle}`}
               >
-                <option value="">Todos los estados</option>
+                <option value="">{t("filterStatusAll")}</option>
                 <option value="OPEN">{t("statusOpen")}</option>
                 <option value="IN_PROGRESS">{t("statusInProgress")}</option>
                 <option value="RESOLVED">{t("statusResolved")}</option>
@@ -174,14 +174,14 @@ export default function ClaimsClient() {
             </div>
             <div className="flex-1 w-full">
               <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
-                Tipo
+                {t("filterTypeLabel")}
               </label>
               <select
                 value={typeFilter}
                 onChange={e => setTypeFilter(e.target.value)}
                 className={`w-full ${selectStyle}`}
               >
-                <option value="">Todos los tipos</option>
+                <option value="">{t("filterTypeAll")}</option>
                 <option value="WRONG_PACKAGE">{t("typeWrongPackage")}</option>
                 <option value="DAMAGED">{t("typeDamaged")}</option>
                 <option value="MISSING">{t("typeMissing")}</option>
@@ -198,13 +198,12 @@ export default function ClaimsClient() {
               }`}
             >
               <Filter className="w-3.5 h-3.5" aria-hidden="true" />
-              Limpiar
+              {t("clearFilters")}
             </button>
           </div>
           {!isLoading && (
             <p className="text-[11px] text-text-muted font-medium mt-3">
-              {filteredClaims.length} reclamo{filteredClaims.length !== 1 ? "s" : ""}
-              {hasActiveFilters ? " (filtrado)" : ""}
+              {t("resultCount", { count: filteredClaims.length })}{hasActiveFilters ? t("resultCountFiltered") : ""}
             </p>
           )}
         </motion.div>
@@ -217,13 +216,13 @@ export default function ClaimsClient() {
         >
           {isLoading ? (
             <div className="flex justify-center py-20">
-              <Loader2 className="w-10 h-10 animate-spin text-text-muted/30" aria-label="Cargando" />
+              <Loader2 className="w-10 h-10 animate-spin text-text-muted/30" aria-label={t("loadingAriaLabel")} />
             </div>
           ) : filteredClaims.length === 0 ? (
             <EmptyState
               icon={AlertCircle}
-              title={claims.length === 0 ? t("emptyTitle") : "Sin resultados"}
-              description={claims.length === 0 ? t("emptyDesc") : "Prueba ajustando los filtros"}
+              title={claims.length === 0 ? t("emptyTitle") : t("noResultsTitle")}
+              description={claims.length === 0 ? t("emptyDesc") : t("noResultsDesc")}
             />
           ) : (
             <div className="space-y-3">
@@ -274,7 +273,7 @@ export default function ClaimsClient() {
                               <>
                                 <span>·</span>
                                 <span>
-                                  Depto {claim.package.apartment.number}
+                                  {t("deptPrefix")} {claim.package.apartment.number}
                                   {claim.package.apartment.tower ? ` ${claim.package.apartment.tower}` : ""}
                                 </span>
                               </>

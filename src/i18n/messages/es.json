@@ -31,7 +31,18 @@
     "role": "Rol",
     "apartment": "Departamento",
     "tower": "Torre",
-    "onboardingComplete": "¡Bienvenido! Tu perfil ha sido configurado."
+    "onboardingComplete": "¡Bienvenido! Tu perfil ha sido configurado.",
+    "findAptLink": "¿No encuentras tu departamento? Notificar al conserje",
+    "notifySuccessTitle": "Mensaje enviado",
+    "notifySuccessDesc": "El conserje recibirá una notificación con tu solicitud.",
+    "notifyCloseButton": "Cerrar",
+    "notifyModalTitle": "Notificar al conserje",
+    "notifyModalDesc": "El conserje recibirá una notificación push con tu mensaje.",
+    "notifyNameLabel": "Nombre",
+    "notifyEmailLabel": "Email",
+    "notifyMessageLabel": "Mensaje",
+    "notifyMessagePlaceholder": "Ej: Vivo en el piso 6, departamento 601",
+    "notifySendButton": "Enviar notificación"
   },
   "Home": {
     "eyebrow": "Gestión de Encomiendas · Edificios Residenciales",
@@ -157,7 +168,15 @@
     "loading": "Cargando...",
     "redirecting": "Redirigiendo a tu panel de control...",
     "scan": "Escanear QR",
-    "back": "Volver"
+    "back": "Volver",
+    "statusPending": "Pendiente",
+    "statusNotified": "Notificado",
+    "statusDelivered": "Entregado",
+    "statusResolved": "Resuelto",
+    "qrModalTitle": "QR de encomienda",
+    "qrDownload": "Descargar QR",
+    "qrClose": "Cerrar",
+    "viewQR": "Ver QR"
   },
   "Concierge": {
     "title": "Panel del Conserje",
@@ -198,7 +217,32 @@
     "typePerishable": "Comida / Frío",
     "startDate": "Fecha Inicio",
     "endDate": "Fecha Fin",
-    "perishable": "Comida / Frío"
+    "perishable": "Comida / Frío",
+    "navResumen": "Resumen",
+    "navPaquetes": "Paquetes",
+    "navReportes": "Reportes",
+    "navReclamos": "Reclamos",
+    "notificationsLabel": "Notificaciones",
+    "markAllRead": "Marcar todas como leídas",
+    "markAsRead": "Marcar leída",
+    "noNotifications": "Sin notificaciones",
+    "alertsLabel": "Avisos",
+    "timeNow": "ahora",
+    "timeMinutesAgo": "hace {count} min",
+    "timeHoursAgo": "hace {count} h",
+    "timeYesterdayAt": "ayer a las {time}",
+    "conciergeRoleBadge": "Conserje",
+    "viewAll": "Ver todos",
+    "aptManagementTitle": "Gestión de Apartamentos",
+    "quickNavPackagesDesc": "Filtros, búsqueda y gestión completa",
+    "quickNavReportsDesc": "Estadísticas y tendencias",
+    "quickNavClaimsDesc": "Gestionar casos de residentes",
+    "pendingBadge": "{count} pendiente(s)",
+    "searching": "Buscando...",
+    "resultCount": "Mostrando {count} resultado(s)",
+    "packageDrawerTitle": "Encomienda",
+    "closeDrawerAriaLabel": "Cerrar",
+    "perishableNote": "Este paquete requiere atención prioritaria"
   },
   "VerificationModal": {
     "title": "Verificar Entrega",
@@ -265,7 +309,22 @@
     "typeOther": "Otro",
     "statusOpen": "Abierto",
     "statusInProgress": "En proceso",
-    "statusResolved": "Resuelto"
+    "statusResolved": "Resuelto",
+    "profileTitle": "Mi Perfil",
+    "loadingApts": "Cargando...",
+    "selectAptPlaceholder": "Seleccionar...",
+    "findAptLink": "¿No encuentras tu depto?",
+    "noAptTitle": "Aún no tienes un departamento asignado",
+    "noAptDesc": "Selecciona tu departamento en tu perfil para ver tus encomiendas.",
+    "noAptButton": "Asignar departamento",
+    "perishableBadge": "Comida / Frío",
+    "claimDescPlaceholder": "Describe el problema...",
+    "notifyModalTitle": "Notificar al conserje",
+    "notifySuccessTitle": "Mensaje enviado",
+    "notifySuccessDesc": "El conserje fue notificado.",
+    "notifyMessageLabel": "Mensaje al conserje",
+    "notifyMessagePlaceholder": "Ej: Vivo en el piso 6, departamento 601",
+    "notifySendButton": "Enviar notificación"
   },
   "Index": {
     "title": "Gestión de Encomiendas",
@@ -298,7 +357,9 @@
     "qrSubtitle": "Escanea o imprime este código para el retiro",
     "printQR": "Imprimir Etiqueta",
     "downloadQR": "Descargar QR",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "loadingApartments": "Cargando departamentos...",
+    "closeErrorButton": "Cerrar"
   },
   "Scanner": {
     "title": "Escanear Código QR",
@@ -340,7 +401,10 @@
     "colPackages": "Encomiendas",
     "deleteButton": "Eliminar",
     "noResident": "Sin residente",
-    "empty": "No hay apartamentos registrados. Agrega el primero."
+    "empty": "No hay apartamentos registrados. Agrega el primero.",
+    "confirmDelete": "¿Confirmar?",
+    "confirmYes": "Sí",
+    "confirmNo": "No"
   },
   "otp": {
     "title": "Verificación en dos pasos",
@@ -407,14 +471,6 @@
     "emptyTitle": "No hay usuarios registrados",
     "emptyDesc": "Actualmente no hay residentes ni conserjes registrados en el sistema."
   },
-  "Reports": {
-    "title": "Reportes y Estadísticas",
-    "subtitle": "Visualiza el flujo de encomiendas y estadísticas",
-    "packagesLast7Days": "Encomiendas en los últimos 7 días",
-    "statusDistribution": "Distribución de estados actuales",
-    "totalProcessed": "Total Procesado",
-    "mostActiveTower": "Torre más activa"
-  },
   "Claims": {
     "title": "Reclamos",
     "subtitle": "Gestiona los reclamos y problemas reportados",
@@ -435,6 +491,29 @@
     "claimCreated": "Reclamo enviado exitosamente",
     "errorCreate": "Error al enviar el reclamo. Intenta nuevamente.",
     "statusUpdated": "Estado actualizado exitosamente",
-    "errorUpdate": "Error al actualizar el estado. Intenta nuevamente."
+    "errorUpdate": "Error al actualizar el estado. Intenta nuevamente.",
+    "filterStatusLabel": "Estado",
+    "filterStatusAll": "Todos los estados",
+    "filterTypeLabel": "Tipo",
+    "filterTypeAll": "Todos los tipos",
+    "clearFilters": "Limpiar",
+    "resultCount": "Mostrando {count} reclamo(s)",
+    "resultCountFiltered": " (filtrado)",
+    "loadingAriaLabel": "Cargando",
+    "noResultsTitle": "Sin resultados",
+    "noResultsDesc": "Prueba ajustando los filtros",
+    "deptPrefix": "Depto"
+  },
+  "Reports": {
+    "title": "Reportes y Estadísticas",
+    "subtitle": "Visualiza el flujo de encomiendas y estadísticas",
+    "packagesLast7Days": "Encomiendas en los últimos 7 días",
+    "statusDistribution": "Distribución de estados actuales",
+    "totalProcessed": "Total Procesado",
+    "mostActiveTower": "Torre más activa",
+    "reportErrorTitle": "Error al cargar los reportes",
+    "reportErrorDesc": "No se pudo conectar con el servidor",
+    "reportRetryButton": "Reintentar",
+    "chartTotal": "Total"
   }
 }

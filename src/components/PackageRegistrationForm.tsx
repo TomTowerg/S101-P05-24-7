@@ -160,7 +160,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
           <button
             onClick={() => setState({ status: "idle", message: "" })}
             className="text-red-500 hover:text-red-400 transition-colors cursor-pointer"
-            aria-label="Cerrar"
+            aria-label={t("closeErrorButton")}
           >
             <X className="w-4 h-4" />
           </button>
@@ -201,7 +201,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
           {isLoadingApts ? (
             <div className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-muted text-sm flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
-              Cargando departamentos...
+              {t("loadingApartments")}
             </div>
           ) : (
             <select
