@@ -354,7 +354,7 @@ export default function PackagesPage() {
                         <button
                           onClick={(e) => { e.stopPropagation(); setQrModal({ packageId: pkg.id, trackingCode: pkg.trackingCode }); }}
                           className="p-1.5 rounded-lg text-text-muted/40 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
-                          aria-label="Ver QR"
+                          aria-label={t("viewQRAriaLabel")}
                         >
                           <QrCode className="w-4 h-4" aria-hidden="true" />
                         </button>
@@ -400,7 +400,7 @@ export default function PackagesPage() {
               transition={{ type: "spring", damping: 30, stiffness: 280 }}
               className="fixed right-0 top-0 h-full w-full max-w-md bg-bg-surface border-l border-border-subtle z-50 flex flex-col overflow-hidden"
               role="complementary"
-              aria-label="Detalle del paquete"
+              aria-label={t("packageDrawerAriaLabel")}
             >
               {/* Drawer header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-border-subtle">

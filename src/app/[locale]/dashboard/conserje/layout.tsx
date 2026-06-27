@@ -97,7 +97,7 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
       </main>
 
       {/* Mobile Navigation (Bottom bar) */}
-      <nav aria-label="Navegación móvil" className="md:hidden fixed bottom-0 left-0 right-0 bg-bg-surface border-t border-border-subtle flex justify-around p-2 z-50 transition-theme">
+      <nav aria-label={t("mobileNavAriaLabel")} className="md:hidden fixed bottom-0 left-0 right-0 bg-bg-surface border-t border-border-subtle flex justify-around p-2 z-50 transition-theme">
          {navItems.map((item) => {
             const active = isActive(item.href);
             return (

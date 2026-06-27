@@ -340,7 +340,7 @@ export default function ConciergeDashboard() {
                           <button
                             onClick={() => setQrModal({ packageId: pkg.id, trackingCode: pkg.trackingCode })}
                             className="p-1.5 rounded-lg text-text-muted/40 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
-                            aria-label="Ver QR"
+                            aria-label={t("viewQRAriaLabel")}
                           >
                             <QrCode className="w-4 h-4" aria-hidden="true" />
                           </button>

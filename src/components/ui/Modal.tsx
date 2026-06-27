@@ -17,6 +17,7 @@ interface ModalProps {
   children: ReactNode;
   footer?: ReactNode;
   size?: keyof typeof SIZES;
+  closeAriaLabel?: string;
 }
 
 export default function Modal({
@@ -26,6 +27,7 @@ export default function Modal({
   children,
   footer,
   size = "md",
+  closeAriaLabel = "Close",
 }: ModalProps) {
   // Lock body scroll while open
   useEffect(() => {
@@ -77,7 +79,7 @@ export default function Modal({
               </h2>
               <button
                 onClick={onClose}
-                aria-label="Cerrar"
+                aria-label={closeAriaLabel}
                 className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-base transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />

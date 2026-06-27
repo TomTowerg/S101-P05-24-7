@@ -3,7 +3,10 @@
     "dashboard": "Dashboard",
     "register": "Register",
     "scan": "Scan QR",
-    "login": "Login"
+    "login": "Login",
+    "changeLanguage": "Change language",
+    "changeTheme": "Change theme",
+    "signIn": "Sign in"
   },
   "onboarding": {
     "title": "Welcome to Package Management",
@@ -42,7 +45,8 @@
     "notifyEmailLabel": "Email",
     "notifyMessageLabel": "Message",
     "notifyMessagePlaceholder": "Ex: I live on floor 6, apartment 601",
-    "notifySendButton": "Send notification"
+    "notifySendButton": "Send notification",
+    "errorOnboarding": "Failed to complete registration. Please try again."
   },
   "Home": {
     "eyebrow": "Parcel Management · Residential Buildings",
@@ -233,6 +237,9 @@
     "timeYesterdayAt": "yesterday at {time}",
     "conciergeRoleBadge": "Concierge",
     "viewAll": "View all",
+    "viewQRAriaLabel": "View QR",
+    "packageDrawerAriaLabel": "Package detail",
+    "mobileNavAriaLabel": "Mobile navigation",
     "aptManagementTitle": "Apartment Management",
     "quickNavPackagesDesc": "Filters, search and full management",
     "quickNavReportsDesc": "Statistics and trends",
@@ -329,7 +336,12 @@
     "notifyMessagePlaceholder": "Ex: I live on floor 6, apartment 601",
     "notifySendButton": "Send notification",
     "arrivedAt": "Arrived on",
-    "pickedUpAt": "Picked up on"
+    "pickedUpAt": "Picked up on",
+    "errorSaveApartment": "Failed to save apartment. Please try again.",
+    "profileButton": "Profile",
+    "defaultName": "Resident",
+    "claimMinCharsHint": "{count}/10 min.",
+    "deptLabel": "Apt"
   },
   "Index": {
     "title": "Delivery Management",

@@ -3,7 +3,10 @@
     "dashboard": "Panel",
     "register": "Registrar",
     "scan": "Escanear QR",
-    "login": "Ingresar"
+    "login": "Ingresar",
+    "changeLanguage": "Cambiar idioma",
+    "changeTheme": "Cambiar tema",
+    "signIn": "Iniciar sesión"
   },
   "onboarding": {
     "title": "Bienvenido a Gestión de Encomiendas",
@@ -42,7 +45,8 @@
     "notifyEmailLabel": "Email",
     "notifyMessageLabel": "Mensaje",
     "notifyMessagePlaceholder": "Ej: Vivo en el piso 6, departamento 601",
-    "notifySendButton": "Enviar notificación"
+    "notifySendButton": "Enviar notificación",
+    "errorOnboarding": "Error al completar el registro. Intenta nuevamente."
   },
   "Home": {
     "eyebrow": "Gestión de Encomiendas · Edificios Residenciales",
@@ -233,6 +237,9 @@
     "timeYesterdayAt": "ayer a las {time}",
     "conciergeRoleBadge": "Conserje",
     "viewAll": "Ver todos",
+    "viewQRAriaLabel": "Ver QR",
+    "packageDrawerAriaLabel": "Detalle del paquete",
+    "mobileNavAriaLabel": "Navegación móvil",
     "aptManagementTitle": "Gestión de Apartamentos",
     "quickNavPackagesDesc": "Filtros, búsqueda y gestión completa",
     "quickNavReportsDesc": "Estadísticas y tendencias",
@@ -329,7 +336,12 @@
     "notifyMessagePlaceholder": "Ej: Vivo en el piso 6, departamento 601",
     "notifySendButton": "Enviar notificación",
     "arrivedAt": "Llegó el",
-    "pickedUpAt": "Retirado el"
+    "pickedUpAt": "Retirado el",
+    "errorSaveApartment": "Error al guardar el departamento. Intenta nuevamente.",
+    "profileButton": "Perfil",
+    "defaultName": "Residente",
+    "claimMinCharsHint": "{count}/10 mín.",
+    "deptLabel": "Depto"
   },
   "Index": {
     "title": "Gestión de Encomiendas",

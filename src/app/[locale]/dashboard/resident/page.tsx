@@ -137,11 +137,11 @@ export default function ResidentDashboard() {
         await fetchPackages();
         setIsEditingApt(false);
       } else {
-        toast.error("Error al guardar el departamento. Intenta nuevamente.");
+        toast.error(t("errorSaveApartment"));
       }
     } catch (error) {
       console.error("Error updating apartment:", error);
-      toast.error("Error al guardar el departamento. Intenta nuevamente.");
+      toast.error(t("errorSaveApartment"));
     } finally {
       setIsSavingApt(false);
     }
@@ -203,7 +203,7 @@ export default function ResidentDashboard() {
               <div className="flex-1 min-w-0 space-y-2">
                 <div>
                   <p className="text-lg font-bold text-text-primary tracking-tight truncate">
-                    {session?.user?.name || "Residente"}
+                    {session?.user?.name || t("defaultName")}
                   </p>
                   <p className="text-sm text-text-muted truncate">{session?.user?.email}</p>
                 </div>
@@ -316,7 +316,7 @@ export default function ResidentDashboard() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-bg-base border border-border-subtle text-text-secondary text-sm font-bold hover:text-text-primary hover:border-indigo-500/30 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
               >
                 <User className="w-4 h-4" aria-hidden="true" />
-                Perfil
+                {t("profileButton")}
               </button>
               <button
                 onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
@@ -538,6 +538,7 @@ export default function ResidentDashboard() {
             open={showClaimForm}
             onClose={() => setShowClaimForm(false)}
             title={t("createClaim")}
+            closeAriaLabel={tCommon("qrClose")}
           >
             <form onSubmit={handleCreateClaim} className="space-y-4">
               <div className="space-y-1.5">
@@ -588,7 +589,7 @@ export default function ResidentDashboard() {
                   className="w-full px-3 py-2.5 rounded-xl bg-bg-base border border-border-subtle text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-indigo-500/50 transition-colors resize-none"
                 />
                 <p className={`text-[10px] font-medium ${claimDesc.length >= 10 ? "text-emerald-400" : "text-text-muted"}`}>
-                  {claimDesc.length}/10 mín.
+                  {t("claimMinCharsHint", { count: claimDesc.length })}
                 </p>
               </div>
 
@@ -617,6 +618,7 @@ export default function ResidentDashboard() {
             open={showNotifyConcierge}
             onClose={() => { setShowNotifyConcierge(false); setNotifySent(false); }}
             title={t("notifyModalTitle")}
+            closeAriaLabel={tCommon("qrClose")}
           >
             {notifySent ? (
               <div className="text-center py-4 space-y-2">
@@ -720,7 +722,7 @@ export default function ResidentDashboard() {
                       <p className="text-xs text-text-muted mt-1">
                         {new Date(claim.createdAt).toLocaleDateString()}{" "}
                         {new Date(claim.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        {currentApt && ` · Depto ${currentApt.number}${currentApt.tower ? ` - ${currentApt.tower}` : ""}`}
+                        {currentApt && ` · ${t("deptLabel")} ${currentApt.number}${currentApt.tower ? ` - ${currentApt.tower}` : ""}`}
                       </p>
                     </div>
                   </motion.div>

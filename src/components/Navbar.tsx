@@ -62,7 +62,7 @@ export default function Navbar() {
         <div className="w-36 flex items-center gap-4">
           <button
             onClick={toggleLocale}
-            aria-label="Cambiar idioma"
+            aria-label={t("changeLanguage")}
             className="flex items-center gap-2 group cursor-pointer"
           >
             <svg
@@ -85,7 +85,7 @@ export default function Navbar() {
           {mounted && (
             <button
               onClick={toggleTheme}
-              aria-label="Cambiar tema"
+              aria-label={t("changeTheme")}
               className="flex items-center justify-center p-1.5 rounded-lg hover:bg-bg-surface transition-colors cursor-pointer"
             >
               {theme === "dark" ? (
@@ -139,7 +139,7 @@ export default function Navbar() {
           ) : (
             <Link
               href="/login"
-              aria-label="Iniciar sesión"
+              aria-label={t("signIn")}
               className={`flex items-center gap-2 transition-colors group ${scrolled ? "text-text-primary/60 hover:text-text-primary" : "text-text-primary/40 hover:text-text-primary"}`}
             >
               <User className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
