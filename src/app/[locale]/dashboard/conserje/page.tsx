@@ -15,7 +15,7 @@ import EmptyState from "@/components/EmptyState";
 import { SkeletonCard } from "@/components/ui/Skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Loader2, Package, Clock, CheckCircle2, History, User, QrCode,
+  Package, Clock, CheckCircle2, History, User, QrCode,
   BarChart2, AlertCircle, ArrowRight, Building2, Search, ChevronDown,
 } from "lucide-react";
 import QRModal from "@/components/QRModal";
@@ -88,10 +88,10 @@ export default function ConciergeDashboard() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#141414]">
-        <div className="text-center">
-          <Loader2 className="h-10 w-10 animate-spin text-[#6366F1] mx-auto mb-4" />
-          <p className="text-[#606060] font-medium">{tCommon("loading")}</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <div className="loombox-loader">
+          <p className="loombox-loader-text">Cargando</p>
+          <span className="loombox-load"></span>
         </div>
       </div>
     );
@@ -111,30 +111,38 @@ export default function ConciergeDashboard() {
       label: t("totalParcels"),
       value: totalParcels,
       icon: Package,
-      color: "#6366F1",
+      color: "#818CF8",
+      glow: "rgba(99,102,241,0.18)",
+      border: "rgba(99,102,241,0.25)",
     },
     {
       label: t("pendingDelivery"),
       value: pendingDelivery,
       icon: Clock,
-      color: "#F59E0B",
+      color: "#FCD34D",
+      glow: "rgba(245,158,11,0.18)",
+      border: "rgba(245,158,11,0.25)",
     },
     {
       label: t("deliveredToday"),
       value: deliveredToday,
       icon: CheckCircle2,
-      color: "#10B981",
+      color: "#34D399",
+      glow: "rgba(16,185,129,0.18)",
+      border: "rgba(16,185,129,0.25)",
     },
     {
       label: t("navReclamos"),
       value: 0,
       icon: AlertCircle,
-      color: "#EF4444",
+      color: "#F87171",
+      glow: "rgba(239,68,68,0.18)",
+      border: "rgba(239,68,68,0.25)",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#141414] text-white px-6 py-8 space-y-8 pb-24 md:pb-8">
+    <div className="min-h-screen text-white px-6 py-8 space-y-8 pb-24 md:pb-8" style={{ background: "#080810" }}>
 
       {/* ── Header ──────────────────────────────── */}
       <motion.div
@@ -177,20 +185,28 @@ export default function ConciergeDashboard() {
               return (
                 <div
                   key={card.label}
-                  className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl p-6 hover:scale-[1.01] transition-transform cursor-default"
+                  className="rounded-2xl p-5 relative overflow-hidden cursor-default hover:scale-[1.01] transition-transform"
+                  style={{
+                    background: `linear-gradient(135deg, ${card.glow} 0%, rgba(8,8,16,0.85) 100%)`,
+                    border: `1px solid ${card.border}`,
+                  }}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <p className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest leading-tight">
+                  <div
+                    className="absolute -top-6 -right-6 w-24 h-24 rounded-full pointer-events-none"
+                    style={{ background: `radial-gradient(circle, ${card.glow} 0%, transparent 70%)` }}
+                  />
+                  <div className="flex items-start justify-between mb-3 relative">
+                    <p className="text-[11px] font-semibold uppercase tracking-widest leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}>
                       {card.label}
                     </p>
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `${card.color}1A` }}
+                      className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: `${card.glow}`, border: `1px solid ${card.border}` }}
                     >
                       <Icon className="w-4 h-4" style={{ color: card.color }} />
                     </div>
                   </div>
-                  <p className="text-[42px] font-bold text-white leading-none">
+                  <p className="text-[40px] font-bold text-white leading-none relative">
                     {card.value}
                   </p>
                 </div>
@@ -231,7 +247,8 @@ export default function ConciergeDashboard() {
           <Link
             key={item.href}
             href={item.href}
-            className="group flex items-center gap-4 p-4 bg-[#1F1F1F] border border-white/[0.08] rounded-2xl hover:border-white/[0.16] hover:bg-[#262626] transition-all cursor-pointer"
+            className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/[0.03] transition-all cursor-pointer"
+            style={{ background: "#0E0E1C", border: "1px solid rgba(255,255,255,0.07)" }}
           >
             <div className={`p-2.5 rounded-xl border ${item.bg} shrink-0 group-hover:scale-105 transition-transform`}>
               {item.icon}
@@ -253,7 +270,7 @@ export default function ConciergeDashboard() {
         className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6"
       >
         {/* Recent packages table */}
-        <div className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl overflow-hidden flex flex-col">
+        <div className="rounded-2xl overflow-hidden flex flex-col" style={{ background: "#0E0E1C", border: "1px solid rgba(255,255,255,0.07)" }}>
           <div className="px-6 py-5 border-b border-white/[0.08] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3">
               <History className="w-5 h-5 text-[#606060]" aria-hidden="true" />
@@ -265,7 +282,7 @@ export default function ConciergeDashboard() {
               )}
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-[#262626] rounded-xl px-3 py-2 border border-white/[0.08]">
+              <div className="flex items-center gap-2 rounded-xl px-3 py-2" style={{ background: "#0D0D1A", border: "1px solid rgba(255,255,255,0.07)" }}>
                 <Search className="w-3.5 h-3.5 text-[#606060] shrink-0" aria-hidden="true" />
                 <input
                   type="text"
@@ -335,7 +352,7 @@ export default function ConciergeDashboard() {
                         )}
                       </td>
                       <td className="px-6 py-4">
-                        <span className="px-2.5 py-1 bg-[#262626] rounded-lg text-xs font-bold text-white border border-white/[0.08]">
+                        <span className="px-2.5 py-1 rounded-lg text-xs font-bold text-white" style={{ background: "#13131F", border: "1px solid rgba(255,255,255,0.09)" }}>
                           {pkg.apartment.number}{pkg.apartment.tower ? ` · ${pkg.apartment.tower}` : ""}
                         </span>
                       </td>
@@ -391,7 +408,8 @@ export default function ConciergeDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl overflow-hidden"
+        className="rounded-2xl overflow-hidden"
+        style={{ background: "#0E0E1C", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         <button
           onClick={() => setAptOpen(!aptOpen)}

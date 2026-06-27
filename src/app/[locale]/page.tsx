@@ -129,7 +129,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="w-full font-sans bg-bg-base text-text-primary selection:bg-[#f59e0b] selection:text-[#09090b] overflow-x-hidden transition-theme">
+    <div className="-mt-16 w-full font-sans bg-bg-base text-text-primary selection:bg-[#f59e0b] selection:text-[#09090b] overflow-x-hidden transition-theme">
 
       {/* ══════════════════════════════════════
           SECCIÓN 1 — HERO

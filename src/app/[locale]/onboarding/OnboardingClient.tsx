@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, Loader2, Building2, X } from "lucide-react";
@@ -23,9 +23,11 @@ export default function OnboardingClient({
   apartments: Apartment[];
   initialRole: string;
 }) {
-  const t = useTranslations("onboarding");
+  const t      = useTranslations("onboarding");
+  const locale = useLocale();
   const { update, data: sessionData } = useSession();
   const role = initialRole as Role;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // CONSERJE skips apartment selection → start at confirmation (step 3)
   // RESIDENTE starts at apartment selection (step 2)
@@ -33,6 +35,36 @@ export default function OnboardingClient({
   const [apartmentId, setApartmentId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const hasSubmitted = useRef(false);
+
+  /* ── Stars canvas ──────────────────────────────────────────────── */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const dpr = window.devicePixelRatio || 1;
+    const CW = canvas.offsetWidth, CH = canvas.offsetHeight;
+    canvas.width = CW * dpr; canvas.height = CH * dpr;
+    ctx.scale(dpr, dpr);
+    const stars = Array.from({ length: 220 }, () => ({
+      x: Math.random() * CW, y: Math.random() * CH,
+      r: Math.random() * 1.1 + 0.2, o: Math.random() * 0.55 + 0.1,
+      speed: Math.random() * 0.015 + 0.003, phase: Math.random() * Math.PI * 2,
+    }));
+    let raf: number, tick = 0;
+    const draw = () => {
+      tick += 0.016;
+      ctx.fillStyle = "rgb(4,2,12)"; ctx.fillRect(0, 0, CW, CH);
+      stars.forEach((s) => {
+        const a = s.o * (0.4 + 0.6 * Math.sin(tick * s.speed * 60 + s.phase));
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fill();
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   // Notify concierge modal state
   const [showNotify, setShowNotify] = useState(false);
@@ -81,7 +113,7 @@ export default function OnboardingClient({
       if (res.ok) {
         await update({ onboardingComplete: true });
         toast.success(t("onboardingComplete"));
-        const dest = role === "CONSERJE" ? "/es/dashboard/conserje" : "/es/dashboard/resident";
+        const dest = role === "CONSERJE" ? `/${locale}/dashboard/conserje` : `/${locale}/dashboard/resident`;
         window.location.href = dest;
       } else {
         toast.error(t("errorOnboarding"));
@@ -111,21 +143,22 @@ export default function OnboardingClient({
         ];
 
   return (
-    <div className="min-h-screen bg-[#141414] flex">
+    <div className="min-h-screen flex relative">
+      {/* Space background canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
 
       {/* LEFT PANEL — branding + step indicator */}
-      <div className="hidden lg:flex w-1/2 flex-col justify-between p-12 bg-[#141414] border-r border-white/[0.06] relative overflow-hidden">
+      <div className="hidden lg:flex w-1/2 flex-col justify-between p-12 relative border-r border-white/[0.05]"
+        style={{ background: "rgba(6,3,18,0.6)", backdropFilter: "blur(2px)" }}>
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#6366F1]/[0.05] rounded-full blur-[100px]" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] bg-[#6366F1]/[0.06] rounded-full blur-[90px]" />
         </div>
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#6366F1]">
-            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-            <path d="m3.3 7 8.7 5 8.7-5" />
-            <path d="M12 22V12" />
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/logo.png" alt="Loombox" width={30} height={30}
+            style={{ width: 30, height: 30, objectFit: "contain" }} />
           <span
             style={{ fontFamily: "var(--font-syne, sans-serif)", fontWeight: 700, letterSpacing: "0.12em", fontSize: "18px" }}
             className="text-white uppercase"
@@ -191,16 +224,15 @@ export default function OnboardingClient({
       </div>
 
       {/* RIGHT PANEL — form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-[#1F1F1F]">
+      <div className="flex-1 flex items-center justify-center p-8 relative"
+        style={{ background: "rgba(10,6,28,0.55)", backdropFilter: "blur(1px)" }}>
         <div className="w-full max-w-sm">
 
           {/* Mobile logo */}
           <div className="flex lg:hidden items-center gap-2 mb-8">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#6366F1]">
-              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-              <path d="m3.3 7 8.7 5 8.7-5" />
-              <path d="M12 22V12" />
-            </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo.png" alt="Loombox" width={24} height={24}
+              style={{ width: 24, height: 24, objectFit: "contain" }} />
             <span className="text-white font-bold text-sm tracking-widest uppercase">Loombox</span>
           </div>
 
@@ -237,7 +269,8 @@ export default function OnboardingClient({
                     <select
                       value={apartmentId}
                       onChange={(e) => setApartmentId(e.target.value)}
-                      className="w-full bg-[#262626] border border-white/[0.08] rounded-xl px-4 py-3 text-[14px] text-white outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors appearance-none cursor-pointer"
+                      className="w-full border rounded-xl px-4 py-3 text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors appearance-none cursor-pointer"
+                      style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)" }}
                     >
                       <option value="" disabled>{t("step2.placeholder")}</option>
                       {apartments.map((apt) => (
@@ -290,7 +323,7 @@ export default function OnboardingClient({
                 </div>
 
                 {/* Confirmation card */}
-                <div className="bg-[#262626] rounded-2xl p-6 border border-white/[0.08] space-y-4">
+                <div className="rounded-2xl p-6 space-y-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 rounded-xl bg-[#6366F1]/10 border border-[#6366F1]/20 flex items-center justify-center shrink-0">
                       <CheckCircle className="w-5 h-5 text-[#6366F1]" />

@@ -6,7 +6,10 @@
     "login": "Ingresar",
     "changeLanguage": "Cambiar idioma",
     "changeTheme": "Cambiar tema",
-    "signIn": "Iniciar sesión"
+    "signIn": "Iniciar sesión",
+    "navPackages": "Encomiendas",
+    "navClaims": "Reclamos",
+    "navProfile": "Perfil"
   },
   "onboarding": {
     "title": "Bienvenido a Gestión de Encomiendas",
@@ -137,7 +140,17 @@
     "orContinue": "o continuar como invitado",
     "backToHome": "Volver al Inicio",
     "footerText": "Al ingresar, aceptas nuestros Términos de Servicio y Política de Privacidad",
-    "helpText": "¿Probando el sistema? Usa tu cuenta de Google con el rol seleccionado."
+    "helpText": "¿Probando el sistema? Usa tu cuenta de Google con el rol seleccionado.",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "welcomeBack": "Bienvenido de vuelta",
+    "heroBrand": "Loombox · Gestión de Encomiendas",
+    "heroHeadline": "Tu edificio, tus paquetes,",
+    "heroHighlight": "todo bajo control.",
+    "heroDescription": "Recibe notificaciones al instante cuando llegue tu encomienda. Retira con un QR, sin filas ni esperas.",
+    "stat1Label": "Digital",
+    "stat2Label": "Disponible",
+    "stat3Label": "Retiro seguro"
   },
   "Register": {
     "back": "Volver al inicio de sesión",
@@ -344,7 +357,14 @@
     "deptLabel": "Depto",
     "statusPending": "Pendiente",
     "statusNotified": "Notificado",
-    "statusDelivered": "Entregado"
+    "statusDelivered": "Entregado",
+    "navDashboard": "Resumen",
+    "navPackages": "Encomiendas",
+    "navPackagesPending": "Pendientes",
+    "navPackagesDelivered": "Entregadas",
+    "navClaims": "Reclamos",
+    "navProfile": "Perfil",
+    "navNotifications": "Notificaciones"
   },
   "Index": {
     "title": "Gestión de Encomiendas",
@@ -473,7 +493,19 @@
     "enterCode": "Ingresa el código de 6 dígitos",
     "enable": "Activar",
     "verify": "Verificar",
-    "invalidCode": "Código incorrecto. Verifica tu app e intenta nuevamente."
+    "invalidCode": "Código incorrecto. Verifica tu app e intenta nuevamente.",
+    "codeVerified": "¡Código verificado!",
+    "verifyShort": "Ingresa el código",
+    "stepsLabel": "Pasos",
+    "step1Title": "Descarga la app",
+    "step1Desc": "Instala Google Authenticator en tu teléfono",
+    "step2Title": "Escanea el QR",
+    "step2Desc": "Abre la app y escanea el código QR que ves aquí",
+    "step3Title": "Ingresa el código",
+    "step3Desc": "Escribe el código de 6 dígitos que genera la app",
+    "manualKey": "Clave manual",
+    "verifyAndActivate": "Activar autenticación",
+    "errorOnboarding": "Error al completar el registro. Intenta nuevamente."
   },
   "Users": {
     "title": "Administrar Usuarios",

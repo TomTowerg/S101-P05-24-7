@@ -47,13 +47,13 @@ export default function ReportsClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-bg-base transition-theme">
+    <div className="min-h-screen bg-[#080810] transition-theme">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease }}
-        className="bg-bg-surface border-b border-border-subtle transition-theme"
+        className="bg-[#0E0E1C] border-b border-white/[0.07] transition-theme"
       >
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center flex-wrap gap-3">
           <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -61,13 +61,13 @@ export default function ReportsClient() {
               <BarChart3 className="w-6 h-6 text-white" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-text-primary tracking-tight">{t("title")}</h1>
-              <p className="text-text-muted text-sm font-medium">{t("subtitle")}</p>
+              <h1 className="text-2xl font-bold text-white tracking-tight">{t("title")}</h1>
+              <p className="text-[#808090] text-sm font-medium">{t("subtitle")}</p>
             </div>
           </div>
           <button
             onClick={() => router.push("/dashboard/conserje")}
-            className="px-6 py-2.5 bg-bg-base border border-border-subtle hover:bg-bg-surface text-text-primary rounded-xl font-bold transition-all text-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+            className="px-6 py-2.5 bg-[#080810] border border-white/[0.07] hover:bg-[#0E0E1C] text-white rounded-xl font-bold transition-all text-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             {tCommon("back")}
@@ -83,8 +83,8 @@ export default function ReportsClient() {
               <AlertCircle className="w-7 h-7 text-red-400" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-text-primary">{t("reportErrorTitle")}</p>
-              <p className="text-xs text-text-muted mt-1">{t("reportErrorDesc")}</p>
+              <p className="text-sm font-bold text-white">{t("reportErrorTitle")}</p>
+              <p className="text-xs text-[#808090] mt-1">{t("reportErrorDesc")}</p>
             </div>
             <button
               onClick={() => { setError(false); fetchReports(); }}
@@ -133,8 +133,8 @@ export default function ReportsClient() {
             className="grid grid-cols-1 lg:grid-cols-3 gap-8"
           >
             {/* Area/Line Chart — 7-day trend */}
-            <div className="lg:col-span-2 bg-bg-surface rounded-2xl border border-border-subtle p-6 transition-theme">
-              <h3 className="text-base font-bold text-text-primary mb-6">{t("packagesLast7Days")}</h3>
+            <div className="lg:col-span-2 bg-[#0E0E1C] rounded-2xl border border-white/[0.07] p-6 transition-theme">
+              <h3 className="text-base font-bold text-white mb-6">{t("packagesLast7Days")}</h3>
               <div className="h-[280px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data.trend} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -169,8 +169,8 @@ export default function ReportsClient() {
                       contentStyle={{
                         borderRadius: "12px",
                         border: "1px solid rgba(255,255,255,0.06)",
-                        backgroundColor: "var(--bg-surface-2)",
-                        color: "var(--text-primary)",
+                        backgroundColor: "#131320",
+                        color: "#ffffff",
                         boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.3)",
                         fontSize: "12px",
                       }}
@@ -192,8 +192,8 @@ export default function ReportsClient() {
             </div>
 
             {/* Donut — status distribution */}
-            <div className="bg-bg-surface rounded-2xl border border-border-subtle p-6 flex flex-col transition-theme">
-              <h3 className="text-base font-bold text-text-primary mb-6">{t("statusDistribution")}</h3>
+            <div className="bg-[#0E0E1C] rounded-2xl border border-white/[0.07] p-6 flex flex-col transition-theme">
+              <h3 className="text-base font-bold text-white mb-6">{t("statusDistribution")}</h3>
               <div className="flex-1 min-h-[200px] relative">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -215,8 +215,8 @@ export default function ReportsClient() {
                       contentStyle={{
                         borderRadius: "12px",
                         border: "1px solid rgba(255,255,255,0.06)",
-                        backgroundColor: "var(--bg-surface-2)",
-                        color: "var(--text-primary)",
+                        backgroundColor: "#131320",
+                        color: "#ffffff",
                         boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.3)",
                         fontSize: "12px",
                       }}
@@ -225,8 +225,8 @@ export default function ReportsClient() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none flex-col">
-                  <span className="text-3xl font-black text-text-primary">{data.summary.totalProcessed}</span>
-                  <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-0.5">{t("chartTotal")}</span>
+                  <span className="text-3xl font-black text-white">{data.summary.totalProcessed}</span>
+                  <span className="text-[9px] font-bold text-[#808090] uppercase tracking-widest mt-0.5">{t("chartTotal")}</span>
                 </div>
               </div>
               <div className="mt-5 flex flex-col gap-2.5">
@@ -234,9 +234,9 @@ export default function ReportsClient() {
                   <div key={item.name} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.fill }} />
-                      <span className="text-xs font-semibold text-text-muted">{item.name}</span>
+                      <span className="text-xs font-semibold text-[#808090]">{item.name}</span>
                     </div>
-                    <span className="text-xs font-bold text-text-primary tabular-nums">{item.value}</span>
+                    <span className="text-xs font-bold text-white tabular-nums">{item.value}</span>
                   </div>
                 ))}
               </div>

@@ -135,19 +135,19 @@ export default function PackagesPage() {
 
   const hasActiveFilters = !!(searchQuery || statusFilter || apartmentFilter || typeFilter || startDate || endDate);
 
-  const inputBase = "w-full bg-[#262626] border border-white/[0.08] rounded-xl px-4 py-2.5 text-[14px] text-white outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors placeholder:text-[#606060]";
+  const inputBase = "w-full bg-[#0D0D1A] border border-white/[0.06] rounded-xl px-4 py-2.5 text-[14px] text-white outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors placeholder:text-[#606060]";
   const selectBase = `${inputBase} appearance-none cursor-pointer`;
 
   if (status === "loading" || (isLoading && packages.length === 0)) {
     return (
-      <div className="min-h-screen bg-[#141414] px-6 py-8 space-y-6">
+      <div className="min-h-screen bg-[#080810] px-6 py-8 space-y-6">
         <div className="h-8 w-64 animate-pulse bg-white/[0.06] rounded-lg" />
-        <div className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl p-6">
+        <div className="bg-[#0E0E1C] border border-white/[0.08] rounded-2xl p-6">
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
             {[0, 1, 2, 3].map(i => <div key={i} className="h-11 animate-pulse bg-white/[0.06] rounded-xl" />)}
           </div>
         </div>
-        <div className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl overflow-hidden">
+        <div className="bg-[#0E0E1C] border border-white/[0.08] rounded-2xl overflow-hidden">
           <SkeletonTable rows={6} cols={5} />
         </div>
       </div>
@@ -155,7 +155,7 @@ export default function PackagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#141414] px-6 py-8 space-y-6 pb-24 md:pb-8">
+    <div className="min-h-screen bg-[#080810] px-6 py-8 space-y-6 pb-24 md:pb-8">
 
       {/* Header */}
       <motion.div
@@ -175,7 +175,7 @@ export default function PackagesPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl p-5 space-y-4"
+        className="bg-[#0E0E1C] border border-white/[0.08] rounded-2xl p-5 space-y-4"
       >
         <div className="flex flex-col xl:flex-row gap-3">
           {/* Search */}
@@ -186,7 +186,7 @@ export default function PackagesPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full pl-9 pr-9 py-2.5 bg-[#262626] border border-white/[0.08] rounded-xl text-[14px] text-white placeholder:text-[#606060] outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors"
+              className="w-full pl-9 pr-9 py-2.5 bg-[#0D0D1A] border border-white/[0.08] rounded-xl text-[14px] text-white placeholder:text-[#606060] outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors"
             />
             {searchQuery && (
               <button
@@ -234,7 +234,7 @@ export default function PackagesPage() {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 bg-[#262626] border border-white/[0.08] rounded-xl text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors"
+                className="px-3 py-2 bg-[#0D0D1A] border border-white/[0.08] rounded-xl text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors"
               />
             </div>
             <div>
@@ -245,7 +245,7 @@ export default function PackagesPage() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 bg-[#262626] border border-white/[0.08] rounded-xl text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors"
+                className="px-3 py-2 bg-[#0D0D1A] border border-white/[0.08] rounded-xl text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors"
               />
             </div>
           </div>
@@ -288,7 +288,7 @@ export default function PackagesPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className={`bg-[#1F1F1F] border border-white/[0.08] rounded-2xl overflow-hidden relative transition-opacity ${isSearching ? "opacity-60" : "opacity-100"}`}
+        className={`bg-[#0E0E1C] border border-white/[0.08] rounded-2xl overflow-hidden relative transition-opacity ${isSearching ? "opacity-60" : "opacity-100"}`}
       >
         {isLoading ? (
           <SkeletonTable rows={6} cols={5} />
@@ -337,7 +337,7 @@ export default function PackagesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="px-2.5 py-1 bg-[#262626] rounded-lg text-xs font-bold text-white border border-white/[0.08]">
+                      <span className="px-2.5 py-1 bg-[#0D0D1A] rounded-lg text-xs font-bold text-white border border-white/[0.08]">
                         {pkg.apartment.number}{pkg.apartment.tower ? ` · ${pkg.apartment.tower}` : ""}
                       </span>
                     </td>
@@ -414,7 +414,7 @@ export default function PackagesPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 280 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-[#1F1F1F] border-l border-white/[0.08] z-50 flex flex-col overflow-hidden"
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-[#0E0E1C] border-l border-white/[0.08] z-50 flex flex-col overflow-hidden"
               role="complementary"
               aria-label={t("packageDrawerAriaLabel")}
             >
@@ -452,7 +452,7 @@ export default function PackagesPage() {
                 {/* Apartment */}
                 <div className="flex items-center justify-between py-4 border-b border-white/[0.06]">
                   <span className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("apt")}</span>
-                  <span className="px-2.5 py-1 bg-[#262626] rounded-lg text-[14px] font-bold text-white border border-white/[0.08]">
+                  <span className="px-2.5 py-1 bg-[#0D0D1A] rounded-lg text-[14px] font-bold text-white border border-white/[0.08]">
                     {selectedPackage.apartment.number}
                     {selectedPackage.apartment.tower ? ` · ${selectedPackage.apartment.tower}` : ""}
                   </span>

@@ -116,16 +116,16 @@ export default function ClaimsClient() {
 
   const hasActiveFilters = !!(statusFilter || typeFilter);
 
-  const selectStyle = "px-3 py-2.5 bg-bg-base border border-border-subtle rounded-xl text-sm font-medium text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors cursor-pointer appearance-none";
+  const selectStyle = "px-3 py-2.5 bg-[#0D0D1A] border border-white/[0.07] rounded-xl text-sm font-medium text-white focus:outline-none focus:border-indigo-500/50 transition-colors cursor-pointer appearance-none";
 
   return (
-    <div className="min-h-screen bg-bg-base transition-theme">
+    <div className="min-h-screen bg-[#080810] transition-theme">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease }}
-        className="bg-bg-surface border-b border-border-subtle transition-theme"
+        className="bg-[#0E0E1C] border-b border-white/[0.07] transition-theme"
       >
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center flex-wrap gap-3">
           <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -133,13 +133,13 @@ export default function ClaimsClient() {
               <AlertCircle className="w-6 h-6 text-white" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-text-primary tracking-tight">{t("title")}</h1>
-              <p className="text-text-muted text-sm font-medium">{t("subtitle")}</p>
+              <h1 className="text-2xl font-bold text-white tracking-tight">{t("title")}</h1>
+              <p className="text-[#808090] text-sm font-medium">{t("subtitle")}</p>
             </div>
           </div>
           <button
             onClick={() => router.push("/dashboard/conserje")}
-            className="px-5 py-2.5 bg-bg-base border border-border-subtle hover:bg-bg-surface text-text-primary rounded-xl font-bold transition-all text-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+            className="px-5 py-2.5 bg-[#080810] border border-white/[0.07] hover:bg-white/[0.06] text-white rounded-xl font-bold transition-all text-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             {tCommon("back")}
@@ -154,11 +154,11 @@ export default function ClaimsClient() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.08, ease }}
-          className="bg-bg-surface border border-border-subtle rounded-2xl p-5 transition-theme"
+          className="bg-[#0E0E1C] border border-white/[0.07] rounded-2xl p-5 transition-theme"
         >
           <div className="flex flex-col sm:flex-row items-end gap-3">
             <div className="flex-1 w-full">
-              <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-bold text-[#808090] uppercase tracking-widest mb-1.5">
                 {t("filterStatusLabel")}
               </label>
               <select
@@ -173,7 +173,7 @@ export default function ClaimsClient() {
               </select>
             </div>
             <div className="flex-1 w-full">
-              <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-bold text-[#808090] uppercase tracking-widest mb-1.5">
                 {t("filterTypeLabel")}
               </label>
               <select
@@ -193,7 +193,7 @@ export default function ClaimsClient() {
               disabled={!hasActiveFilters}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 ${
                 hasActiveFilters
-                  ? "bg-bg-base text-text-muted hover:text-text-primary border border-border-subtle hover:border-indigo-500/30"
+                  ? "bg-[#080810] text-[#808090] hover:text-white border border-white/[0.07] hover:border-indigo-500/30"
                   : "opacity-0 pointer-events-none"
               }`}
             >
@@ -202,7 +202,7 @@ export default function ClaimsClient() {
             </button>
           </div>
           {!isLoading && (
-            <p className="text-[11px] text-text-muted font-medium mt-3">
+            <p className="text-[11px] text-[#808090] font-medium mt-3">
               {t("resultCount", { count: filteredClaims.length })}{hasActiveFilters ? t("resultCountFiltered") : ""}
             </p>
           )}
@@ -216,7 +216,7 @@ export default function ClaimsClient() {
         >
           {isLoading ? (
             <div className="flex justify-center py-20">
-              <Loader2 className="w-10 h-10 animate-spin text-text-muted/30" aria-label={t("loadingAriaLabel")} />
+              <Loader2 className="w-10 h-10 animate-spin text-[#808090]/30" aria-label={t("loadingAriaLabel")} />
             </div>
           ) : filteredClaims.length === 0 ? (
             <EmptyState
@@ -237,7 +237,7 @@ export default function ClaimsClient() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ delay: index * 0.04, ease }}
-                      className={`bg-bg-surface border border-border-subtle rounded-2xl p-5 md:p-6 shadow-sm hover:border-indigo-500/20 transition-all ${isResolved ? "opacity-60" : ""}`}
+                      className={`bg-[#0E0E1C] border border-white/[0.07] rounded-2xl p-5 md:p-6 shadow-sm hover:border-indigo-500/20 transition-all ${isResolved ? "opacity-60" : ""}`}
                     >
                       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                         <div className="flex-1 space-y-2">
@@ -251,7 +251,7 @@ export default function ClaimsClient() {
                               {STATUS_LABEL[claim.status]}
                             </span>
                             {claim.package && (
-                              <span className="flex items-center gap-1 px-2.5 py-1 bg-bg-base border border-border-subtle rounded-full text-[10px] font-bold text-text-muted uppercase tracking-wider">
+                              <span className="flex items-center gap-1 px-2.5 py-1 bg-[#080810] border border-white/[0.07] rounded-full text-[10px] font-bold text-[#808090] uppercase tracking-wider">
                                 <Package className="w-3 h-3" aria-hidden="true" />
                                 {claim.package.trackingCode}
                               </span>
@@ -259,10 +259,10 @@ export default function ClaimsClient() {
                           </div>
 
                           {/* Description */}
-                          <p className="text-text-primary text-sm leading-relaxed">{claim.description}</p>
+                          <p className="text-white text-sm leading-relaxed">{claim.description}</p>
 
                           {/* Meta */}
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-text-muted font-medium">
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[#808090] font-medium">
                             <span>{claim.user.name || claim.user.email}</span>
                             <span>·</span>
                             <span>
@@ -286,7 +286,7 @@ export default function ClaimsClient() {
                           <button
                             onClick={() => handleStatusUpdate(claim.id, nextStatus)}
                             disabled={updatingId === claim.id}
-                            className="shrink-0 flex items-center gap-2 px-4 py-2 bg-bg-base hover:bg-indigo-500/10 hover:text-indigo-400 border border-border-subtle hover:border-indigo-500/30 text-text-muted rounded-xl font-bold text-xs transition-all cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+                            className="shrink-0 flex items-center gap-2 px-4 py-2 bg-[#080810] hover:bg-indigo-500/10 hover:text-indigo-400 border border-white/[0.07] hover:border-indigo-500/30 text-[#808090] rounded-xl font-bold text-xs transition-all cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
                           >
                             {updatingId === claim.id
                               ? <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" />

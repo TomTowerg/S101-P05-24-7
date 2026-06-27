@@ -91,16 +91,16 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
   }
 
   return (
-    <div className="bg-bg-surface rounded-xl shadow-sm border border-border-subtle overflow-hidden transition-theme">
+    <div className="bg-[#0E0E1C] rounded-xl shadow-sm border border-white/[0.07] overflow-hidden transition-theme">
       {/* ── Header (Hidden on success) ────────────────────────────────────── */}
       {state.status !== "success" && (
-        <div className="bg-bg-base px-6 py-4 flex items-center gap-3 border-b border-border-subtle">
+        <div className="px-6 py-4 flex items-center gap-3 border-b border-white/[0.07]" style={{ background: "#0A0A16" }}>
           <div className="p-2 bg-indigo-500/20 rounded-lg">
             <Package className="w-5 h-5 text-indigo-400" strokeWidth={1.5} />
           </div>
           <div>
-            <h2 className="text-text-primary font-semibold text-base">{t("title")}</h2>
-            <p className="text-text-muted text-xs">{t("subtitle")}</p>
+            <h2 className="text-white font-semibold text-base">{t("title")}</h2>
+            <p className="text-[#808090] text-xs">{t("subtitle")}</p>
           </div>
         </div>
       )}
@@ -113,17 +113,17 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
               <div className="inline-flex items-center justify-center p-3 bg-green-500/10 rounded-full mb-2">
                 <CheckCircle className="w-8 h-8 text-green-500" />
               </div>
-              <h3 className="text-2xl font-black text-text-primary tracking-tight">
+              <h3 className="text-2xl font-black text-white tracking-tight">
                 {state.message}
               </h3>
-              <p className="text-text-muted text-sm font-medium">
-                {t("apartmentLabel")}: <span className="text-text-primary font-bold">{state.registeredPackage.apartment.number}</span>
+              <p className="text-[#808090] text-sm font-medium">
+                {t("apartmentLabel")}: <span className="text-white font-bold">{state.registeredPackage.apartment.number}</span>
                 {state.registeredPackage.apartment.tower ? ` · ${t("towerLabel")} ${state.registeredPackage.apartment.tower}` : ""}
               </p>
             </div>
 
             {/* QR Section */}
-            <div className="bg-bg-base/30 rounded-3xl p-4 md:p-8 border border-border-subtle">
+            <div className="rounded-3xl p-4 md:p-8 border border-white/[0.07]" style={{ background: "rgba(10,10,22,0.5)" }}>
               <PackageQR
                 packageId={state.registeredPackage.id}
                 trackingCode={state.registeredPackage.trackingCode}
@@ -143,7 +143,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
               </button>
               <button
                 onClick={() => setState({ status: "idle", message: "" })}
-                className="w-full py-3 text-text-muted hover:text-text-primary font-bold transition-colors text-xs uppercase tracking-widest cursor-pointer"
+                className="w-full py-3 text-[#808090] hover:text-white font-bold transition-colors text-xs uppercase tracking-widest cursor-pointer"
               >
                 {t("close")}
               </button>
@@ -174,7 +174,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
         <div>
           <label
             htmlFor="trackingCode"
-            className="block text-sm font-medium text-text-primary mb-1.5"
+            className="block text-sm font-medium text-white mb-1.5"
           >
             {t("trackingCodeLabel")}
             <span className="text-red-500 ml-1">*</span>
@@ -188,18 +188,18 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
             value={form.trackingCode}
             onChange={handleChange}
             placeholder={t("trackingCodePlaceholder")}
-            className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-primary placeholder-text-muted/40 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono transition-shadow"
+            className="w-full px-4 py-2.5 bg-[#080810] rounded-lg border border-white/[0.07] text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono transition-shadow"
           />
         </div>
 
         {/* Apartment SELECT */}
         <div>
-          <label htmlFor="apartmentId" className="block text-sm font-medium text-text-primary mb-1.5">
+          <label htmlFor="apartmentId" className="block text-sm font-medium text-white mb-1.5">
             {t("apartmentLabel")}
             <span className="text-red-500 ml-1">*</span>
           </label>
           {isLoadingApts ? (
-            <div className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-muted text-sm flex items-center gap-2">
+            <div className="w-full px-4 py-2.5 bg-[#080810] rounded-lg border border-white/[0.07] text-[#808090] text-sm flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
               {t("loadingApartments")}
             </div>
@@ -210,7 +210,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
               required
               value={form.apartmentId}
               onChange={(e) => setForm(prev => ({ ...prev, apartmentId: e.target.value }))}
-              className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow cursor-pointer"
+              className="w-full px-4 py-2.5 bg-[#080810] rounded-lg border border-white/[0.07] text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow cursor-pointer"
             >
               <option value="" disabled>{t("apartmentPlaceholder")}</option>
               {apartments.map(apt => (
@@ -226,10 +226,10 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
         <div>
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-text-primary mb-1.5"
+            className="block text-sm font-medium text-white mb-1.5"
           >
             {t("descriptionLabel")}
-            <span className="text-text-muted text-xs ml-1">
+            <span className="text-[#808090] text-xs ml-1">
               ({t("optional")})
             </span>
           </label>
@@ -240,7 +240,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
             value={form.description}
             onChange={handleChange}
             placeholder={t("descriptionPlaceholder")}
-            className="w-full px-4 py-2.5 bg-bg-base rounded-lg border border-border-subtle text-text-primary placeholder-text-muted/40 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-shadow"
+            className="w-full px-4 py-2.5 bg-[#080810] rounded-lg border border-white/[0.07] text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-shadow"
           />
         </div>
 
@@ -253,7 +253,7 @@ export default function PackageRegistrationForm({ onSuccess }: { onSuccess?: () 
               type="checkbox"
               checked={form.isPerishable}
               onChange={(e) => setForm((prev) => ({ ...prev, isPerishable: e.target.checked }))}
-              className="w-4 h-4 text-red-500 bg-bg-base border-red-500/30 rounded focus:ring-red-500 focus:ring-2 cursor-pointer"
+              className="w-4 h-4 text-red-500 bg-[#080810] border-red-500/30 rounded focus:ring-red-500 focus:ring-2 cursor-pointer"
             />
           </div>
           <div className="flex flex-col">

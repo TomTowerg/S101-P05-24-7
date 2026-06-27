@@ -4,13 +4,13 @@ import type { ReactNode } from "react";
 
 type AccentColor = "indigo" | "amber" | "green" | "blue" | "red" | "gray";
 
-const colorMap: Record<AccentColor, string> = {
-  indigo: "text-indigo-400 bg-indigo-400/10 border-indigo-400/20",
-  amber:  "text-amber-400  bg-amber-400/10  border-amber-400/20",
-  green:  "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
-  blue:   "text-blue-400   bg-blue-400/10   border-blue-400/20",
-  red:    "text-red-400    bg-red-400/10    border-red-400/20",
-  gray:   "text-gray-400   bg-gray-400/10   border-gray-400/20",
+const colorMap: Record<AccentColor, { text: string; bg: string; border: string }> = {
+  indigo: { text: "#818CF8", bg: "rgba(99,102,241,0.12)",  border: "rgba(99,102,241,0.22)" },
+  amber:  { text: "#FCD34D", bg: "rgba(245,158,11,0.12)",  border: "rgba(245,158,11,0.22)" },
+  green:  { text: "#34D399", bg: "rgba(16,185,129,0.12)",  border: "rgba(16,185,129,0.22)" },
+  blue:   { text: "#60A5FA", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.22)" },
+  red:    { text: "#F87171", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.22)"  },
+  gray:   { text: "#9CA3AF", bg: "rgba(156,163,175,0.12)", border: "rgba(156,163,175,0.22)" },
 };
 
 interface StatCardProps {
@@ -28,18 +28,24 @@ export default function StatCard({
   color = "indigo",
   className = "",
 }: StatCardProps) {
+  const c = colorMap[color];
   return (
     <div
-      className={`bg-bg-surface border border-border-subtle rounded-xl p-5 flex items-center justify-between gap-4 transition-theme ${className}`}
+      className={`rounded-xl p-5 flex items-center justify-between gap-4 ${className}`}
+      style={{ background: "#0E0E1C", border: "1px solid rgba(255,255,255,0.07)" }}
     >
       <div className="space-y-1 min-w-0">
-        <p className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] truncate">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] truncate" style={{ color: "rgba(255,255,255,0.40)" }}>
           {label}
         </p>
-        <p className="text-3xl font-bold text-text-primary tracking-tight">{value}</p>
+        <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
       </div>
       {icon && (
-        <div className={`p-3 rounded-xl border shrink-0 ${colorMap[color]}`} aria-hidden="true">
+        <div
+          className="p-3 rounded-xl shrink-0"
+          style={{ color: c.text, background: c.bg, border: `1px solid ${c.border}` }}
+          aria-hidden="true"
+        >
           {icon}
         </div>
       )}

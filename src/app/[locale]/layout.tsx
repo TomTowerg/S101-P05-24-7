@@ -51,6 +51,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       className={`${syne.variable} ${inter.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-bg-base text-text-primary antialiased overscroll-none transition-theme">
