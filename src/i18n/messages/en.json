@@ -341,7 +341,10 @@
     "profileButton": "Profile",
     "defaultName": "Resident",
     "claimMinCharsHint": "{count}/10 min.",
-    "deptLabel": "Apt"
+    "deptLabel": "Apt",
+    "statusPending": "Pending",
+    "statusNotified": "Notified",
+    "statusDelivered": "Delivered"
   },
   "Index": {
     "title": "Delivery Management",

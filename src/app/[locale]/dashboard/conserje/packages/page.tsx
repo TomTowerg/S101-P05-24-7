@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import StatusBadge from "@/components/ui/StatusBadge";
 import { SkeletonTable } from "@/components/ui/Skeleton";
 import EmptyState from "@/components/EmptyState";
 import {
-  Loader2, Search, Filter, X, Package, Flame, ChevronRight, QrCode,
+  Loader2, Search, Filter, X, Package, ChevronRight, QrCode,
 } from "lucide-react";
 import QRModal from "@/components/QRModal";
 
@@ -32,6 +31,19 @@ interface PackageData {
     number: string;
     tower: string | null;
   };
+}
+
+function StatusBadge({ status, t }: { status: string; t: (key: string) => string }) {
+  const styles: Record<string, string> = {
+    PENDING: "bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20",
+    NOTIFIED: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+    DELIVERED: "bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20",
+  };
+  return (
+    <span className={`px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide ${styles[status] || styles.PENDING}`}>
+      {t(`status${status}`) || status}
+    </span>
+  );
 }
 
 export default function PackagesPage() {
@@ -123,18 +135,19 @@ export default function PackagesPage() {
 
   const hasActiveFilters = !!(searchQuery || statusFilter || apartmentFilter || typeFilter || startDate || endDate);
 
-  const selectStyle = "w-full px-3 py-2.5 bg-bg-base border border-border-subtle rounded-xl text-sm font-medium text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors cursor-pointer appearance-none";
+  const inputBase = "w-full bg-[#262626] border border-white/[0.08] rounded-xl px-4 py-2.5 text-[14px] text-white outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors placeholder:text-[#606060]";
+  const selectBase = `${inputBase} appearance-none cursor-pointer`;
 
   if (status === "loading" || (isLoading && packages.length === 0)) {
     return (
-      <div className="p-6 md:p-10 space-y-6">
-        <div className="h-8 w-64 animate-shimmer rounded-lg" />
-        <div className="bg-bg-surface border border-border-subtle rounded-2xl p-6">
+      <div className="min-h-screen bg-[#141414] px-6 py-8 space-y-6">
+        <div className="h-8 w-64 animate-pulse bg-white/[0.06] rounded-lg" />
+        <div className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl p-6">
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
-            {[0, 1, 2, 3].map(i => <div key={i} className="h-11 animate-shimmer rounded-xl" />)}
+            {[0, 1, 2, 3].map(i => <div key={i} className="h-11 animate-pulse bg-white/[0.06] rounded-xl" />)}
           </div>
         </div>
-        <div className="bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden">
+        <div className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl overflow-hidden">
           <SkeletonTable rows={6} cols={5} />
         </div>
       </div>
@@ -142,40 +155,43 @@ export default function PackagesPage() {
   }
 
   return (
-    <div className="p-6 md:p-10 space-y-6 pb-24 md:pb-10">
+    <div className="min-h-screen bg-[#141414] px-6 py-8 space-y-6 pb-24 md:pb-8">
 
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h1 className="text-2xl font-bold text-text-primary tracking-tight">{t("searchPackages")}</h1>
-        <p className="text-text-muted text-sm font-medium mt-0.5">{t("f1")}</p>
+        <p className="text-[11px] font-medium text-[#606060] uppercase tracking-widest mb-1">
+          Overview / {t("navPaquetes")}
+        </p>
+        <h1 className="text-[36px] font-bold text-white leading-none mb-1">{t("searchPackages")}</h1>
+        <p className="text-[15px] text-[#A0A0A0] font-medium">{t("f1")}</p>
       </motion.div>
 
       {/* Filters */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-bg-surface border border-border-subtle rounded-2xl p-5 space-y-4 transition-theme"
+        className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl p-5 space-y-4"
       >
         <div className="flex flex-col xl:flex-row gap-3">
           {/* Search */}
           <div className="flex-[2] relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" aria-hidden="true" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#606060] pointer-events-none" aria-hidden="true" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full pl-9 pr-9 py-2.5 bg-bg-base border border-border-subtle rounded-xl text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-indigo-500/50 transition-colors"
+              className="w-full pl-9 pr-9 py-2.5 bg-[#262626] border border-white/[0.08] rounded-xl text-[14px] text-white placeholder:text-[#606060] outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#606060] hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -183,7 +199,7 @@ export default function PackagesPage() {
           </div>
 
           {/* Status */}
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={selectStyle}>
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={selectBase}>
             <option value="">{t("allStatuses")}</option>
             <option value="PENDING">{t("statusPENDING")}</option>
             <option value="NOTIFIED">{t("statusNOTIFIED")}</option>
@@ -191,14 +207,14 @@ export default function PackagesPage() {
           </select>
 
           {/* Type */}
-          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className={selectStyle}>
+          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className={selectBase}>
             <option value="">{t("allTypes")}</option>
             <option value="standard">{t("typeStandard")}</option>
             <option value="perishable">{t("typePerishable")}</option>
           </select>
 
           {/* Apartment */}
-          <select value={apartmentFilter} onChange={(e) => setApartmentFilter(e.target.value)} className={selectStyle}>
+          <select value={apartmentFilter} onChange={(e) => setApartmentFilter(e.target.value)} className={selectBase}>
             <option value="">{t("allApartments")}</option>
             {apartments.map((apt) => (
               <option key={apt.id} value={apt.id}>
@@ -211,34 +227,34 @@ export default function PackagesPage() {
         <div className="flex flex-col sm:flex-row items-end gap-3">
           <div className="flex gap-3 w-full sm:w-auto">
             <div>
-              <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-bold text-[#606060] uppercase tracking-widest mb-1.5">
                 {t("startDate")}
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 bg-bg-base border border-border-subtle rounded-xl text-sm text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors"
+                className="px-3 py-2 bg-[#262626] border border-white/[0.08] rounded-xl text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors"
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-bold text-[#606060] uppercase tracking-widest mb-1.5">
                 {t("endDate")}
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 bg-bg-base border border-border-subtle rounded-xl text-sm text-text-primary focus:outline-none focus:border-indigo-500/50 transition-colors"
+                className="px-3 py-2 bg-[#262626] border border-white/[0.08] rounded-xl text-[14px] text-white outline-none focus:border-[#6366F1]/50 transition-colors"
               />
             </div>
           </div>
           <button
             onClick={clearFilters}
             disabled={!hasActiveFilters}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] font-medium transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1]/50 ${
               hasActiveFilters
-                ? "bg-bg-base text-text-muted hover:text-text-primary border border-border-subtle hover:border-indigo-500/30"
+                ? "border border-white/[0.12] text-[#A0A0A0] hover:text-white bg-transparent hover:bg-white/[0.04]"
                 : "opacity-0 pointer-events-none"
             }`}
           >
@@ -254,7 +270,7 @@ export default function PackagesPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-xs text-text-muted font-medium px-1"
+          className="text-[13px] text-[#606060] font-medium px-1"
         >
           {isSearching ? (
             <span className="flex items-center gap-2">
@@ -269,10 +285,10 @@ export default function PackagesPage() {
 
       {/* Results table */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className={`bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden transition-theme relative ${isSearching ? "opacity-60" : ""}`}
+        className={`bg-[#1F1F1F] border border-white/[0.08] rounded-2xl overflow-hidden relative transition-opacity ${isSearching ? "opacity-60" : "opacity-100"}`}
       >
         {isLoading ? (
           <SkeletonTable rows={6} cols={5} />
@@ -288,16 +304,16 @@ export default function PackagesPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-bg-base/60 border-b border-border-subtle">
-                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("tracking")}</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("apt")}</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("status")}</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest hidden md:table-cell">{t("receivedBy")}</th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("date")}</th>
-                  <th className="px-6 py-4 w-10" />
+                <tr className="border-b border-white/[0.06]">
+                  <th className="px-6 py-3 text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("tracking")}</th>
+                  <th className="px-6 py-3 text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("apt")}</th>
+                  <th className="px-6 py-3 text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("status")}</th>
+                  <th className="px-6 py-3 text-[11px] font-semibold text-[#606060] uppercase tracking-widest hidden md:table-cell">{t("receivedBy")}</th>
+                  <th className="px-6 py-3 text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("date")}</th>
+                  <th className="px-6 py-3 w-10" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border-subtle">
+              <tbody>
                 {packages.map((pkg, index) => (
                   <motion.tr
                     key={pkg.id}
@@ -305,44 +321,44 @@ export default function PackagesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.03, ease: [0.16, 1, 0.3, 1] }}
                     onClick={() => setSelectedPackage(pkg)}
-                    className="hover:bg-white/[0.02] transition-colors cursor-pointer group"
+                    className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors cursor-pointer group h-[56px]"
+                    style={{ backgroundColor: index % 2 === 1 ? "rgba(255,255,255,0.01)" : "transparent" }}
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-indigo-400 glow-text-indigo">
+                        <span className="font-mono text-[13px] font-semibold text-[#6366F1]">
                           {pkg.trackingCode}
                         </span>
                         {pkg.isPerishable && (
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[9px] font-bold">
-                            <Flame className="w-2.5 h-2.5" aria-hidden="true" />
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[9px] font-bold">
                             {t("perishable")}
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
+                      <span className="px-2.5 py-1 bg-[#262626] rounded-lg text-xs font-bold text-white border border-white/[0.08]">
                         {pkg.apartment.number}{pkg.apartment.tower ? ` · ${pkg.apartment.tower}` : ""}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <StatusBadge status={pkg.status as any} />
+                      <StatusBadge status={pkg.status} t={t} />
                     </td>
                     <td className="px-6 py-4 hidden md:table-cell">
                       {pkg.receiverName ? (
-                        <span className="text-xs font-semibold text-text-primary">{pkg.receiverName}</span>
+                        <span className="text-[13px] font-semibold text-white">{pkg.receiverName}</span>
                       ) : (
-                        <span className="text-xs text-text-muted/40 font-medium">—</span>
+                        <span className="text-[13px] text-[#606060] font-medium">—</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-xs text-text-muted font-medium whitespace-nowrap">
+                        <span className="text-[13px] text-[#A0A0A0] font-medium whitespace-nowrap">
                           {new Date(pkg.createdAt).toLocaleDateString()}{" "}
                           {new Date(pkg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </span>
                         {pkg.status === "DELIVERED" && pkg.pickedUpAt && (
-                          <span className="text-[10px] text-emerald-500 font-semibold whitespace-nowrap">
+                          <span className="text-[10px] text-[#10B981] font-semibold whitespace-nowrap">
                             ↩ {new Date(pkg.pickedUpAt).toLocaleDateString()}{" "}
                             {new Date(pkg.pickedUpAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                           </span>
@@ -353,12 +369,12 @@ export default function PackagesPage() {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={(e) => { e.stopPropagation(); setQrModal({ packageId: pkg.id, trackingCode: pkg.trackingCode }); }}
-                          className="p-1.5 rounded-lg text-text-muted/40 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg text-[#606060] hover:text-[#6366F1] hover:bg-[#6366F1]/10 transition-colors cursor-pointer"
                           aria-label={t("viewQRAriaLabel")}
                         >
                           <QrCode className="w-4 h-4" aria-hidden="true" />
                         </button>
-                        <ChevronRight className="w-4 h-4 text-text-muted/40 group-hover:text-indigo-400 transition-colors" aria-hidden="true" />
+                        <ChevronRight className="w-4 h-4 text-[#606060] group-hover:text-[#6366F1] transition-colors" aria-hidden="true" />
                       </div>
                     </td>
                   </motion.tr>
@@ -389,7 +405,7 @@ export default function PackagesPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setSelectedPackage(null)}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
               aria-hidden="true"
             />
             <motion.aside
@@ -398,26 +414,26 @@ export default function PackagesPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 280 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-bg-surface border-l border-border-subtle z-50 flex flex-col overflow-hidden"
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-[#1F1F1F] border-l border-white/[0.08] z-50 flex flex-col overflow-hidden"
               role="complementary"
               aria-label={t("packageDrawerAriaLabel")}
             >
               {/* Drawer header */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-border-subtle">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-white/[0.08]">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/25">
-                    <Package className="w-5 h-5 text-indigo-400" aria-hidden="true" />
+                  <div className="p-2 rounded-xl bg-[#6366F1]/10 border border-[#6366F1]/20">
+                    <Package className="w-5 h-5 text-[#6366F1]" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{t("packageDrawerTitle")}</p>
-                    <p className="font-mono text-sm font-bold text-indigo-400 glow-text-indigo">
+                    <p className="text-[10px] font-bold text-[#606060] uppercase tracking-widest">{t("packageDrawerTitle")}</p>
+                    <p className="font-mono text-sm font-bold text-[#6366F1]">
                       {selectedPackage.trackingCode}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedPackage(null)}
-                  className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-base transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+                  className="p-2 rounded-xl hover:bg-white/[0.05] text-[#606060] hover:text-white transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1]/50"
                   aria-label={t("closeDrawerAriaLabel")}
                 >
                   <X className="w-5 h-5" />
@@ -425,46 +441,47 @@ export default function PackagesPage() {
               </div>
 
               {/* Drawer body */}
-              <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5">
+              <div className="flex-1 overflow-y-auto px-6 py-6 space-y-1">
+
                 {/* Status */}
-                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("status")}</span>
-                  <StatusBadge status={selectedPackage.status as any} />
+                <div className="flex items-center justify-between py-4 border-b border-white/[0.06]">
+                  <span className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("status")}</span>
+                  <StatusBadge status={selectedPackage.status} t={t} />
                 </div>
 
                 {/* Apartment */}
-                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("apt")}</span>
-                  <span className="px-2.5 py-1 bg-bg-base rounded-lg text-xs font-bold text-text-primary border border-border-subtle">
+                <div className="flex items-center justify-between py-4 border-b border-white/[0.06]">
+                  <span className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("apt")}</span>
+                  <span className="px-2.5 py-1 bg-[#262626] rounded-lg text-[14px] font-bold text-white border border-white/[0.08]">
                     {selectedPackage.apartment.number}
                     {selectedPackage.apartment.tower ? ` · ${selectedPackage.apartment.tower}` : ""}
                   </span>
                 </div>
 
                 {/* Receiver */}
-                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("receivedBy")}</span>
-                  <span className="text-sm font-semibold text-text-primary">
+                <div className="flex items-center justify-between py-4 border-b border-white/[0.06]">
+                  <span className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("receivedBy")}</span>
+                  <span className="text-[14px] font-semibold text-white">
                     {selectedPackage.receiverName || "—"}
                   </span>
                 </div>
 
-                {/* Arrival date + time */}
-                <div className="flex items-center justify-between py-4 border-b border-border-subtle">
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("arrivedAt")}</span>
-                  <span className="text-sm font-medium text-text-primary">
+                {/* Arrival */}
+                <div className="flex items-center justify-between py-4 border-b border-white/[0.06]">
+                  <span className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("arrivedAt")}</span>
+                  <span className="text-[14px] font-medium text-white">
                     {new Date(selectedPackage.createdAt).toLocaleDateString()}{" "}
-                    <span className="text-text-muted">
+                    <span className="text-[#A0A0A0]">
                       {new Date(selectedPackage.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </span>
                 </div>
 
-                {/* Pickup date + time (only when DELIVERED) */}
+                {/* Pickup */}
                 {selectedPackage.status === "DELIVERED" && selectedPackage.pickedUpAt && (
-                  <div className="flex items-center justify-between py-4 border-b border-border-subtle">
-                    <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{t("pickedUpAt")}</span>
-                    <span className="text-sm font-medium text-emerald-500">
+                  <div className="flex items-center justify-between py-4 border-b border-white/[0.06]">
+                    <span className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">{t("pickedUpAt")}</span>
+                    <span className="text-[14px] font-medium text-[#10B981]">
                       {new Date(selectedPackage.pickedUpAt).toLocaleDateString()}{" "}
                       <span className="font-semibold">
                         {new Date(selectedPackage.pickedUpAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -475,11 +492,10 @@ export default function PackagesPage() {
 
                 {/* Perishable */}
                 {selectedPackage.isPerishable && (
-                  <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
-                    <Flame className="w-4 h-4 text-red-400 shrink-0" aria-hidden="true" />
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20 mt-2">
                     <div>
-                      <p className="text-xs font-bold text-red-400 uppercase tracking-wider">{t("perishable")}</p>
-                      <p className="text-xs text-text-muted mt-0.5">{t("perishableNote")}</p>
+                      <p className="text-[11px] font-bold text-orange-400 uppercase tracking-wider">{t("perishable")}</p>
+                      <p className="text-[13px] text-[#A0A0A0] mt-0.5">{t("perishableNote")}</p>
                     </div>
                   </div>
                 )}

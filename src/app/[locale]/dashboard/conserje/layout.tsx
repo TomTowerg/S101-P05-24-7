@@ -11,6 +11,7 @@ import {
   AlertCircle,
   LogOut,
   Package,
+  Search,
 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -27,7 +28,6 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
   ];
 
   const isActive = (path: string) => {
-    // pathname includes the locale, so we need to check if it ends with or matches
     if (path === "/dashboard/conserje") {
       return pathname.endsWith("/dashboard/conserje");
     }
@@ -35,84 +35,99 @@ export default function ConciergeLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-bg-base flex flex-col md:flex-row pt-[68px] transition-theme">
-      {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-bg-surface border-r border-border-subtle flex flex-col hidden md:flex h-[calc(100vh-68px)] sticky top-[68px] transition-theme">
-        <div className="p-6 border-b border-border-subtle">
-          <div className="flex items-center gap-3">
-            <div className="bg-indigo-600 p-2 rounded-xl shadow-md shadow-indigo-200">
-              <Package className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="font-bold text-text-primary text-lg leading-none tracking-tight">Loombox</h2>
-              <span className="text-[10px] uppercase tracking-widest font-bold text-indigo-600">{t("conciergeRoleBadge")}</span>
-            </div>
+    <div className="min-h-screen bg-[#141414] flex flex-col md:flex-row transition-theme pt-16">
+      {/* Sidebar — desktop only */}
+      <aside className="hidden md:flex w-[240px] shrink-0 bg-[#141414] border-r border-white/[0.08] flex-col h-[calc(100vh-4rem)] sticky top-16">
+
+        {/* Logo */}
+        <div className="px-5 py-5 border-b border-white/[0.08]">
+          <div className="flex items-center gap-2.5">
+            <Package className="w-5 h-5 text-[#6366F1]" />
+            <span className="font-bold text-sm tracking-[0.12em] text-white uppercase">LOOMBOX</span>
           </div>
         </div>
-        
-        <div className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
+
+        {/* Search bar */}
+        <div className="px-4 py-3">
+          <div className="flex items-center gap-2 bg-[#262626] rounded-xl px-3 py-2 border border-white/[0.08]">
+            <Search className="w-3.5 h-3.5 text-[#606060] shrink-0" />
+            <input
+              type="text"
+              placeholder="Buscar..."
+              className="bg-transparent text-[13px] text-white placeholder:text-[#606060] outline-none w-full"
+            />
+          </div>
+        </div>
+
+        {/* Nav items */}
+        <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href as any}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-[14px] transition-colors cursor-pointer ${
                   active
-                    ? "bg-indigo-500/15 text-indigo-600"
-                    : "text-text-muted hover:bg-bg-base hover:text-text-primary"
+                    ? "text-[#6366F1] bg-[#6366F1]/[0.08] font-medium"
+                    : "text-[#A0A0A0] hover:text-white hover:bg-white/[0.04]"
                 }`}
               >
-                <item.icon className={`w-5 h-5 ${active ? "text-indigo-600" : "text-text-muted/65"}`} />
+                <item.icon className="w-4 h-4 shrink-0" />
                 {item.label}
               </Link>
             );
           })}
-        </div>
+        </nav>
 
-        <div className="p-4 border-t border-border-subtle">
-          <div className="mb-4 px-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-500/15 flex items-center justify-center text-indigo-400 font-bold border border-indigo-500/25">
-              {session?.user?.name?.charAt(0) || "C"}
+        {/* User profile */}
+        <div className="mt-auto border-t border-white/[0.08] px-4 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-[#6366F1]/20 flex items-center justify-center shrink-0">
+              <span className="text-xs font-semibold text-[#6366F1]">
+                {session?.user?.name?.charAt(0) ?? "?"}
+              </span>
             </div>
-            <div className="overflow-hidden">
-              <p className="text-sm font-bold text-text-primary truncate">{session?.user?.name || t("conciergeRoleBadge")}</p>
-              <p className="text-[10px] text-text-muted truncate">{session?.user?.email}</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-medium text-white truncate">{session?.user?.name}</p>
+              <p className="text-[11px] text-[#606060] truncate">{session?.user?.email}</p>
             </div>
+            <button
+              onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
+              className="p-1.5 rounded-lg hover:bg-white/[0.05] text-[#606060] hover:text-white transition-colors cursor-pointer"
+              aria-label={t("signOut")}
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           </div>
-
-          <button
-            onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-red-600 hover:bg-red-500/10 transition-colors cursor-pointer"
-          >
-            <LogOut className="w-4 h-4" />
-            {t("signOut").toUpperCase()}
-          </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-full overflow-x-hidden min-h-[calc(100vh-68px)]">
+      {/* Main content */}
+      <main className="flex-1 bg-[#141414] overflow-auto min-h-screen">
         {children}
       </main>
 
-      {/* Mobile Navigation (Bottom bar) */}
-      <nav aria-label={t("mobileNavAriaLabel")} className="md:hidden fixed bottom-0 left-0 right-0 bg-bg-surface border-t border-border-subtle flex justify-around p-2 z-50 transition-theme">
-         {navItems.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href as any}
-                className={`flex flex-col items-center p-2 rounded-lg ${
-                  active ? "text-indigo-600" : "text-text-muted"
-                }`}
-              >
-                <item.icon className="w-5 h-5 mb-1" aria-hidden="true" />
-                <span className="text-[10px] font-bold uppercase">{item.label}</span>
-              </Link>
-            );
-          })}
+      {/* Mobile bottom nav */}
+      <nav
+        aria-label={t("mobileNavAriaLabel")}
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-[#141414] border-t border-white/[0.08] flex justify-around p-2 z-50"
+      >
+        {navItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href as any}
+              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                active ? "text-[#6366F1]" : "text-[#606060]"
+              }`}
+            >
+              <item.icon className="w-5 h-5 mb-1" aria-hidden="true" />
+              <span className="text-[10px] font-bold uppercase">{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
     </div>
   );

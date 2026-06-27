@@ -53,29 +53,11 @@ export default async function RootLayout({
       className={`${syne.variable} ${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const savedTheme = localStorage.getItem('theme');
-                  if (savedTheme === 'light') {
-                    document.documentElement.classList.add('light');
-                  } else {
-                    document.documentElement.classList.remove('light');
-                  }
-                } catch (_) {}
-              })();
-            `,
-          }}
-        />
-      </head>
       <body className="min-h-screen flex flex-col bg-bg-base text-text-primary antialiased overscroll-none transition-theme">
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <Navbar />
-            <main className="flex flex-col flex-1">
+            <main className="flex flex-col flex-1 pt-16">
               <PageTransition>{children}</PageTransition>
             </main>
             <Toaster position="bottom-right" richColors duration={3000} />

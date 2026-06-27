@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, ArrowRight, Loader2, Building2, X } from "lucide-react";
+import { CheckCircle, Loader2, Building2, X } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 
 type Role = "CONSERJE" | "RESIDENTE";
@@ -102,36 +102,108 @@ export default function OnboardingClient({
   const currentStepDisplay = role === "CONSERJE" ? 1 : step - 1;
   const totalStepsDisplay = role === "CONSERJE" ? 1 : 2;
 
+  const steps =
+    role === "CONSERJE"
+      ? [{ label: t("step3.title"), desc: t("step3.subtitle") }]
+      : [
+          { label: t("step2.title"), desc: t("apartment") },
+          { label: t("step3.title"), desc: t("step3.subtitle") },
+        ];
+
   return (
-    <div className="min-h-screen bg-neutral-950 flex flex-col items-center pt-20 px-4">
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px]" />
-      </div>
-      <div className="relative z-10 w-full max-w-2xl">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-white mb-2">{t("title")}</h1>
-          <p className="text-neutral-400">{t("subtitle")}</p>
+    <div className="min-h-screen bg-[#141414] flex">
+
+      {/* LEFT PANEL — branding + step indicator */}
+      <div className="hidden lg:flex w-1/2 flex-col justify-between p-12 bg-[#141414] border-r border-white/[0.06] relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#6366F1]/[0.05] rounded-full blur-[100px]" />
         </div>
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-neutral-400 font-medium">
-              {t("progress", { current: currentStepDisplay, total: totalStepsDisplay })}
-            </span>
-            <span className="text-sm font-medium text-indigo-400">
-              {Math.round((currentStepDisplay / totalStepsDisplay) * 100)}%
-            </span>
-          </div>
-          <div className="h-2 bg-neutral-800 rounded-full overflow-hidden">
+
+        {/* Logo */}
+        <div className="relative flex items-center gap-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#6366F1]">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+            <path d="m3.3 7 8.7 5 8.7-5" />
+            <path d="M12 22V12" />
+          </svg>
+          <span
+            style={{ fontFamily: "var(--font-syne, sans-serif)", fontWeight: 700, letterSpacing: "0.12em", fontSize: "18px" }}
+            className="text-white uppercase"
+          >
+            Loombox
+          </span>
+        </div>
+
+        {/* Step indicator */}
+        <div className="relative space-y-6">
+          <p className="text-[11px] font-semibold text-[#606060] uppercase tracking-widest">
+            {t("progress", { current: currentStepDisplay, total: totalStepsDisplay })}
+          </p>
+
+          {/* Progress bar */}
+          <div className="h-1 bg-white/[0.06] rounded-full overflow-hidden w-48">
             <motion.div
-              className="h-full bg-indigo-600 rounded-full"
+              className="h-full bg-[#6366F1] rounded-full"
               initial={{ width: `${(1 / totalStepsDisplay) * 100}%` }}
               animate={{ width: `${(currentStepDisplay / totalStepsDisplay) * 100}%` }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             />
           </div>
+
+          {/* Steps list */}
+          <div className="space-y-4">
+            {steps.map((s, i) => {
+              const stepNum = i + 1;
+              const isActive = stepNum === currentStepDisplay;
+              const isDone = stepNum < currentStepDisplay;
+              return (
+                <div key={i} className="flex items-center gap-3">
+                  <div
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300 ${
+                      isDone
+                        ? "bg-[#6366F1]/20 border border-[#6366F1]/30"
+                        : isActive
+                        ? "bg-[#6366F1]"
+                        : "bg-white/[0.04] border border-white/[0.08]"
+                    }`}
+                  >
+                    {isDone ? (
+                      <CheckCircle className="w-4 h-4 text-[#6366F1]" />
+                    ) : (
+                      <span className={`text-[12px] font-bold ${isActive ? "text-white" : "text-[#606060]"}`}>
+                        {stepNum}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <p className={`text-[14px] font-medium transition-colors duration-300 ${isActive || isDone ? "text-white" : "text-[#606060]"}`}>
+                      {s.label}
+                    </p>
+                    <p className="text-[12px] text-[#606060]">{s.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-2xl p-6 md:p-10 shadow-2xl overflow-hidden relative">
+
+        <p className="relative text-[12px] text-[#606060]">TICS420 — 2026</p>
+      </div>
+
+      {/* RIGHT PANEL — form */}
+      <div className="flex-1 flex items-center justify-center p-8 bg-[#1F1F1F]">
+        <div className="w-full max-w-sm">
+
+          {/* Mobile logo */}
+          <div className="flex lg:hidden items-center gap-2 mb-8">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#6366F1]">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span className="text-white font-bold text-sm tracking-widest uppercase">Loombox</span>
+          </div>
+
           <AnimatePresence mode="wait">
             {step === 2 && (
               <motion.div
@@ -139,23 +211,33 @@ export default function OnboardingClient({
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-8"
               >
-                <h2 className="text-2xl font-semibold text-white text-center mb-8">{t("step2.title")}</h2>
+                {/* Step title */}
+                <div>
+                  <p className="text-[11px] font-semibold text-[#6366F1] uppercase tracking-widest mb-2">
+                    {t("title")}
+                  </p>
+                  <h1 className="text-[28px] font-bold text-white mb-2">{t("step2.title")}</h1>
+                  <p className="text-[15px] text-[#A0A0A0]">{t("subtitle")}</p>
+                </div>
+
+                {/* Apartment select */}
                 {apartments.length === 0 ? (
                   <EmptyState
                     icon={Building2}
                     title={t("step2.noApartments")}
                   />
                 ) : (
-                  <div className="max-w-md mx-auto">
-                    <label className="block text-sm font-medium text-neutral-300 mb-2">
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-medium text-[#A0A0A0]">
                       {t("apartment")}
                     </label>
                     <select
                       value={apartmentId}
                       onChange={(e) => setApartmentId(e.target.value)}
-                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                      className="w-full bg-[#262626] border border-white/[0.08] rounded-xl px-4 py-3 text-[14px] text-white outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors appearance-none cursor-pointer"
                     >
                       <option value="" disabled>{t("step2.placeholder")}</option>
                       {apartments.map((apt) => (
@@ -164,27 +246,28 @@ export default function OnboardingClient({
                         </option>
                       ))}
                     </select>
-                    <div className="mt-3 text-center">
-                      <button
-                        type="button"
-                        onClick={openNotifyModal}
-                        className="text-xs text-neutral-400 hover:text-indigo-400 underline underline-offset-2 transition-colors cursor-pointer"
-                      >
-                        {t("findAptLink")}
-                      </button>
-                    </div>
                   </div>
                 )}
-                <div className="mt-8 flex justify-end">
+
+                {/* Can't find depto link */}
+                <p className="text-[13px] text-[#606060]">
                   <button
-                    disabled={!apartmentId}
-                    onClick={() => setStep(3)}
-                    className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    type="button"
+                    onClick={openNotifyModal}
+                    className="text-[#6366F1] hover:text-[#4F46E5] transition-colors underline-offset-2 hover:underline cursor-pointer"
                   >
-                    <span>{t("continue")}</span>
-                    <ArrowRight size={18} />
+                    {t("findAptLink")}
                   </button>
-                </div>
+                </p>
+
+                {/* Continue button */}
+                <button
+                  disabled={!apartmentId}
+                  onClick={() => setStep(3)}
+                  className="w-full bg-[#6366F1] hover:bg-[#4F46E5] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-full px-6 py-3.5 text-[15px] font-semibold transition-colors cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {t("continue")}
+                </button>
               </motion.div>
             )}
 
@@ -194,37 +277,53 @@ export default function OnboardingClient({
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-6 text-center"
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-8"
               >
-                <div className="w-20 h-20 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle size={40} />
+                {/* Step title */}
+                <div>
+                  <p className="text-[11px] font-semibold text-[#6366F1] uppercase tracking-widest mb-2">
+                    {t("title")}
+                  </p>
+                  <h1 className="text-[28px] font-bold text-white mb-2">{t("step3.title")}</h1>
+                  <p className="text-[15px] text-[#A0A0A0]">{t("step3.subtitle")}</p>
                 </div>
-                <h2 className="text-2xl font-semibold text-white mb-2">{t("step3.title")}</h2>
-                <p className="text-neutral-400 mb-8">{t("step3.subtitle")}</p>
-                <div className="bg-neutral-950 rounded-xl p-6 mb-8 max-w-sm mx-auto text-left border border-neutral-800">
-                  <div className="mb-4">
-                    <span className="text-sm text-neutral-500 block">{t("role")}</span>
-                    <span className="text-white font-medium">
-                      {role === "CONSERJE" ? t("step1.concierge") : t("step1.resident")}
-                    </span>
+
+                {/* Confirmation card */}
+                <div className="bg-[#262626] rounded-2xl p-6 border border-white/[0.08] space-y-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-xl bg-[#6366F1]/10 border border-[#6366F1]/20 flex items-center justify-center shrink-0">
+                      <CheckCircle className="w-5 h-5 text-[#6366F1]" />
+                    </div>
+                    <p className="text-[13px] font-semibold text-white">{t("step3.title")}</p>
                   </div>
-                  {role === "RESIDENTE" && (
+                  <div className="space-y-3 pt-2 border-t border-white/[0.06]">
                     <div>
-                      <span className="text-sm text-neutral-500 block">{t("apartment")}</span>
-                      <span className="text-white font-medium">
-                        {apartments.find((a) => a.id === apartmentId)?.number}
-                        {apartments.find((a) => a.id === apartmentId)?.tower
-                          ? ` (${t("tower")} ${apartments.find((a) => a.id === apartmentId)?.tower})`
-                          : ""}
+                      <span className="text-[11px] text-[#606060] block uppercase tracking-widest mb-0.5">{t("role")}</span>
+                      <span className="text-[14px] text-white font-medium">
+                        {role === "CONSERJE" ? t("step1.concierge") : t("step1.resident")}
                       </span>
                     </div>
-                  )}
+                    {role === "RESIDENTE" && (
+                      <div>
+                        <span className="text-[11px] text-[#606060] block uppercase tracking-widest mb-0.5">{t("apartment")}</span>
+                        <span className="text-[14px] text-white font-medium">
+                          {apartments.find((a) => a.id === apartmentId)?.number}
+                          {apartments.find((a) => a.id === apartmentId)?.tower
+                            ? ` (${t("tower")} ${apartments.find((a) => a.id === apartmentId)?.tower})`
+                            : ""}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="flex justify-between max-w-sm mx-auto items-center">
+
+                {/* Actions */}
+                <div className="flex items-center justify-between gap-4">
                   {role === "RESIDENTE" ? (
                     <button
                       onClick={() => setStep(2)}
-                      className="text-neutral-400 hover:text-white px-4 py-2 font-medium transition-colors cursor-pointer"
+                      className="text-[#A0A0A0] hover:text-white px-4 py-2 text-[14px] font-medium transition-colors cursor-pointer disabled:opacity-40"
                       disabled={isLoading}
                     >
                       {t("back")}
@@ -235,10 +334,10 @@ export default function OnboardingClient({
                   <button
                     onClick={handleComplete}
                     disabled={isLoading}
-                    className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                    className="flex-1 bg-[#6366F1] hover:bg-[#4F46E5] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-full px-6 py-3.5 text-[15px] font-semibold transition-colors cursor-pointer flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
-                      <Loader2 className="animate-spin" size={18} />
+                      <Loader2 className="animate-spin w-4 h-4" />
                     ) : (
                       <span>{t("step3.cta")}</span>
                     )}
@@ -250,22 +349,25 @@ export default function OnboardingClient({
         </div>
       </div>
 
-      {/* ── Notify Concierge Modal ── */}
+      {/* Notify Concierge Modal */}
       {showNotify && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 w-full max-w-md"
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-[#1F1F1F] border border-white/[0.08] rounded-2xl p-6 w-full max-w-md shadow-2xl"
           >
             {notifySent ? (
               <div className="text-center py-4 space-y-3">
-                <CheckCircle className="w-12 h-12 text-green-400 mx-auto" />
+                <div className="w-12 h-12 rounded-2xl bg-[#6366F1]/10 border border-[#6366F1]/20 flex items-center justify-center mx-auto">
+                  <CheckCircle className="w-6 h-6 text-[#6366F1]" />
+                </div>
                 <h3 className="text-white font-bold text-lg">{t("notifySuccessTitle")}</h3>
-                <p className="text-neutral-400 text-sm">{t("notifySuccessDesc")}</p>
+                <p className="text-[#A0A0A0] text-sm">{t("notifySuccessDesc")}</p>
                 <button
                   onClick={() => { setShowNotify(false); setNotifySent(false); }}
-                  className="mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium transition-colors cursor-pointer"
+                  className="mt-4 px-6 py-2.5 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-full text-[14px] font-semibold transition-colors cursor-pointer"
                 >
                   {t("notifyCloseButton")}
                 </button>
@@ -274,47 +376,50 @@ export default function OnboardingClient({
               <>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-white font-bold text-lg">{t("notifyModalTitle")}</h3>
-                  <button onClick={() => setShowNotify(false)} className="text-neutral-400 hover:text-white transition-colors cursor-pointer">
-                    <X size={20} />
+                  <button
+                    onClick={() => setShowNotify(false)}
+                    className="text-[#606060] hover:text-white transition-colors cursor-pointer p-1"
+                  >
+                    <X size={18} />
                   </button>
                 </div>
-                <p className="text-neutral-400 text-sm mb-4">{t("notifyModalDesc")}</p>
+                <p className="text-[#A0A0A0] text-sm mb-5">{t("notifyModalDesc")}</p>
                 <form onSubmit={handleNotify} className="space-y-3">
                   <div>
-                    <label className="block text-xs font-medium text-neutral-300 mb-1">{t("notifyNameLabel")}</label>
+                    <label className="block text-[12px] font-medium text-[#A0A0A0] mb-1.5">{t("notifyNameLabel")}</label>
                     <input
                       type="text"
                       required
                       value={notifyForm.name}
                       onChange={e => setNotifyForm(p => ({ ...p, name: e.target.value }))}
-                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full bg-[#262626] border border-white/[0.08] text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-neutral-300 mb-1">{t("notifyEmailLabel")}</label>
+                    <label className="block text-[12px] font-medium text-[#A0A0A0] mb-1.5">{t("notifyEmailLabel")}</label>
                     <input
                       type="email"
                       required
                       value={notifyForm.email}
                       onChange={e => setNotifyForm(p => ({ ...p, email: e.target.value }))}
-                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full bg-[#262626] border border-white/[0.08] text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-neutral-300 mb-1">{t("notifyMessageLabel")}</label>
+                    <label className="block text-[12px] font-medium text-[#A0A0A0] mb-1.5">{t("notifyMessageLabel")}</label>
                     <textarea
                       required
                       rows={3}
                       placeholder={t("notifyMessagePlaceholder")}
                       value={notifyForm.message}
                       onChange={e => setNotifyForm(p => ({ ...p, message: e.target.value }))}
-                      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                      className="w-full bg-[#262626] border border-white/[0.08] text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/20 transition-colors resize-none"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={isNotifying}
-                    className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-lg font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 bg-[#6366F1] hover:bg-[#4F46E5] text-white py-3 rounded-full text-[14px] font-semibold transition-colors disabled:opacity-40 cursor-pointer"
                   >
                     {isNotifying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     {t("notifySendButton")}

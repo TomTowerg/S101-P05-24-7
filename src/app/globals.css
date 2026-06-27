@@ -30,13 +30,21 @@
 
 :root {
   /* Dark mode (default) */
-  --bg-base: #0A0B14;
-  --bg-surface: #111827;
-  --bg-surface-2: #1F2937;
-  --text-primary: #F9FAFB;
-  --text-secondary: #9CA3AF;
-  --text-muted: #6B7280;
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  --bg-base: #141414;
+  --bg-surface: #1F1F1F;
+  --bg-surface-2: #262626;
+  --bg-surface-3: #2E2E2E;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --text-muted: #606060;
+  --accent: #6366F1;
+  --accent-hover: #4F46E5;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --cyan: #06B6D4;
 }
 
 html.light {
@@ -50,13 +58,14 @@ html.light {
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    font-size: 15px;
+  }
   body {
     background-color: var(--color-bg-base);
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
-  }
-  html {
-    scroll-behavior: smooth;
   }
   
   /* Global smooth transitions for theme switches */
@@ -119,6 +128,11 @@ html.light {
   50%  { top: 100%; }
   100% { top: 0%; }
 }
+
+/* ─── Scrollbar hide ─────────────────────────────── */
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ─── Utilities ─────────────────────────────────── */
 

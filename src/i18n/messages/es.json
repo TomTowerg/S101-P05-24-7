@@ -341,7 +341,10 @@
     "profileButton": "Perfil",
     "defaultName": "Residente",
     "claimMinCharsHint": "{count}/10 mín.",
-    "deptLabel": "Depto"
+    "deptLabel": "Depto",
+    "statusPending": "Pendiente",
+    "statusNotified": "Notificado",
+    "statusDelivered": "Entregado"
   },
   "Index": {
     "title": "Gestión de Encomiendas",

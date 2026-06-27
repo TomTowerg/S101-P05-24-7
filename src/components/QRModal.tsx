@@ -25,7 +25,7 @@ export default function QRModal({ packageId, trackingCode, open, onClose }: QRMo
     QRCode.toDataURL(packageId, {
       width: 200,
       margin: 2,
-      color: { dark: "#111827", light: "#F9FAFB" },
+      color: { dark: "#FFFFFF", light: "#262626" },
     })
       .then(setQrDataUrl)
       .catch(console.error)
@@ -47,25 +47,25 @@ export default function QRModal({ packageId, trackingCode, open, onClose }: QRMo
       <div className="flex flex-col items-center gap-6 py-2">
         {loading ? (
           <div className="w-[200px] h-[200px] flex items-center justify-center">
-            <Loader2 className="w-8 h-8 animate-spin text-text-muted/40" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#6366F1]" />
           </div>
         ) : qrDataUrl ? (
-          <div className="rounded-2xl overflow-hidden shadow-md border border-border-subtle">
+          <div className="bg-[#262626] rounded-2xl p-6 flex items-center justify-center border border-white/[0.08]">
             <img src={qrDataUrl} alt={`QR ${trackingCode}`} width={200} height={200} />
           </div>
         ) : null}
-        <div className="flex gap-3 w-full">
+        <div className="flex gap-3 justify-center mt-4">
           <button
             onClick={handleDownload}
             disabled={!qrDataUrl}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2 px-6 py-2.5 bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-medium rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
             {t("qrDownload")}
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2.5 bg-bg-base text-text-muted text-sm font-bold rounded-xl hover:bg-bg-surface transition-colors cursor-pointer border border-border-subtle"
+            className="px-6 py-2.5 bg-transparent text-[#A0A0A0] hover:text-white text-sm font-medium rounded-full transition-colors cursor-pointer border border-white/[0.12] hover:border-white/[0.2]"
           >
             {t("qrClose")}
           </button>
