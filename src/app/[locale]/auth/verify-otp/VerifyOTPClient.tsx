@@ -13,7 +13,6 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [trustDevice, setTrustDevice] = useState(false);
   const [errorStatus, setErrorStatus] = useState<{message: string, type: 'error' | 'success'} | null>(null);
   const [shake, setShake] = useState(false);
 
@@ -83,7 +82,7 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
       const res = await fetch("/api/auth/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, trustDevice }),
+        body: JSON.stringify({ code, trustDevice: false }),
       });
 
       const data = await res.json();
@@ -247,26 +246,6 @@ export default function VerifyOTPClient({ email, role }: { email: string; role: 
             </motion.p>
           )}
         </AnimatePresence>
-
-        {/* Trust device */}
-        <label className="flex items-center justify-center gap-3 cursor-pointer group">
-          <div className="relative flex items-center justify-center">
-            <input
-              type="checkbox"
-              className="peer sr-only"
-              checked={trustDevice}
-              onChange={(e) => setTrustDevice(e.target.checked)}
-              disabled={isLoading}
-            />
-            <div className="w-5 h-5 bg-[#262626] border-2 border-white/[0.12] rounded peer-checked:bg-[#6366F1] peer-checked:border-[#6366F1] transition-colors peer-focus:ring-2 peer-focus:ring-[#6366F1]/30"></div>
-            <svg className="absolute w-3.5 h-3.5 text-white scale-0 peer-checked:scale-100 transition-transform pointer-events-none" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 5L4.5 8.5L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <span className="text-[13px] font-medium text-[#A0A0A0] group-hover:text-white transition-colors">
-            {t("trustDevice")}
-          </span>
-        </label>
 
         {/* Submit button */}
         <button

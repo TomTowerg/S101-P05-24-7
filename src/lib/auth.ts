@@ -4,7 +4,6 @@ import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
-import { cookies } from "next/headers";
 import bcrypt from "bcrypt";
 import { loginSchema } from "@/lib/validations/auth";
 import {
@@ -104,8 +103,12 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user }) {
       if (user) {
+        // New sign-in: force 2FA verification every time
         token.id = user.id;
         token.role = user.role;
+        token.otpVerified = false;
+        // Invalidate any previous OTP sessions so the user can't skip verification
+        await prisma.otpSession.deleteMany({ where: { userId: user.id as string } });
       }
 
       if (token.id) {
@@ -117,9 +120,6 @@ export const authOptions: NextAuthOptions = {
             apartment: true,
             onboardingComplete: true,
             totpEnabled: true,
-            trustedDevices: {
-              where: { expiresAt: { gt: new Date() } },
-            },
           },
         });
 
@@ -129,17 +129,13 @@ export const authOptions: NextAuthOptions = {
           token.onboardingComplete = dbUser.onboardingComplete;
           token.totpEnabled = dbUser.totpEnabled;
 
-          const cookieStore = await cookies();
-          const trustedCookie = cookieStore.get("loombox_trusted_device")?.value;
-          const isTrusted =
-            !!trustedCookie &&
-            dbUser.trustedDevices.some((td) => td.token === trustedCookie);
-
-          const otpSession = await prisma.otpSession.findFirst({
-            where: { userId: dbUser.id, expiresAt: { gt: new Date() } },
-          });
-
-          token.otpVerified = isTrusted || !!otpSession;
+          // Only check for an active OTP session (no trusted-device bypass)
+          if (!token.otpVerified) {
+            const otpSession = await prisma.otpSession.findFirst({
+              where: { userId: dbUser.id, expiresAt: { gt: new Date() } },
+            });
+            token.otpVerified = !!otpSession;
+          }
         }
       }
 
