@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get('endDate');
     const type = searchParams.get('type');
 
-    let whereClause: any = {};
+    const whereClause: any = {};
 
     // If resident, only show packages for their apartment
     if (token.role === "RESIDENTE") {

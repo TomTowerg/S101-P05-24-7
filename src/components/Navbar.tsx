@@ -30,7 +30,7 @@ export default function Navbar() {
   if (isLoginPage) return null;
 
   /* ── Language toggle (reusable) ─────────────────────────────── */
-  const LangToggle = () => (
+  const langToggleElement = (
     <button
       onClick={toggleLocale}
       aria-label={t("changeLanguage")}
@@ -72,7 +72,7 @@ export default function Navbar() {
               </span>
             </Link>
             <span className="w-px h-4 bg-white/[0.10] hidden sm:block" />
-            <LangToggle />
+            {langToggleElement}
           </div>
 
           {/* Right: bell + profile + sign-out */}
@@ -119,7 +119,7 @@ export default function Navbar() {
 
           {/* Left: lang toggle */}
           <div className="w-36 flex items-center gap-4">
-            <LangToggle />
+            {langToggleElement}
           </div>
 
           {/* Center: Logo */}

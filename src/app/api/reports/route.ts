@@ -29,10 +29,10 @@ export async function GET() {
   }
 
   // 2. Pie chart status distribution
-  let statusCounts = { PENDING: 0, NOTIFIED: 0, DELIVERED: 0 };
+  const statusCounts = { PENDING: 0, NOTIFIED: 0, DELIVERED: 0 };
   
   // 3. Most active tower
-  let towerCounts: Record<string, number> = {};
+  const towerCounts: Record<string, number> = {};
 
   packages.forEach(pkg => {
     const dateStr = pkg.createdAt.toISOString().split('T')[0];
