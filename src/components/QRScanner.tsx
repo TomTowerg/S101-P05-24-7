@@ -103,9 +103,11 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
       const html5QrCode = new Html5Qrcode(scannerId, { verbose: false });
       scannerRef.current = html5QrCode;
 
+      const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+      const boxSize = isMobile ? Math.min(window.innerWidth * 0.7, 280) : 250;
       const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
+        fps: isMobile ? 15 : 10,
+        qrbox: { width: boxSize, height: boxSize },
         aspectRatio: 1.0,
         formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
       };
@@ -125,17 +127,18 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
             config,
             (decodedText: string) => {
               callbackFired = true;
+              const decoded = decodedText.trim();
               // ── Validate: must look like a Prisma CUID or UUID ──
-              if (!VALID_PACKAGE_ID_REGEX.test(decodedText)) {
+              if (!VALID_PACKAGE_ID_REGEX.test(decoded)) {
                 setError({ type: "invalidqr", message: t("errorInvalidQR") });
                 setState("error");
                 stopScanner();
-                if (onScanError) onScanError("invalid_qr: " + decodedText);
+                if (onScanError) onScanError("invalid_qr: " + decoded);
                 return;
               }
               // Valid package ID — hand off and close scanner
               stopScanner();
-              onScanSuccess(decodedText);
+              onScanSuccess(decoded);
             },
             () => {
               // Per-frame "no QR found" callback — intentionally silent
@@ -150,7 +153,10 @@ export default function QRScanner({ onScanSuccess, onScanError, onClose }: QRSca
           if (
             msg.includes("OverconstrainedError") ||
             msg.includes("NotFoundError") ||
-            msg.includes("DevicesNotFoundError")
+            msg.includes("DevicesNotFoundError") ||
+            msg.includes("Constraints") ||
+            msg.includes("constraints") ||
+            msg.includes("facing")
           ) {
             continue;
           }
